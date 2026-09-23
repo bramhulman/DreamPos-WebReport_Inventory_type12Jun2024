@@ -1,0 +1,1 @@
+﻿<%@ Application Codebehind="Global.asax.vb" Inherits="DreamPos_WebReport.Global_asax" Language="vb" %>

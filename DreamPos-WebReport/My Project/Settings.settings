@@ -1,0 +1,102 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="gofood" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">'GOJEK', 'GOFOOD','GORES','GORESTO','GO KITCHEN'</Value>
+    </Setting>
+    <Setting Name="errLog" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">D:\PCL\DreamPos-WebReport_Inventory_type12Jun2024\DreamPos-WebReport\ErrLog.txt</Value>
+    </Setting>
+    <Setting Name="patSales" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">'PayATTable','PAY@TABLE','PatAtTable'</Value>
+    </Setting>
+    <Setting Name="dirdeliver" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">'DIRDELIVER','DIRDELIVERY'</Value>
+    </Setting>
+    <Setting Name="grab" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">'GRAB', 'GRAB KITCHEN'</Value>
+    </Setting>
+    <Setting Name="waorder" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">'WA ORDER'</Value>
+    </Setting>
+    <Setting Name="webreport" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:57115</Value>
+    </Setting>
+    <Setting Name="cookies" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">UserLogin_inv</Value>
+    </Setting>
+    <Setting Name="session" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">username</Value>
+    </Setting>
+    <Setting Name="price1" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="price2" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">21</Value>
+    </Setting>
+    <Setting Name="rcp_cc" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="r_type" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="itemmaster_cc" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="recalcost" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="stock_cost" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="errClose" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">D:\PCL\DreamPos-WebReport_Inventory_type12Jun2024\DreamPos-WebReport\ErrClose.txt</Value>
+    </Setting>
+    <Setting Name="errcsv" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">D:\PCL\DreamPos-WebReport_Inventory_type12Jun2024\DreamPos-WebReport\Err.csv</Value>
+    </Setting>
+    <Setting Name="limitday" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">200</Value>
+    </Setting>
+    <Setting Name="limitorder" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="slssvr" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Server=localhost;port=3307;user id=root;password=t4v14n4ul1;database=cldmemberbarburger7; Connection Timeout=3000; default command timeout=2400;</Value>
+    </Setting>
+    <Setting Name="tosupplier_byacc" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="emailName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">dreampos-mail@dreamposcloud.com</Value>
+    </Setting>
+    <Setting Name="emailPass" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">success888999</Value>
+    </Setting>
+    <Setting Name="emailHost" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mail.dreamposcloud.com</Value>
+    </Setting>
+    <Setting Name="emailPort" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">587</Value>
+    </Setting>
+    <Setting Name="emailTarget" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">bram.hulman@gmail.com</Value>
+    </Setting>
+    <Setting Name="reviewedby" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Cici</Value>
+    </Setting>
+    <Setting Name="approvedby" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Desiree</Value>
+    </Setting>
+    <Setting Name="supp_tax" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="ServerStr" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Server=localhost;port=3307;user id=root;password=t4v14n4ul1;database=cldmemberbarburger7; Connection Timeout=3000; default command timeout=6000;SslMode=None;AllowPublicKeyRetrieval=True;CharSet=utf8mb4;</Value>
+    </Setting>
+    <Setting Name="admin" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ridwan</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

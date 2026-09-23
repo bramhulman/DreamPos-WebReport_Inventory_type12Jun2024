@@ -1,0 +1,157 @@
+﻿/* TABLE  Edit
+----------------------------------------------------------*/
+   .style14
+        {
+            text-align: center;
+            font-weight: 700;
+            color: #FFFFFF;
+             background: #3a4f63;
+ 
+            font-size: large;
+            height: 30px;
+        }
+        
+        .stylelable
+        {   color:#000000;
+            border: thin solid #3a4f63;
+            width: 115px;
+        }
+         .stylelable2
+        {   color:#000000;
+            border: thin solid #FFFFFF;
+            width: 90px;
+        }
+        .styletable
+        {
+            border: thin solid #3a4f63;
+            width: 260px;
+        }
+        .btn
+        {
+            /*padding: 1px 1px 1px 1px;*/
+            font: normal 120%;
+            height: 30px;
+            color: #fff;
+            background-color:  #3a4f63;
+            border-radius: 15px 15px 15px 15px;
+            -moz-border-radius: 15px 15px 15px 15px;
+            -webkit-border: 15px 15px 15px 15px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left:15px;
+        }
+        .btn:hover
+        {
+            background-color: transparent;
+            border: 0.15em #fff solid;
+            color:  #3a4f63;
+        }
+        
+         .btnOf
+        {
+            padding: 1px 1px 1px 1px;
+            font: normal 120%;
+            height: 30px;
+            color: #fff;
+            background-color:  #3a4f63;
+            border-radius: 15px 15px 15px 15px;
+            -moz-border-radius: 15px 15px 15px 15px;
+            -webkit-border: 15px 15px 15px 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .btnOf:hover
+        {
+            background-color: transparent;
+            border: 0.15em #fff solid;
+            color:  #3a4f63;
+        }
+     
+     
+       .menutable
+        {
+            padding: 5px 5px 5px 5px;
+            height: auto;
+            
+            color: #fff;
+            
+            border-radius: 15px 15px 15px 15px;
+           
+            -moz-border-radius: 15px 15px 15px 15px;
+            -webkit-border: 15px 15px 15px 15px;
+            -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
+            -moz-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
+            box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 5px;
+        }
+       
+       
+       .style15
+    {
+        border: thin solid #3a4f63;
+        width: 371px;
+    }
+      .style90
+    {
+        border: thin solid #3a4f63;
+        width: 200px;
+    }
+       /* LISTVIEW
+----------------------------------------------------------*/
+       
+          .style1
+       {
+            color: #FFFFFF;
+            background: #3a4f63;
+  
+        }
+     
+  .menuUp
+        {
+            padding: 5px 0 0 10px;
+            font: normal 100% Arial, Helvetica, sans-serif;
+            height: 30px;
+            
+            color: #fff;
+            background: #3a4f63;
+          
+            border-radius: 15px 15px 15px 15px;
+            -moz-border-radius: 15px 15px 15px 15px;
+            -webkit-border: 15px 15px 15px 15px;
+            -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
+            -moz-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
+            box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
+        }
+   
+        .style3
+     {
+         width: 148px;
+     }
+     .style4
+     {
+         width: 66px;
+     }
+      .menuUpTrans
+        {
+            padding: 5px 0 0 0;
+            
+            font: x-large Segoe UI semibold, bold;
+            height: 30px;
+            
+            color:  #4b6c9e;
+           
+          
+           
+        }
+        
+        .menuUpTop
+        {
+            padding: 5px 0 0 0;
+            font: normal 120% Arial, Helvetica, sans-serif,bold;
+            height: 30px;
+            
+            color:  #3a4f63;
+           
+          
+           
+        }
+         

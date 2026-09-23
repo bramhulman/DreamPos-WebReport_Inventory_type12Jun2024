@@ -1,0 +1,327 @@
+<asp:Content ID="LeftContentBar" ContentPlaceHolderID="LeftContentBar" runat="server">
+                <asp:ScriptManager runat="server">
+                
+     </asp:ScriptManager>
+
+                    
+
+    <style type="text/css">
+    .modal
+    {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: black;
+        z-index: 99;
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        -moz-opacity: 0.8;
+        min-height: 100%;
+        width: 100%;
+    }
+    .loading
+    {
+        font-family: Arial;
+        font-size: 10pt;
+        border: 5px solid #67CFF5;
+        width: 200px;
+        height: 100px;
+        display: none;
+        position: fixed;
+        background-color: White;
+        z-index: 999;
+    }
+</style>
+    
+    
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+    function ShowProgress() {
+        setTimeout(function () {
+            var modal = $('<div />');
+            modal.addClass("modal");
+            $('body').append(modal);
+            var loading = $(".loading");
+            loading.show();
+            var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
+            var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
+            loading.css({ top: top, left: left });
+        }, 200);
+    }
+    $('form').live("submit", function () {
+        ShowProgress();
+    });
+        //untuk dropdownlist
+    $(document).ready(function () {
+
+    ddlOptionGrouping();
+
+    //Sys.WebForms.PageRequestManager.getInstance().add_endRequest(ddlOptionGrouping);
+
+    function ddlOptionGrouping() {
+        /* Add Option Groups to asp:DropdownList */
+        var $select = $('#<%= ddlRpt.ClientID %>');
+        var optGroup;
+        $('#<%= ddlRpt.ClientID %> option').each(function () {
+            if ($(this).val() == '<') {
+                /* Opener */
+                optGroup = $('<optGroup>').attr('label', $(this).text());
+            } else if ($(this).val() == '>') {
+                /* Closer */
+                $('</optGroup>').appendTo(optGroup);
+                optGroup.appendTo($select);
+                optGroup = null;
+            } else {
+                /* Normal Item */
+                let $option = $('<option>' + $(this).text() + '</option>').attr('value', $(this).val());
+                if (this.hasAttribute('selected')) {
+                    $option.attr('selected', $(this).attr('selected'));
+                }
+                if (optGroup) {
+                    $option.appendTo(optGroup);
+                } else {
+                    $option.appendTo($select);
+                }
+            }
+            $(this).remove();
+        });
+    }
+});
+//akhir untuk dropdowngroup
+</script>
+
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+        <li class="nav-item">
+            <%--<a runat="server" href="~/Home.aspx" class="nav-link">--%>
+              <%--<i class="nav-icon fas fa-tachometer-alt"></i>--%>
+          
+              <h5 style="text-align: center;color:white;">
+                Select Report
+                 <%-- <asp:UpdatePanel runat="server" ID="upddlrpt">
+                      <ContentTemplate>
+                          <asp:DropDownList ID="ddlRpt" runat="server" CssClass="form-control" AppendDataBoundItems="True" 
+                        EnableViewState="True" ViewStateMode="Enabled">
+                        </asp:DropDownList>
+                      </ContentTemplate>
+                       <Triggers>
+                      <asp:AsyncPostbackTrigger ControlID="ddlRpt" EventName="SelectedIndexChanged" />
+                        </Triggers>
+                  </asp:UpdatePanel>--%>
+
+                  <asp:DropDownList ID="ddlRpt" runat="server" CssClass="form-control">
+                      
+                  </asp:DropDownList>
+
+                 <%--<asp:DropDownList ID="ddlRpt" runat="server" CssClass="form-control" AppendDataBoundItems="True"
+                    EnableViewState="True" ViewStateMode="Enabled">
+                </asp:DropDownList>--%>
+              </h5>
+          </li>
+       
+         <li class="nav-item">
+            <%--<a runat="server" href="~/Home.aspx" class="nav-link">--%>
+              <%--<i class="nav-icon fas fa-tachometer-alt"></i>--%>
+              <h5 style="text-align:center;color:white;"> 
+                  Parameter 
+              </h5>
+          </li>
+       
+        <li class="nav-item">
+            <%--<a runat="server" href="~/Home.aspx" class="nav-link">--%>
+              <%--<i class="nav-icon fas fa-tachometer-alt"></i>--%>
+              <p style="text-align:center;color:white;" > 
+                  Own dan Franchise 
+                  <asp:DropDownList ID="ddlOwn" runat="server" CssClass="form-control" AppendDataBoundItems="True" AutoPostBack="false" OnSelectedIndexChanged="ddlOwn_SelectedIndexChanged"
+                    EnableViewState="True" ViewStateMode="Enabled"></asp:DropDownList>
+              </p>
+          </li>
+
+
+
+
+         <li class="nav-item">
+              
+
+                               <table style="width:100%">
+                                  
+                                    <tr>
+                                    <td rowspan="2" style="width:40%; text-align:center"><asp:Label runat="server" AssociatedControlID="btnshowmdlbrand" Text="Brand: " ForeColor="White"></asp:Label></td>
+                                    <td style="width:60%; margin-left:10px; text-align:center""><button type="button" runat="server" class="btn btn-primary" data-toggle="modal" id="btnshowmdlbrand" data-target="#ModalBrand" style="padding:1px 4px;">
+                                         Get Brand
+                                         </button>
+                                        </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="text-align:center;"><asp:Label ID="lblNmBrand" runat="server" Text="All Brand" Textalign="center" ForeColor="White" Visible="false"></asp:Label> </td>
+                                  </tr>
+
+                                   <tr>
+                                    <td rowspan="2" style="width:40%; text-align:center"><asp:Label runat="server" AssociatedControlID="btnshowmdlcity" Text="City: " ForeColor="White"></asp:Label></td>
+                                    <td style="width:60%; margin-left:10px; text-align:center;"><button type="button" runat="server" class="btn btn-primary" data-toggle="modal" id="btnshowmdlcity" data-target="#ModalCity" style="padding:1px 4px;">
+                                         Get City
+                                         </button>
+                                        </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="text-align:center;"><asp:Label ID="LblNmCity" runat="server" Text="All City" Textalign="center" ForeColor="White" Visible="false"></asp:Label> </td>
+                                    
+                                  </tr>
+
+                                    <tr>
+                                    <td rowspan="2" style="width:40%; text-align:center"><asp:Label runat="server" AssociatedControlID="btnshowmdlstore" Text="Store: " ForeColor="White"></asp:Label></td>
+                                    <td style="width:60%; margin-left:10px; text-align:center;"><button type="button" runat="server" class="btn btn-primary" data-toggle="modal" id="btnshowmdlstore" data-target="#ModalStore" style="padding:1px 4px;">
+
+                                         Get Store
+                                         </button>
+                                        </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="text-align:center;"><asp:Label ID="lblOutletNameData" runat="server" Text="All Store" Textalign="center" ForeColor="White" Visible="false"></asp:Label> </td>
+                                    
+                                  </tr>
+
+                                </table>
+                               
+                               
+            </li>
+          
+         <li class="nav-item" id="paramitem" style="display:none" runat="server">
+             <div class="row">
+                    <div class="form-horizontal">
+                           <div class="card-body">
+
+                               <table style="width:100%">
+                                  
+                                    <tr>
+                                    <td rowspan="2" style="width:40%; text-align:center"><asp:Label runat="server" AssociatedControlID="btnItem" Text="Item: " ForeColor="White"></asp:Label></td>
+                                    <td style="width:60%; margin-left:10px; text-align:center;"><asp:button runat="server" class="btn btn-primary" id="btnItem" style="padding:1px 4px;" Text="Get Store">
+                                        </asp:button>
+                                        </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="text-align:center;"><asp:Label ID="LblNmItem" runat="server" Text="All Item" Textalign="center" ForeColor="White"></asp:Label> </td>
+                                    
+                                  </tr>
+                                   </table>
+                               </div>
+                        </div>
+                 </div>
+             
+          </li>
+         <li class="nav-item">
+            <%--<a runat="server" href="~/Home.aspx" class="nav-link">--%>
+              <%--<i class="nav-icon fas fa-tachometer-alt"></i>--%>
+              <div style="text-align:center;color:white;" > 
+                  <asp:label runat="server" ID="lblparamfrom" Text="Date From"></asp:label> <br />
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                      </span>
+                    </div>
+                     <%--<ajaxToolkit:ToolkitScriptManager runat="server" ID ="ToolkitScriptManager1"></ajaxToolkit:ToolkitScriptManager>--%>
+                      <asp:TextBox style="text-align:center;" runat="server" ID="txtFrom" Class="form-control" AutoPostBack="false" />
+                          <ajaxtoolkit:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="txtFrom" 
+                            Format="dd MMM yyyy"></ajaxtoolkit:CalendarExtender>                               
+                  </div>                                  
+              </div>
+          </li>
+
+         <li class="nav-item">
+            <%--<a runat="server" href="~/Home.aspx" class="nav-link">--%>
+              <%--<i class="nav-icon fas fa-tachometer-alt"></i>--%>
+              <div style="text-align:center;color:white;" id="paramto" runat="server" > 
+                  <asp:label runat="server" ID="lblparamto" Text="Date To"></asp:label> <br />
+                   <div class="input-group">
+                      <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="far fa-calendar-alt" runat="server" id="iconparamto"></i>
+                      </span>
+                    </div>
+                     <%--<ajaxToolkit:ToolkitScriptManager runat="server" ID ="ToolkitScriptManager2"></ajaxToolkit:ToolkitScriptManager>--%>
+                      <asp:TextBox style="text-align:center;" runat="server" ID="txtTo" Class="form-control" AutoPostBack="false" />
+                          <ajaxtoolkit:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtTo" 
+                            Format="dd MMM yyyy"></ajaxtoolkit:CalendarExtender>                               
+                  </div>                               
+              </div>
+          </li>
+
+         <li class="nav-item">
+            <%--<a runat="server" href="~/Home.aspx" class="nav-link">--%>
+              <%--<i class="nav-icon fas fa-tachometer-alt"></i>--%>
+              <p style="text-align:center;color:white;" > 
+                 <br />
+                  <asp:Button ID="btnShow" runat="server" Style="font-weight: 600; border-color:gray; width:108px;" OnClick="btnShow_Click"
+                    Text="OK" CssClass="btn btn-primary" />  
+                  </p>
+                  <%-- Update 21 Februari 2020 --%>
+                  <%--<asp:Button ID="btnShow" runat="server" Style="font-weight: 600; border-color:gray;" OnClick="btnShow_Click"
+                    Text="OK" CssClass="btn btn-primary" OnClientClick="showPopup()"/>--%>
+ 
+
+                             <%-- <br />
+                  <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                      <ContentTemplate></ContentTemplate>
+                      <Triggers>
+                          <asp:AsyncPostBackTrigger ControlID="btnShow"  EventName="Click"/>
+                      </Triggers>
+                  </asp:UpdatePanel>
+                  <br />
+
+                    <asp:Button runat="server" ID="hiddenTargetControlForModalPopup" style="display:none"/>
+                    <ajaxToolkit:ModalPopupExtender runat="server" ID="programmaticModalPopup"
+                        BehaviorID="programmaticModalPopupBehavior"
+                        TargetControlID="hiddenTargetControlForModalPopup"
+                        PopupControlID="programmaticPopup"
+                        BackgroundCssClass="modalBackground"
+                        DropShadow="True"
+                        RepositionMode="RepositionOnWindowScroll" >
+                    </ajaxToolkit:ModalPopupExtender>
+
+                    <asp:Panel runat="server" CssClass="modalPopupProgress" ID="programmaticPopup" style="background-color:lightgray;display:none;height:auto;width:auto;padding:10px">
+                    <div id='messagediv' style="text-align:center">
+                        <img alt="" src="/images/loader.gif" />
+                    </div>
+
+                    </asp:Panel>--%>
+
+
+
+                <%--</p>--%>
+                                
+          </li>
+         <li class="nav-item">
+            
+              <p style="text-align:center;color:white;" > 
+                 <asp:Button Text="Export CSV" ID="btnExport" runat="server" OnClick="btnExport_Click"
+                    Style="font-weight: 600; border-color:gray; width:108px;" CssClass="btn btn-primary" UseSubmitBehavior="false" /> 
+                  </p>
+          </li>
+         <li class="nav-item">
+            
+              <p style="text-align:center;color:white;" > 
+                 <asp:Button Text="Export Excel" ID="btnExport2" runat="server" OnClick="btnExport2_Click"
+                    Style="font-weight: 600; border-color:gray; width:108px;" CssClass="btn btn-primary" UseSubmitBehavior="false" /> 
+                  <br />
+                  <br />
+              </p>
+          </li>
+        <li class="nav-item">
+            <asp:Label ID="lblnobrand" runat="server" Text="0" Visible="false"></asp:Label>
+            <asp:Label ID="lblnoCity" runat="server" Text="0" Visible="false"></asp:Label>
+            <asp:Label ID="lblNoOutlet" runat="server" Text="0"  Visible = "false"></asp:Label>
+             <asp:Label ID="lblnoitem" runat="server" Text="0"  Visible = "false"></asp:Label>
+        </li>
+</ul>
+    
+                <div class="loading" style="text-align:center">
+                    Loading... Please wait...<br />
+                    <br />
+                    <img src="/images/loader.gif" alt="" />
+                </div>
+          
+    
+</asp:Content>

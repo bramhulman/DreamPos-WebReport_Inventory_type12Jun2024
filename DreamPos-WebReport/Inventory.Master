@@ -1,0 +1,288 @@
+<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Inventory.master.vb"
+    Inherits="DreamPos_WebReport.Inventory" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head id="Head1" runat="server">
+    <title></title>
+    <link rel="icon" href="~/images/logo.jpg" type="image/jpeg" runat="server" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.tooplate_listItm').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listRcip').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listStkm').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listStkgrp').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listCost').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listSup').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listRcv').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listTrf').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listRwaste').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listReturn').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listOpname').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listCalc').click(function () {
+                $('#spinner').show();
+            });
+            $('.tooplate_listExpense').click(function () {
+                $('#spinner').show();
+            });
+            $('.btn2').click(function () {
+                $('#spinner').show();
+            });
+            $('.menu').click(function () {
+                $('#spinner').show();
+            });
+        });
+    </script>
+    <link href="~/Style/Style.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        .modal
+        {
+            position: fixed;
+            z-index: 999;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background-color: Black;
+            filter: alpha(opacity=60);
+            opacity: 0.6;
+            -moz-opacity: 0.8;
+        }
+        .center
+        {
+            z-index: 1000;
+            margin: 300px auto;
+            padding: 10px;
+            width: 130px;
+            background-color: White;
+            border-radius: 10px;
+            filter: alpha(opacity=100);
+            opacity: 1;
+            -moz-opacity: 1;
+        }
+        .center img
+        {
+            height: 128px;
+            width: 128px;
+        }
+        .menu
+        {
+            font-size: medium;
+        }
+        .menu
+        {
+            font-size: medium;
+        }
+        .menu
+        {
+            font-size: large;
+        }
+        .menu
+        {
+            font-size: medium;
+        }
+        
+        
+        .dropdown-content 
+        {
+            display: none;
+           
+            background: transparent;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a 
+        {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {background-color: #f1f1f1}
+
+        .tooplate_listOrderW:hover .dropdown-content {
+            display: block;
+        }
+        
+    </style>
+</head>
+<body>
+    <form id="Form1" runat="server" style="margin-top: 0px">
+    <div id="spinner" class="modal" style="display: none">
+        <div class="center">
+            <img alt="" src="/images/loader.gif" />
+        </div>
+    </div>
+    <div class="page">
+        <div id="tooplate_sidebar">
+            <div class="cleaner_Image">
+                <asp:ImageButton ID="Image1" runat="server" ImageUrl="../images/Dreampos.png" Height="80"
+                    NavigateUrl="~/Pages_Home.aspx" Width="180" CssClass="btn2" />
+            </div>
+            <h2>
+                &nbsp;&nbsp;&nbsp; Our Services</h2>
+            <ul class="tooplate_listItm" id="LItemMaster" runat="server">
+                <li><a href="/Pages_ItemMaster.aspx" >Item Master</a></li>
+            </ul>
+            <ul class="tooplate_listStkgrp" id="LStockGroup" runat="server">
+                <li><a href="/Pages_StkGroup.aspx">Stock Group</a></li>
+            </ul>
+            <ul class="tooplate_listStkm" id="LStockMaster" runat="server">
+                <li><a href="/Pages_Stk.aspx">Stock Master</a></li>
+            </ul>
+            <ul class="tooplate_listCost" id="LCostCentre" runat="server">
+                <li><a href="/Pages_ICC.aspx">Cost Centre</a></li>
+            </ul>
+            <ul class="tooplate_listSup" id="LSupplier" runat="server">
+                <li><a href="/Pages_Supplier.aspx">Supplier</a></li>
+            </ul>
+            <ul class="tooplate_listRcip" id="LReceipe" runat="server">
+                <li><a href="/Pages_Receipe.aspx">Recipe</a></li>
+            </ul>
+             <ul class="tooplate_listOrderW" id="LOrderW" runat="server">
+                <li><a href="">Order To Warehouse</a>
+                    <div class="dropdown-content">
+                        <a id = "aCreate" runat="server">Create Order</a>
+                        <a id = "aReceive" runat="server">Receive and finish order</a>
+                    </div>
+                </li>
+            </ul>
+
+             <ul class="tooplate_listOrderW" id="LOrderS" runat="server">
+                <li><a href="/Pages_InvOrderWHO.aspx">Order From Store</a></li>
+            </ul>
+
+             <ul class="tooplate_listOrderW" id="LBacth" runat="server">
+                <li><a href="/Pages_InvBatch.aspx">Batch Process</a></li>
+            </ul>
+
+             <ul class="tooplate_listTrf" id="LTransfer" runat="server">
+                <li><a href="/Pages_InvTransfer.aspx">Transfer</a></li>
+            </ul>
+             <ul class="tooplate_listRwaste" id="LRWaste" runat="server">
+                <li><a href="/Pages_InvRwaste.aspx">Raw Waste</a></li>
+            </ul>
+             <ul class="tooplate_listRcv" id="LReceive" runat="server">
+                <li><a href="/Pages_InvRcv.aspx">order / Receive</a></li>
+            </ul>
+              <ul class="tooplate_listReturn" id="LReturn" runat="server">
+                <li><a href="/Pages_InvReturn.aspx">Return</a></li>
+            </ul>
+             <ul class="tooplate_listOpname" id="LSOpname" runat="server">
+                <li><a href="/Pages_StockOpname.aspx">Stock Opname</a></li>
+            </ul>
+            <ul class="tooplate_listCalc" id="LCalculate" runat="server">
+                <li><a href="/Pages_Calculate.aspx">Calculate Inventory</a></li>
+            </ul>
+            <ul class="tooplate_listExpense" id="LExpense" runat="server">
+                <li><a href="/Pages_ExpOther.aspx">Expense Other</a></li>
+            </ul>
+            <ul class="tooplate_listExpense" id="LInvoice" runat="server">
+                <li><a href="/Pages_InvInvoice.aspx">Invoice</a></li>
+            </ul>
+
+            <%--  <div class="button"><a href="services.html">View All</a></div>--%>
+            <div class="cleaner_h60">
+            </div>
+            <div class="cleaner_h60">
+            </div>
+            <div class="cleaner_h60">
+            </div>
+            <%--  <h2>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    Testimonial</h2>
+                <blockquote>
+                    <p>
+                        Aliquam tristique, lectus nec condimentum egestas, neque erat posuere purus, sed
+                        interdum elit est.</p>
+                    <cite>Smith - <span>Web designer</span></cite>
+                </blockquote>--%>
+        </div>
+        <div class="header">
+            <div class="title">
+                <h1>
+                    Web Report
+                </h1>
+            </div>
+            <div class="loginDisplay">
+                <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
+                    <AnonymousTemplate>
+                        [ <a href="~/Default.aspx" id="HeadLoginStatus" runat="server">Log Out</a> ]
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        Welcome <span class="bold">
+                            <asp:LoginName ID="HeadLoginName" runat="server" />
+                        </span>! [
+                        <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="Log Out"
+                            LogoutPageUrl="~/" />
+                        ]
+                    </LoggedInTemplate>
+                </asp:LoginView>
+            </div>
+            <div class="clear hideSkiplink">
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="False"
+                    IncludeStyleBlock="False" Orientation="Horizontal" Width="309px">
+                    <Items>
+                        <asp:MenuItem Text="Home" NavigateUrl="~/Pages_Home.aspx" Value="Home" />
+                        <asp:MenuItem Text="Other" NavigateUrl="~/Pages_Transaction.aspx" />
+                        <asp:MenuItem NavigateUrl="~/Pages_InvHome.aspx" Text="Inventory" Value="Inventory">
+                        </asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/Pages_Dashboard.aspx" Text="DashBoard" Value="DashBoard">
+                        </asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/rptViewer.aspx" Text="Report" Value="Report"></asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/rptExport.aspx" Text="Export" Value="Export"></asp:MenuItem>
+                    </Items>
+                </asp:Menu>
+            </div>
+            <div id="tooplate_main">
+                <div id="tooplate_content">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="footer">
+            <div class="title">
+                <h2>
+                    Power by 'Pcl Software'
+                </h2>
+            </div>
+        </div>
+    </div>
+    </form>
+<script src="dist/js/inactivity-timer.js"></script>
+</body>
+</html>
+

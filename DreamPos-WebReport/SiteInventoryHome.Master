@@ -1,0 +1,881 @@
+<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="SiteInventoryHome.master.vb" Inherits="DreamPos_WebReport.SiteInventoryHome" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head runat="server">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>DreamPos Inventory Cloud | Dashboard</title>
+    <link rel="icon" href="~/images/logo.jpg" type="image/jpeg" runat="server" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css"/>
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css"/>
+
+    <!-- jQuery (wajib pertama) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery UI (UNTUK sortable / accordion dll) -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+
+        <!-- Moment.js (WAJIB untuk daterangepicker) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
+<!-- Daterangepicker CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<!-- Daterangepicker JS -->
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+      
+        <!-- jQuery Knob — VERSI YANG PASTI JALAN -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-knob@1.2.11/dist/jquery.knob.min.js"></script>
+
+
+        <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-bs4.min.js"></script>
+
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+      
+
+
+        <!-- Moment.js (WAJIB untuk daterangepicker) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
+<!-- Daterangepicker CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<!-- Daterangepicker JS -->
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        
+    
+<!-- jQuery Knob — VERSI YANG PASTI JALAN -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-knob@1.2.11/dist/jquery.knob.min.js"></script>
+
+        <!-- Bootstrap Bundle (sudah include Popper) -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-bs4.min.js"></script>
+
+        <!-- VectorMap Core -->
+    <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/jquery.vmap.min.js"></script>--%>
+
+    <!-- Peta Dunia -->
+    <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/maps/jquery.vmap.world.js"></script>--%>
+
+    <!-- PETA USA (WAJIB!) -->
+    <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/maps/jquery.vmap.usa.js"></script>--%>
+        <!-- SPARKLINE (TAMBAHKAN INI!) -->
+    <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>--%>
+    <!-- AdminLTE App -->
+    <script src="dist/js/adminlte.min.js"></script>
+         
+        
+        <!-- Ionicons -->
+          <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+         <!-- iCheck -->
+          <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css"/>
+          
+         
+          <!-- overlayScrollbars -->
+          <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css"/>
+          <!-- Daterange picker -->
+          <%--<link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css"/>--%>
+         
+            <style>
+                .style1 {
+                            color: #FFFFFF;
+                            background: #3a4f63;
+                        }
+                .table-header-blue {
+                    background-color: #007bff !important;
+                    color: white !important;
+                }
+                .table-header-blue th, .table-header-blue b {
+                    color: white !important;
+                    font-weight: bold !important;
+                }
+                .text-white { color: white !important; }
+                .text-end { text-align: right !important; }
+                .dropbtn {
+
+                    background-color: #3a4f63;
+                    color: white;
+                    width:180px;
+                    padding: 10px 20px;
+                    border: none;
+                    text-align :left  ;
+                    vertical-align:middle;
+                }
+
+                .dropdown {
+                    width:200px;
+                    position: relative;
+                    display: inline-block;
+                }
+
+                .dropdown-content {
+                    display: none;
+                    position: absolute;
+                    background-color: #f1f1f1;
+                    min-width: 180px;
+                    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                    z-index: 1;
+                }
+
+                .dropdown-content a {
+                    color: black;
+                    padding:8px 16px;
+                    text-align :right ;
+                    text-decoration: none;
+                    display: block;
+                }
+
+                .dropdown-content a:hover {background-color: #ddd;}
+
+                .dropdown:hover .dropdown-content {display: block;}
+
+                .dropdown:hover .dropbtn {background-color: #f1f1f1;color: black;}
+                  .style22
+                        {
+                            color: #FFFFFF;
+                            width: 73%;
+                            background: #007bff;
+                            padding:5px;
+                        }
+                   .style25
+                        {
+                            color: #FFFFFF;
+                            width: 17%;
+                            background: #007bff;
+                            padding:5px;
+                        }
+                     .style17
+                        {
+                            color: #FFFFFF;
+                            width: 10%;
+                            background: #007bff;
+                            padding:5px;
+                        }
+                    .menutab {
+                        padding: 10px;
+                        font: normal 120%;
+                        color: #1D1D1D;
+                        border-radius: 15px;
+                        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+                    }
+
+                    /* --- GLOBAL MODERN UI OVERRIDES --- */
+                    
+                    /* 1. General Typography & Layout */
+                    body {
+                        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                        background-color: #f4f6f9;
+                    }
+                    
+                    /* 2. Modern Cards */
+                    .card {
+                        border: none;
+                        border-radius: 8px; /* Softer corners */
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.08); /* Soft shadow */
+                        margin-bottom: 20px;
+                        background-color: #fff;
+                        transition: transform 0.2s ease-in-out;
+                    }
+                    /*.card:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+                    }*/
+                    .card-header {
+                        background-color: #fff;
+                        border-bottom: 1px solid #f0f0f0;
+                        padding: 15px 20px;
+                        font-weight: 600;
+                        font-size: 1.1rem;
+                        color: #333;
+                    }
+                    .card-body {
+                        padding: 20px;
+                    }
+
+                    /* 3. Modern Inputs */
+                    .form-control {
+                        border-radius: 6px;
+                        border: 1px solid #ced4da;
+                        padding: 10px 12px; /* Taller inputs */
+                        height: auto; /* Let padding define height */
+                        font-size: 14px;
+                        box-shadow: none;
+                        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+                    }
+                    .form-control:focus {
+                        border-color: #80bdff;
+                        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+                    }
+                    .input-group-text {
+                        border-radius: 6px;
+                        background-color: #f8f9fa;
+                        border-color: #ced4da;
+                    }
+                    
+                    /* 4. Modern Buttons */
+                    .btn {
+                        border-radius: 6px;
+                        padding: 8px 16px;
+                        font-weight: 500;
+                        letter-spacing: 0.3px;
+                        transition: all 0.2s;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }
+                    .btn-primary {
+                        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+                        border: none;
+                    }
+                    .btn-primary:hover {
+                        background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                    }
+                    .btn-success {
+                        background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+                        border: none;
+                    }
+                    .btn-danger {
+                        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+                        border: none;
+                    }
+                    .btn-info {
+                        background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%);
+                        border: none;
+                        color: white;
+                    }
+                    
+                    /* 5. Modern Tables in GridView */
+                    .table {
+                        border-collapse: separate !important;
+                        border-spacing: 0;
+                        width: 100%;
+                        margin-bottom: 1rem;
+                        background-color: #fff; /* Ensure bright white background */
+                        color: #212529;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        border: 1px solid #d1d3e2; /* Clearer border */
+                    }
+                    .table th, .table td {
+                        padding: 12px 15px;
+                        vertical-align: middle;
+                        border-top: 1px solid #e3e6f0; /* Clearer separator */
+                    }
+                    .table thead th {
+                        vertical-align: bottom;
+                        border-bottom: 2px solid #b6d4fe; /* Distinct header underline */
+                        background-color: #cfe2ff !important; /* Crisper Light Blue Header */
+                        color: #000; /* Black text for max clarity */
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        font-size: 0.85rem;
+                        letter-spacing: 0.5px;
+                        border: none;
+                    }
+                    .table-striped tbody tr:nth-of-type(odd) {
+                        background-color: rgba(0, 0, 0, 0.02); /* Keep subtle stripe */
+                    }
+                    .table-hover tbody tr:hover {
+                        background-color: rgba(0, 123, 255, 0.05); /* Blue-ish hover interaction */
+                    }
+                    
+                    /* Header overrides for specific GridView headers if needed */
+                    .table-header-blue {
+                         background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+                    }
+
+                    /* 6. Modal Polish */
+                    .modal-content {
+                        border-radius: 10px;
+                        border: none;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    }
+                    .modal-header {
+                        border-bottom: 1px solid #eee;
+                        background-color: #f8f9fa;
+                        border-radius: 10px 10px 0 0;
+                        padding: 15px 20px;
+                    }
+                    .modal-footer {
+                        border-top: 1px solid #eee;
+                        background-color: #f8f9fa;
+                        border-radius: 0 0 10px 10px;
+                    }
+
+                    /* 7. Utility */
+                    .form-group label {
+                        font-weight: 600;
+                        color: #495057;
+                    }
+                    .breadcrumb {
+                        background: transparent;
+                        padding: 0;
+                        margin-bottom: 0;
+                    }
+                    /* Fix DataTables page size select dropdown overlap issue */
+                    .dataTables_length select,
+                    .dataTables_wrapper .dataTables_length select {
+                        display: inline-block !important;
+                        width: auto !important;
+                        min-width: 65px !important; /* give it plenty of space so the text doesn't overlap the arrow */
+                        padding: .375rem 1.75rem .375rem .75rem !important; /* standard padding for custom arrow */
+                        margin: 0 8px !important; /* give it nice breathing room from the words Show and records */
+                        height: calc(1.5em + .75rem + 2px) !important;
+                        vertical-align: middle !important;
+                    }
+                </style>
+        <asp:ContentPlaceHolder ID="head" runat="server" />
+        <!-- MATIKAN VECTOR MAP SELAMANYA (INI PENYEBAB UTAMA!) -->
+    <%--<script>
+        $(function () {
+            // Matikan semua plugin yang conflict
+            $.fn.vectorMap = undefined;
+            $.fn.vmap = undefined;
+            $.fn.sparkline = undefined;
+            if (typeof JQVMap !== 'undefined') JQVMap = undefined;
+        });
+    </script>--%>
+</head>
+
+
+
+
+
+
+<body class="hold-transition sidebar-mini layout-fixed">
+   
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  if (typeof $.widget !== 'undefined' && typeof $.ui !== 'undefined') {
+      $.widget.bridge('uibutton', $.ui.button)
+  }
+</script>
+<!-- Bootstrap 4 -->
+<%--<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>--%>
+<!-- ChartJS -->
+<script src="plugins/chart.js/Chart.min.js"></script>
+
+<%--<!-- JQVMap -->
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="plugins/jquery-knob/jquery.knob.min.js"></script>--%>
+<!-- daterangepicker -->
+<%--<script src="plugins/moment/moment.min.js"></script>--%>
+<%--<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>--%>
+<!-- Summernote -->
+<%--<script src="plugins/summernote/summernote-bs4.min.js"></script>--%>
+<!-- overlayScrollbars -->
+<%--<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>--%>
+<!-- AdminLTE App -->
+<%--<script src="dist/js/adminlte.js"></script>--%>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<%--<script src="dist/js/pages/dashboard.js"></script>--%>
+<!-- AdminLTE for demo purposes -->
+<%--<script src="dist/js/demo.js"></script>--%> 
+
+   <%-- <script type="text/javascript" language="javascript">
+
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
+        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
+
+        </script>--%>
+
+<script>
+
+    function Notify(msg, title, type, clear, pos, sticky) {
+        //        toastr.options.positionClass = "toast-bottom-right";
+        //        toastr.options.positionClass = "toast-bottom-left";
+        //        toastr.options.positionClass = "toast-top-right";
+        //        toastr.options.positionClass = "toast-top-left";
+        //        toastr.options.positionClass = "toast-bottom-full-width";
+        //        toastr.options.positionClass = "toast-top-full-width";
+        //        options = {
+        //            tapToDismiss: true,
+        //            toastClass: 'toast',
+        //            containerId: 'toast-container',
+        //            debug: false,
+        //            fadeIn: 300,
+        //            fadeOut: 1000,
+        //            extendedTimeOut: 1000,
+        //            iconClass: 'toast-info',
+        //            positionClass: 'toast-top-right',
+        //            timeOut: 5000, // Set timeOut to 0 to make it sticky
+        //            titleClass: 'toast-title',
+        //            messageClass: 'toast-message' }
+
+
+        if (clear == true) {
+            toastr.clear();
+        }
+        if (sticky == true) {
+            toastr.tapToDismiss = true;
+            toastr.timeOut = 10000;
+        }
+
+        toastr.options.onclick = function () {
+            //alert('You can perform some custom action after a toast goes away');
+        }
+        //"toast-top-left";
+        toastr.options.positionClass = pos;
+        if (type.toLowerCase() == 'info') {
+            toastr.options.timeOut = 1000;
+            toastr.tapToDismiss = true;
+            toastr.info(msg, title);
+        }
+        if (type.toLowerCase() == 'success') {
+            toastr.options.timeOut = 1500;
+            toastr.success(msg, title);
+        }
+        if (type.toLowerCase() == 'warning') {
+            toastr.options.timeOut = 3000;
+            toastr.warning(msg, title);
+        }
+        if (type.toLowerCase() == 'error') {
+            toastr.options.timeOut = 10000;
+            toastr.error(msg, title);
+        }
+    }
+
+</script>
+   
+        <form id="form2" runat="server">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-light" style="background: linear-gradient(90deg, #007bff 0%, #00d2ff 100%); border-bottom: 3px solid transparent; border-image: linear-gradient(to right, #e74c3c 0%, #f1c40f 100%) 1;">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link text-white" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+      </li>
+      
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="user-panel navbar-nav ml-auto align-items-center">
+       
+            <asp:LoginView ID="LoginView1" runat="server" ViewStateMode="Disabled">
+                        <AnonymousTemplate>
+                            <table>
+                                <tr>
+                                    <td><a runat="server" class="text-white">Register</a></td>
+                                    <td><a runat="server" href="~/Default.aspx" class="text-white">Log in</a></td>
+                                   
+                                </tr>
+                            </table>
+                             
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                             
+                                     <li class="nav-item d-flex align-items-center" style="margin:0 10px;">
+                                         <span class="text-white mr-1" style="font-weight: 500;">Welcome,</span>
+                                         <a href="#" class="text-white font-weight-bold" runat="server"><%: Context.User.Identity.Name() %></a>
+                                    </li>
+                                       <li class="nav-item" style="margin:0 10px;">
+                                           <%-- OPTIMIZED LOGOUT: Direct point to Logout.aspx --%>
+                                           <style>
+                                               .btn-logout-custom {
+                                                   color: white !important;
+                                                   border: 1px solid rgba(255,255,255,0.7);
+                                                   border-radius: 20px;
+                                                   transition: all 0.3s;
+                                               }
+                                               .btn-logout-custom:hover {
+                                                   background-color: white !important;
+                                                   color: #d63031 !important; /* Soft Red Text */
+                                                   border-color: #f1c40f !important; /* Gold Border */
+                                                   box-shadow: 0 0 10px rgba(241, 196, 15, 0.5); /* Gold Glow */
+                                               }
+                                               /* Active sidebar item: Soft Red with Gold Accent */
+                                               .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+                                                   background-color: #ff6b6b !important; /* Soft Red */
+                                                   color: white !important;
+                                                   border-left: 4px solid #f1c40f; /* Gold Bar */
+                                                   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                                               }
+                                           </style>
+                                           <a href="Logout.aspx" class="nav-link btn btn-logout-custom btn-sm px-3 py-1">
+                                               <i class="fas fa-sign-out-alt mr-1"></i> Log out
+                                           </a>
+                                             </li>
+                               
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+      
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-light-primary elevation-4" style="border-right: 1px solid #f1c40f;">
+
+      <div class="user-panel mt-1 pb-1 mb-1 d-flex" style="background-color: transparent;">
+        <div class="image">
+          <asp:Image ID="Image1" runat="server" imageurl = "~/images/logo.jpg" class="img-circle elevation-2" style="text-align:center"/>
+        </div>
+        <div class="info">
+             <%--<a id="webreport" runat="server" href="#" onserverclick="webreporthome_ServerClick" class="d-block"><h4>Inventory Cloud</h4></a>--%>
+          <a href="Inventoryhome.aspx" placeholder="Home" class="d-block"><H4 style="color: #007bff; font-weight: 700;">Inventory Cloud</H4></a>
+        </div>
+      </div>
+
+   
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a runat="server" href="~/Inventoryhome.aspx" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt text-blue"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item" runat="server" id="m_webreport">
+            <a id="webreporthome" runat="server" href="#" onserverclick="webreporthome_ServerClick" class="nav-link">
+              <i class="nav-icon fas fa-chart-line text-indigo"></i>
+              <p>Web Report Home</p>
+            </a>
+          </li>
+          <li class="nav-item" id="lkstock" runat="server">
+            <a runat="server" href="~/kstock.aspx" class="nav-link">
+              <i class="nav-icon fas fa-history text-green"></i>
+              <p>Stock Card</p>
+            </a>
+          </li>
+          <li class="nav-item" id="LItemMaster" runat="server">
+            <a runat="server" href="~/Pages_ItemMaster.aspx" class="nav-link">
+              <i class="nav-icon fas fa-box-open text-orange"></i>
+              <p>Item Master</p>
+            </a>
+          </li>
+          <li class="nav-item" id="LStockGroup" runat="server">
+            <a runat="server" href="~/Pages_StkGroup.aspx" class="nav-link">
+              <i class="nav-icon fas fa-layer-group text-teal"></i>
+              <p>Stock Group</p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview" id="LStockMaster" runat="server">
+            <a class="nav-link">
+              <i class="nav-icon fas fa-boxes text-info"></i>
+              <p>
+                Stock
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a runat="server" id="astockmaster" class="nav-link">
+                  <i class="far fa-circle nav-icon text-info"></i>
+                  <p>Stock Master</p>
+                </a>
+              </li>
+              <li class="nav-item" id="Li1" runat="server">
+                <a runat="server" id="astocklimit" class="nav-link">
+                  <i class="far fa-circle nav-icon text-info"></i>
+                  <p>Stock Limit</p>
+                </a>
+              </li>
+              <li class="nav-item" id="Lreplace" runat="server">
+                <a runat="server" id="areplacestock" class="nav-link">
+                  <i class="far fa-circle nav-icon text-info"></i>
+                  <p>Substitute Ingredient</p>
+                </a>
+              </li>
+              <li class="nav-item" id="Lusedby" runat="server">
+                <a runat="server" id="ausedby" href="~/Usedby.aspx" class="nav-link">
+                  <i class="far fa-circle nav-icon text-info"></i>
+                  <p>Used By</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item" id="lcostcentre" runat="server">
+            <a runat="server" href="~/Pages_ICC.aspx" class="nav-link">
+              <i class="nav-icon fas fa-store-alt text-pink"></i>
+              <p>Cost Center</p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview" id="LSupplierGroup" runat="server">
+            <a class="nav-link">
+              <i class="nav-icon fas fa-truck text-danger"></i>
+              <p>
+                Supplier
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a runat="server" id="LSupplier" class="nav-link">
+                  <i class="far fa-circle nav-icon text-danger"></i>
+                  <p>Supplier Master</p>
+                </a>
+              </li>
+              <li class="nav-item" id="LSupplierStk" runat="server">
+                <a runat="server" href="~/Pages_SupplierStkSetting.aspx" class="nav-link">
+                  <i class="far fa-circle nav-icon text-danger"></i>
+                  <p>Supplier Stock Mapping</p>
+                </a>
+              </li>
+              <li class="nav-item" id="LCCSupp" runat="server">
+                <a runat="server" id="LCCSupplier" class="nav-link">
+                  <i class="far fa-circle nav-icon text-danger"></i>
+                  <p>Supplier Cost Center</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item" id="LReceipe" runat="server">
+            <a runat="server" href="~/Pages_Receipe.aspx" class="nav-link">
+              <i class="nav-icon fas fa-receipt text-warning"></i>
+              <p>Recipe</p>
+            </a>
+          </li>
+
+            <li class="nav-item has-treeview" runat="server" id="LPR">
+  <a class="nav-link">
+    <i class="nav-icon fas fa-clipboard-list" style="color: #20c997;"></i>
+    <p>
+      Purchase Request
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+  <ul class="nav nav-treeview" style="display: none;">
+    <li class="nav-item">
+      <a id="acreaterequest" runat="server" class="nav-link ">
+        <i class="far fa-circle nav-icon" style="color: #20c997;"></i>
+        <p>Create Request</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a id="astorereq" runat="server" class="nav-link " href="~/PurchaseRequestHO.aspx">
+        <i class="far fa-circle nav-icon" style="color: #20c997;"></i>
+        <p>Request from Outlet</p>
+      </a>
+    </li>
+  </ul>
+</li>
+
+          <li class="nav-item has-treeview" runat="server" id="LOrderW">
+            <a class="nav-link">
+              <i class="nav-icon fas fa-truck-loading text-primary"></i>
+              <p>
+                Order to Warehouse
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a id="aCreate" runat="server" class="nav-link ">
+                  <i class="far fa-circle nav-icon text-primary"></i>
+                  <p>Create Order</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a id="aReceive" runat="server" class="nav-link ">
+                  <i class="far fa-circle nav-icon text-primary"></i>
+                  <p>Receive & Finish</p>
+                </a>
+              </li>
+              <li class="nav-item" id="Lchangedcost" runat="server">
+                <a runat="server" id="achangedcost" class="nav-link">
+                  <i class="far fa-circle nav-icon text-primary"></i>
+                  <p>Changed Cost</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item" id="LOrderS" runat="server">
+            <a runat="server" href="~/Pages_InvOrderWHO.aspx" class="nav-link">
+              <i class="nav-icon fas fa-shopping-cart text-success"></i>
+              <p>Order from Store</p>
+            </a>
+          </li>
+          <li class="nav-item" id="LBacth" runat="server">
+            <a runat="server" href="~/Pages_InvBatch.aspx" class="nav-link">
+              <i class="nav-icon fas fa-cogs text-secondary"></i>
+              <p>Batch Process</p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview" runat="server" id="LCPO">
+            <a class="nav-link">
+              <i class="nav-icon fas fa-calculator text-purple"></i>
+              <p>
+                PreOrder Usage
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a id="aCustomer" runat="server" class="nav-link ">
+                  <i class="far fa-circle nav-icon text-purple"></i>
+                  <p>Customer List</p>
+                </a>
+              </li>
+              <li class="nav-item" id="LPO" runat="server">
+                <a runat="server" id="aPO" class="nav-link">
+                  <i class="far fa-circle nav-icon text-purple"></i>
+                  <p>Pre-Order</p>
+                </a>
+              </li>
+              <li class="nav-item" id="LusageList" runat="server">
+                <a runat="server" id="ausageList" class="nav-link">
+                  <i class="far fa-circle nav-icon text-purple"></i>
+                  <p>Usage List</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item" id="LTransfer" runat="server">
+            <a runat="server" href="~/Pages_InvTransfer.aspx" class="nav-link">
+              <i class="nav-icon fas fa-dolly-flatbed text-orange"></i>
+              <p>Transfer</p>
+            </a>
+          </li>
+          <li class="nav-item" id="LRtnWH" runat="server">
+            <a runat="server" href="~/Pages_RtnWH.aspx" class="nav-link">
+              <i class="nav-icon fas fa-undo-alt text-maroon"></i>
+              <p>Return to Warehouse</p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview" id="LRWaste" runat="server">
+            <a class="nav-link">
+              <i class="nav-icon fas fa-trash-alt text-red"></i>
+              <p>
+                Waste
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a runat="server" id="aListWaste" class="nav-link">
+                  <i class="far fa-circle nav-icon text-red"></i>
+                  <p>Waste List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a runat="server" id="arawwaste" class="nav-link">
+                  <i class="far fa-circle nav-icon text-red"></i>
+                  <p>Raw Waste</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item" id="LReceive" runat="server">
+            <a runat="server" href="~/Pages_InvRcv.aspx" class="nav-link">
+              <i class="nav-icon fas fa-file-download text-success"></i>
+              <p>Order / Receive</p>
+            </a>
+          </li>
+          <li class="nav-item" id="LReturn" runat="server">
+            <a runat="server" href="~/Pages_InvReturn.aspx" class="nav-link">
+              <i class="nav-icon fas fa-reply text-warning"></i>
+              <p>Return to Supplier</p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview" id="LOpname" runat="server">
+            <a class="nav-link">
+              <i class="nav-icon fas fa-clipboard-check text-primary"></i>
+              <p>
+                Opname
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a runat="server" id="aListOpname" class="nav-link">
+                  <i class="far fa-circle nav-icon text-primary"></i>
+                  <p>List Opname</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a runat="server" id="aStockOpname" class="nav-link">
+                  <i class="far fa-circle nav-icon text-primary"></i>
+                  <p>Stock Opname</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item" id="LCalculate" runat="server">
+            <a runat="server" href="~/Pages_Calculate.aspx" class="nav-link">
+              <i class="nav-icon fas fa-calculator text-purple"></i>
+              <p>Calculate Inventory</p>
+            </a>
+          </li>
+          <li class="nav-item" id="LExpense" runat="server">
+            <a runat="server" href="~/Pages_ExpOther.aspx" class="nav-link">
+              <i class="nav-icon fas fa-hand-holding-usd text-danger"></i>
+              <p>Miscellaneous Expenses</p>
+            </a>
+          </li>
+          <li class="nav-item" id="LInvoice" runat="server">
+            <a runat="server" href="~/Pages_InvInvoice.aspx" class="nav-link">
+              <i class="nav-icon fas fa-file-invoice-dollar text-success"></i>
+              <p>Invoice</p>
+            </a>
+          </li>
+          <li class="nav-item" id="LInvoicePayment" runat="server">
+            <a runat="server" href="~/Pages_InvoicePayment.aspx" class="nav-link">
+              <i class="nav-icon fas fa-money-bill-wave text-success"></i>
+              <p>Store Invoice</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+     <%-- <form id="form1" runat="server">--%>
+    <div>
+        <asp:ContentPlaceHolder ID="BodyContent" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    <%--</form>--%>
+    </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <%--<strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>--%>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b><asp:Label runat="server" ID="lblversion" Font-Bold="True" Font-Size="X-Large"></asp:Label>
+    </div>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server" />
+        </form>
+    
+<script src="dist/js/inactivity-timer.js"></script>
+</body>
+</html>
+
