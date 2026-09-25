@@ -1355,10 +1355,17 @@ Public Class clsInventoryProcess
                         '" & Openqty & "+" & Invrcvqty & "-" & rtnqty & "+" & t_in & "-" & t_out & "-" & InvWasteQty & "-" & fwaste & "-" & invusageQty & "-" & ho_out & "+" & ho_in & "-" & BP_out & "+" & BP_in & "
 
 
-                        If Not Double.IsNaN(((InvCost * row.Item("ttlqty")) + (getreccost(InvstkId, InvCc, InvCustId, dDate.AddDays(1).ToString("yyyy-MM-dd")) * todaytrans)) / (row.Item("ttlqty") + todaytrans)) And (row.Item("ttlqty") + todaytrans > 0) Then 'invcost
-                            invcost2 = ((InvCost * row.Item("ttlqty")) + (getreccost(InvstkId, InvCc, InvCustId, dDate.AddDays(1).ToString("yyyy-MM-dd")) * todaytrans)) / (row.Item("ttlqty") + todaytrans)
+                        Dim denom As Double = row.Item("ttlqty") + todaytrans
+                        Dim recCst As Double = getreccost(InvstkId, InvCc, InvCustId, dDate.AddDays(1).ToString("yyyy-MM-dd"))
+                        If row.Item("ttlqty") > 0 AndAlso denom > 0.0001 AndAlso Not Double.IsNaN(((InvCost * row.Item("ttlqty")) + (recCst * todaytrans)) / denom) Then
+                            invcost2 = ((InvCost * row.Item("ttlqty")) + (recCst * todaytrans)) / denom
+                        ElseIf recCst > 0 Then
+                            invcost2 = recCst
                         Else
-                            invcost2 = InvCost 'row.Item("cost") 
+                            invcost2 = InvCost
+                        End If
+                        If invcost2 > 100000000 OrElse invcost2 < 0 Then
+                            invcost2 = InvCost
                         End If
 
                         '        c_cmd.executeNonQuery("update cld_inv_transstockcls set  openqty = Openqty + " & old_qty & ",ttlqty = Openqty + " & old_qty & "+" & todaytrans & ",

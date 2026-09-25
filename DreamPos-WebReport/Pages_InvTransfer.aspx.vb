@@ -230,8 +230,9 @@ Public Class Pages_InvTransfer
             a = Nothing
 
 
-            strTr = "DELETE FROM cld_inv_trans  where ID = " & id & " and type = 9 "
-            c_cmd.executeNonQuery(strTr)
+            ' PERBAIKAN: Jangan hapus transaksi type=9 (Batch Production) dari halaman Transfer
+            ' strTr = "DELETE FROM cld_inv_trans where ID = " & id & " and type = 9 "
+            ' c_cmd.executeNonQuery(strTr)
 
 
         Catch ex As Exception

@@ -1,4 +1,4 @@
-﻿Imports System.IO
+Imports System.IO
 Imports NPOI.XSSF.UserModel
 Imports NPOI.SS.UserModel
 Imports System.Net
@@ -188,8 +188,9 @@ Public Class Pages_RtnWH
             a = Nothing
 
 
-            strTr = "DELETE FROM cld_inv_trans  where ID = " & id & " and type = 9 "
-            c_cmd.executeNonQuery(strTr)
+            ' PERBAIKAN: Jangan hapus transaksi type=9 (Batch Production) dari halaman Return Warehouse
+            ' strTr = "DELETE FROM cld_inv_trans where ID = " & id & " and type = 9 "
+            ' c_cmd.executeNonQuery(strTr)
 
 
         Catch ex As Exception

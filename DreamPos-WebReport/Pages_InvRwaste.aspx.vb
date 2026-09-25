@@ -1,4 +1,4 @@
-﻿Public Class Pages_InvRwaste
+Public Class Pages_InvRwaste
     Inherits System.Web.UI.Page
     Private mfunction As New ModFunction
     Private cInv As New clsInventory
@@ -179,8 +179,9 @@
             a = Nothing
 
 
-            strTr = "DELETE FROM cld_inv_trans  where ID = " & id & " and type = 9 "
-            c_cmd.executeNonQuery(strTr)
+            ' PERBAIKAN: Jangan hapus transaksi type=9 (Batch Production) dari halaman Waste
+            ' strTr = "DELETE FROM cld_inv_trans where ID = " & id & " and type = 9 "
+            ' c_cmd.executeNonQuery(strTr)
 
 
         Catch ex As Exception

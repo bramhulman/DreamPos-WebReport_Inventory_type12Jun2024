@@ -1,4 +1,4 @@
-﻿Public Class Pages_InvClosingStock
+Public Class Pages_InvClosingStock
     Inherits System.Web.UI.Page
     Private mfunction As New ModFunction
     Private cInv As New clsInventory
@@ -203,8 +203,9 @@
             a = Nothing
 
 
-            strTr = "DELETE FROM cld_inv_trans  where ID = " & id & " and type = 9 "
-            c_cmd.executeNonQuery(strTr)
+            ' PERBAIKAN: Jangan hapus transaksi type=9 (Batch Production) dari halaman Closing Stock
+            ' strTr = "DELETE FROM cld_inv_trans where ID = " & id & " and type = 9 "
+            ' c_cmd.executeNonQuery(strTr)
 
 
         Catch ex As Exception

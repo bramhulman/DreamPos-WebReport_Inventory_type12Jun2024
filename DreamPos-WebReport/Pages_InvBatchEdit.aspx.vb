@@ -493,8 +493,8 @@ Public Class Pages_InvBatchEdit
                                   txtUnit2.Text, CDec(txtLosF.Text), CDec(txtTotalStk.Text), lblUnit1.Text, lblUnit2.Text, username, username, txtstkNo.Text, DdlTo.SelectedItem.Text, username, custid, inv_date, ddlrcp.SelectedValue)
                 qty1 = ciproc.getrecqty(ddlItem.SelectedValue, DdlTo.SelectedValue, custid, inv_date)
                 If qty1 < expectqty Then
-                    errLog("qty lebih kecil", "batch " & DdlTo.SelectedItem.Text & " " & ddlItem.SelectedItem.Text)
-                    DeleteInvBatch(MTid, custid, username)
+                    errLog("qty lebih kecil dari ekspektasi saat edit batch (penghapusan otomatis dinonaktifkan)", "batch " & DdlTo.SelectedItem.Text & " " & ddlItem.SelectedItem.Text)
+                    ' DeleteInvBatch(MTid, custid, username) ' PERBAIKAN: Jangan hapus otomatis transaksi type=9 saat edit batch
                 End If
             End If
 

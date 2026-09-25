@@ -828,50 +828,81 @@ Public Class cls_recalculate
 
     End Function
     Public Sub InvCaclculate_ActiveTransOnly(ByVal dstart As Date, ByVal dend As Date, ByVal Custid As Integer, Optional ByVal ccidFilter As Integer = 0, Optional ByVal stkidFilter As Integer = 0)
-        Dim dsDistinct As DataSet
+        Dim c_cmd As New clsDbo("")
         Try
-            ' 1. Ambil data stok yang benar-benar memiliki transaksi saja di rentang tanggal tersebut
-            Dim strQry As String = "SELECT DISTINCT DATE(InvDate) AS InvDate, cc, Stk_Id FROM cld_inv_trans WHERE InvDate >= '" & dstart.ToString("yyyy-MM-dd 00:00:00") & "' AND InvDate <= '" & dend.ToString("yyyy-MM-dd 23:59:59") & "' AND CustID = " & Custid
-            If ccidFilter > 0 Then strQry &= " AND cc = " & ccidFilter
-            If stkidFilter > 0 Then strQry &= " AND Stk_Id = " & stkidFilter
-            strQry &= " ORDER BY InvDate ASC"
+            Dim dFrom As Date = dstart.Date
+            Dim dTo As Date = dend.Date
+            If dTo < dFrom Then dTo = dFrom
 
-            Dim cmdDist As New clsDbo("")
-            dsDistinct = cmdDist.ReturnDataset(strQry)
+            Dim filterCC As String = ""
+            Dim filterStk As String = ""
 
-            If dsDistinct.Tables(0).Rows.Count > 0 Then
-                For Each row As DataRow In dsDistinct.Tables(0).Rows
-                    Dim dDate As Date = Convert.ToDateTime(row("InvDate"))
-                    Dim ccid As Integer = Convert.ToInt32(row("cc"))
-                    Dim stkid As Integer = Convert.ToInt32(row("Stk_Id"))
+            If ccidFilter > 0 Then filterCC = " AND ccid = " & ccidFilter
+            If stkidFilter > 0 Then filterStk = " AND stkid = " & stkidFilter
 
-                    ' 2. Hitung ulang komponen qty HANYA untuk item yang bergerak di hari tersebut (menggunakan SQL Atomic UPDATE)
-                    Dim sqlRecal As String = "UPDATE cld_inv_transstockcls SET " &
-                        "rcvqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 3 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = " & stkid & " AND InvDate = '" & dDate.ToString("yyyy-MM-dd") & "' AND Cc = " & ccid & "), 0), " &
-                        "rtnqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 4 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = " & stkid & " AND InvDate = '" & dDate.ToString("yyyy-MM-dd") & "' AND Cc = " & ccid & "), 0), " &
-                        "tinQty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 1 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = " & stkid & " AND InvDate = '" & dDate.ToString("yyyy-MM-dd") & "' AND Cc = " & ccid & "), 0), " &
-                        "toutQty = IFNULL((SELECT SUM(sd.ttlStock) FROM cld_inv_trans sd JOIN cld_invlk_trf ON (sd.Linkid = cld_invlk_trf.id AND sd.CustID = cld_invlk_trf.CustID) WHERE sd.type = 1 AND sd.flagtrans = 1 AND sd.CustID = " & Custid & " AND sd.Stk_Id = " & stkid & " AND sd.InvDate = '" & dDate.ToString("yyyy-MM-dd") & "' AND cld_invlk_trf.ccFrom = " & ccid & "), 0), " &
-                        "rwasteQty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 2 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = " & stkid & " AND InvDate = '" & dDate.ToString("yyyy-MM-dd") & "' AND Cc = " & ccid & "), 0) " &
-                        "WHERE CustID = " & Custid & " AND stkid = " & stkid & " AND ccid = " & ccid & " AND invdate = '" & dDate.ToString("yyyy-MM-dd 00:00:00") & "'"
-                    
-                    Dim cmdUpd1 As New clsDbo("")
-                    cmdUpd1.executeNonQuery(sqlRecal)
+            Dim currDate As Date = dFrom.Date
+            Do While currDate <= dTo
+                Dim sCurrDate As String = currDate.ToString("yyyy-MM-dd 00:00:00")
+                Dim prevDate As Date = currDate.AddDays(-1)
+                Dim sPrevDate As String = prevDate.ToString("yyyy-MM-dd 00:00:00")
 
-                    ' 3. Setelah komponen quantity benar, kalkulasi ulang TtlQty nya
-                    Dim sqlTtl As String = "UPDATE cld_inv_transstockcls SET ttlqty = openqty + rcvqty - rtnqty + tinQty - toutQty - rwasteQty - fwasteQty - usageqty - HoOutQty + HoInQty + bpin - bpout - cwasteqty " &
-                        "WHERE CustID = " & Custid & " AND stkid = " & stkid & " AND ccid = " & ccid & " AND invdate = '" & dDate.ToString("yyyy-MM-dd 00:00:00") & "'"
-                    
-                    Dim cmdUpd2 As New clsDbo("")
-                    cmdUpd2.executeNonQuery(sqlTtl)
+                ' 1. Pastikan setiap item yang ada kemarin memiliki baris hari ini (Insert If Not Exists)
+                Dim strInsertToday As String = "INSERT INTO cld_inv_transstockcls " &
+                    "(invdate, custid, stkid, stk_no, stk_name, ccid, cc_name, opencost, openqty, cost, " &
+                    " rcvqty, rtnqty, tinqty, toutqty, rwasteqty, fwasteqty, usageqty, ttlqty, bclose, " &
+                    " closeqty, closecost, varianceqty, hooutqty, hoinqty, bpin, bpout, cwasteqty) " &
+                    "SELECT '" & sCurrDate & "', yest.custid, yest.stkid, yest.stk_no, yest.stk_name, yest.ccid, yest.cc_name, " &
+                    "       CASE WHEN (yest.bclose = 1 OR yest.bclose = b'1') AND yest.closecost > 0 THEN yest.closecost ELSE yest.cost END, " &
+                    "       CASE WHEN (yest.bclose = 1 OR yest.bclose = b'1') THEN yest.closeqty ELSE yest.ttlqty END, " &
+                    "       CASE WHEN (yest.bclose = 1 OR yest.bclose = b'1') AND yest.closecost > 0 THEN yest.closecost ELSE yest.cost END, " &
+                    "       0, 0, 0, 0, 0, 0, 0, " &
+                    "       CASE WHEN (yest.bclose = 1 OR yest.bclose = b'1') THEN yest.closeqty ELSE yest.ttlqty END, " &
+                    "       0, 0, 0, 0, 0, 0, 0, 0, 0 " &
+                    "FROM cld_inv_transstockcls yest " &
+                    "LEFT JOIN cld_inv_transstockcls today ON yest.stkid = today.stkid AND yest.ccid = today.ccid AND yest.custid = today.custid AND today.invdate = '" & sCurrDate & "' " &
+                    "WHERE yest.invdate = '" & sPrevDate & "' AND yest.custid = " & Custid & " AND today.stkid IS NULL " &
+                    filterCC.Replace("ccid", "yest.ccid").Replace("stkid", "yest.stkid")
+                c_cmd.executeNonQuery(strInsertToday)
 
-                    ' 4. Dorong saldo akhir hari ini (ttlqty) menjadi saldo awal (openqty) hari besoknya
-                    Dim clsinvpro As New clsInventoryProcess()
-                    clsinvpro.Inv_Proc_trans_stckClsbyid(dDate, dDate, Custid, ccid, stkid)
-                Next
-            End If
+                ' 2. Alirkan openqty hari ini dari saldo akhir (ttlqty/closeqty) kemarin
+                Dim strCascadeOpen As String = "UPDATE cld_inv_transstockcls today " &
+                    "INNER JOIN cld_inv_transstockcls yest " &
+                    "   ON today.stkid = yest.stkid AND today.ccid = yest.ccid AND today.custid = yest.custid " &
+                    "  AND yest.invdate = '" & sPrevDate & "' " &
+                    "SET today.openqty = CASE WHEN (yest.bclose = 1 OR yest.bclose = b'1') THEN yest.closeqty ELSE yest.ttlqty END " &
+                    "WHERE today.invdate = '" & sCurrDate & "' AND today.custid = " & Custid & filterCC.Replace("ccid", "today.ccid").Replace("stkid", "today.stkid")
+                c_cmd.executeNonQuery(strCascadeOpen)
+
+                ' 3. Update komponen transaksi kuantitas untuk hari ini
+                Dim sqlRecal As String = "UPDATE cld_inv_transstockcls today SET " &
+                    "rcvqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 3 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
+                    "rtnqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 4 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
+                    "tinQty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 1 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
+                    "toutQty = IFNULL((SELECT SUM(sd.ttlStock) FROM cld_inv_trans sd JOIN cld_invlk_trf ON (sd.Linkid = cld_invlk_trf.id AND sd.CustID = cld_invlk_trf.CustID) WHERE sd.type = 1 AND sd.flagtrans = 1 AND sd.CustID = " & Custid & " AND sd.Stk_Id = today.stkid AND sd.InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND cld_invlk_trf.ccFrom = today.ccid), 0), " &
+                    "rwasteQty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 2 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
+                    "usageqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_transusage WHERE type = 10 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
+                    "hooutqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 7 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
+                    "hoinqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 8 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
+                    "bpin = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 9 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
+                    "bpout = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_transusage WHERE type = 11 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
+                    "cwasteqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 14 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0) " &
+                    "WHERE today.CustID = " & Custid & " AND today.invdate = '" & sCurrDate & "'" & filterCC.Replace("ccid", "today.ccid").Replace("stkid", "today.stkid")
+                c_cmd.executeNonQuery(sqlRecal)
+
+                ' 4. Hitung ulang TtlQty & VarianceQty hari ini
+                Dim sqlTtl As String = "UPDATE cld_inv_transstockcls SET " &
+                    "ttlqty = openqty + rcvqty - rtnqty + tinQty - toutQty - rwasteQty - fwasteQty - usageqty - HoOutQty + HoInQty + bpin - bpout - cwasteqty, " &
+                    "varianceqty = CASE WHEN (bclose = 1 OR bclose = b'1') THEN (openqty + rcvqty - rtnqty + tinQty - toutQty - rwasteQty - fwasteQty - usageqty - closeqty - HoOutQty + HoInQty + bpin - bpout) ELSE 0 END " &
+                    "WHERE CustID = " & Custid & " AND invdate = '" & sCurrDate & "'" & filterCC & filterStk
+                c_cmd.executeNonQuery(sqlTtl)
+
+                currDate = currDate.AddDays(1)
+            Loop
         Catch ex As Exception
             errLog(Err.Description, "cls_recalculate:InvCaclculate_ActiveTransOnly")
             Err.Clear()
+        Finally
+            c_cmd.dispose()
         End Try
     End Sub
     Public Sub InvCaclculate_Cost_ActiveTransOnly(ByVal dstart As Date, ByVal dend As Date, ByVal Custid As Integer, Optional ByVal ccidFilter As Integer = 0, Optional ByVal stkidFilter As Integer = 0)
@@ -958,7 +989,7 @@ Public Class cls_recalculate
                 c_cmd.executeNonQuery(strSanitizeTrans)
 
                 ' STEP B: Hitung closing cost hari ini berdasarkan transaksi masuk (type IN (1, 3, 8, 9))
-                ' PERBAIKAN DILUSI: Jika openqty <= 0 ATAU opencost <= 0, modal 100% mengikuti unit cost transaksi baru (transcost / transqty)
+                ' PERBAIKAN ANOMALI: Jika openqty <= 0 ATAU opencost <= 0 ATAU total (openqty + transqty) <= 0.0001, modal 100% mengikuti unit cost transaksi baru (transcost / transqty)
                 Dim strUpdateTodayCost As String = "UPDATE cld_inv_transstockcls today " &
                 "LEFT JOIN (" &
                 "    SELECT stk_id, cc, " &
@@ -976,7 +1007,7 @@ Public Class cls_recalculate
                 "SET today.cost = CASE " &
                 "    WHEN trans.transqty IS NULL OR trans.transqty <= 0 THEN " &
                 "        CASE WHEN today.opencost > 0 THEN today.opencost ELSE today.cost END " &
-                "    WHEN today.openqty <= 0 OR today.opencost <= 0 THEN " &
+                "    WHEN today.openqty <= 0 OR today.opencost <= 0 OR (today.openqty + trans.transqty) <= 0.0001 THEN " &
                 "        (trans.transcost / trans.transqty) " &
                 "    ELSE " &
                 "        ((today.opencost * today.openqty) + trans.transcost) / (today.openqty + trans.transqty) " &
@@ -985,12 +1016,18 @@ Public Class cls_recalculate
                 "  AND today.custid = " & Custid & filterCC & filterStk
                 c_cmd.executeNonQuery(strUpdateTodayCost)
 
-                ' STEP C: Pastikan jika cost hasil kalkulasi <= 0 tapi opencost > 0, pertahankan opencost
+                ' STEP C: Pastikan jika cost hasil kalkulasi <= 0 atau membengkak anomali (> 100jt), perbaiki secara otomatis
                 Dim strSanityCost As String = "UPDATE cld_inv_transstockcls today " &
-                "SET today.cost = today.opencost " &
+                "LEFT JOIN cld_inv_stk s ON today.stkid = s.id AND today.custid = s.custid " &
+                "SET today.cost = CASE " &
+                "    WHEN today.opencost > 0 AND today.opencost < 100000000 THEN today.opencost " &
+                "    WHEN s.price2 > 0 THEN s.price2 " &
+                "    WHEN s.price1 > 0 THEN s.price1 " &
+                "    ELSE 0 " &
+                "END " &
                 "WHERE today.invdate = '" & sCurrDate & "' " &
                 "  AND today.custid = " & Custid & " " &
-                "  AND (today.cost IS NULL OR today.cost <= 0) AND today.opencost > 0" & filterCC & filterStk
+                "  AND (today.cost IS NULL OR today.cost <= 0 OR today.cost > 100000000)" & filterCC & filterStk
                 c_cmd.executeNonQuery(strSanityCost)
 
                 ' STEP D: Jika memproses hari ini, sinkronkan cost ke cld_inv_stk_cc
