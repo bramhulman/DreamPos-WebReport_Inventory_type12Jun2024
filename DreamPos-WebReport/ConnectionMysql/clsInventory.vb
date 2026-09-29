@@ -1123,8 +1123,8 @@ nextrow:
             If id = 0 Then
                 Dim idtrans As String = CItrans.idRWaste(custid)
                 ' Parameterized insert with subquery for ID generation to reduce race condition window
-                c_cmd.resetCmd("INSERT INTO cld_inv_Trans (ID, Custid, InvDate, Type, Cc, Stk_Id, Stk_Name, U1, U2, Factor1, ttlStock, Blank1, Cost, LinkID, FlagTrans, U1_nm, U2_nm, CreatedBy, CreatedDate, Null1, Null2, StkNo, CcName) " &
-                               "VALUES ((SELECT IFNULL(MAX(ID),0)+1 FROM cld_inv_Trans AS t), @custid, @invdate, 2, @cc, @stkid, @stkname, @u1, @u2, @factor1, @ttlstock, 0, @cost, @linkid, 1, @u1nm, @u2nm, @createby, @createddate, Null, Null, @stkno, @ccname)")
+                c_cmd.resetCmd("INSERT INTO cld_inv_Trans (ID, Custid, InvDate, Type, Cc, Stk_Id, Stk_Name, U1, U2, Factor1, ttlStock, CostU1, Cost, LinkID, FlagTrans, U1_nm, U2_nm, CreatedBy, CreatedDate, stk_no, Cc_name) " &
+                               "VALUES ((SELECT IFNULL(MAX(ID),0)+1 FROM cld_inv_Trans AS t), @custid, @invdate, 2, @cc, @stkid, @stkname, @u1, @u2, @factor1, @ttlstock, 0, @cost, @linkid, 1, @u1nm, @u2nm, @createby, @createddate, @stkno, @ccname)")
 
                 c_cmd.addParam(custid, "@custid", MySqlDbType.Int32)
                 c_cmd.addParam(Date.Now.ToString("yyyy-MM-dd"), "@invdate", MySqlDbType.String)
@@ -1475,8 +1475,8 @@ nextrow:
 
             If ds.Tables(0).Rows.Count = 0 Then
                 ' INSERT
-                c_cmd.resetCmd("INSERT INTO cld_inv_Trans (ID, Custid, InvDate, Type, Cc, Stk_Id, Stk_Name, U1, U2, Factor1, ttlStock, Blank1, Cost, LinkID, FlagTrans, U1_nm, U2_nm, CreatedBy, CreatedDate, Null1, Null2, StkNo, CcName) " &
-                               "VALUES ((SELECT IFNULL(MAX(ID),0)+1 FROM cld_inv_Trans AS t), @custid, @invdate, @type, @cc, @stkid, @stkname, @u1, @u2, @factor1, @ttlstock, 0, @cost, '', 1, @u1nm, @u2nm, @createby, @createddate, Null, Null, @stkno, @ccname)")
+                c_cmd.resetCmd("INSERT INTO cld_inv_Trans (ID, Custid, InvDate, Type, Cc, Stk_Id, Stk_Name, U1, U2, Factor1, ttlStock, CostU1, Cost, LinkID, FlagTrans, U1_nm, U2_nm, CreatedBy, CreatedDate, stk_no, Cc_name) " &
+                               "VALUES ((SELECT IFNULL(MAX(ID),0)+1 FROM cld_inv_Trans AS t), @custid, @invdate, @type, @cc, @stkid, @stkname, @u1, @u2, @factor1, @ttlstock, 0, @cost, '', 1, @u1nm, @u2nm, @createby, @createddate, @stkno, @ccname)")
 
                 c_cmd.addParam(custid, "@custid", MySqlDbType.Int32)
                 c_cmd.addParam(invDate, "@invdate", MySqlDbType.String)

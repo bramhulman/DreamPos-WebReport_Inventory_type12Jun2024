@@ -813,6 +813,12 @@
                   <p>Stock Opname</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a runat="server" id="aDailyOpname" class="nav-link" href="~/Pages_DailyOpname.aspx">
+                  <i class="far fa-circle nav-icon text-warning"></i>
+                  <p>Daily Stock Opname</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item" id="LCalculate" runat="server">

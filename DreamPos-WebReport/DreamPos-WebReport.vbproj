@@ -361,6 +361,7 @@
     <Content Include="Pages_StkEdit.aspx" />
     <Content Include="Pages_StkGroup.aspx" />
     <Content Include="Pages_StkGroupEdit.aspx" />
+    <Content Include="Pages_DailyOpname.aspx" />
     <Content Include="Pages_StockOpname.aspx" />
     <Content Include="Pages_StockOpnameEdit.aspx" />
     <Content Include="Pages_Supplier.aspx" />
@@ -2499,6 +2500,13 @@
     </Compile>
     <Compile Include="Pages_StkGroupEdit.aspx.vb">
       <DependentUpon>Pages_StkGroupEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages_DailyOpname.aspx.designer.vb">
+      <DependentUpon>Pages_DailyOpname.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages_DailyOpname.aspx.vb">
+      <DependentUpon>Pages_DailyOpname.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages_StockOpname.aspx.designer.vb">

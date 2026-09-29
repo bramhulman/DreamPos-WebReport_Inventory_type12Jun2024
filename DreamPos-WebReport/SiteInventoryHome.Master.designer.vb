@@ -464,6 +464,15 @@ Partial Public Class SiteInventoryHome
     Protected WithEvents aStockOpname As Global.System.Web.UI.HtmlControls.HtmlAnchor
 
     '''<summary>
+    '''aDailyOpname control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents aDailyOpname As Global.System.Web.UI.HtmlControls.HtmlAnchor
+
+    '''<summary>
     '''LCalculate control.
     '''</summary>
     '''<remarks>
