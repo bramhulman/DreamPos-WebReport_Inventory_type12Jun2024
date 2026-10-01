@@ -6,206 +6,216 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="BodyContent" runat="server">
-     <asp:ScriptManager runat="server">
-                
-     </asp:ScriptManager>
-     <style type="text/css">
-    /*.modal
-    {
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: black;
-        z-index: 99;
-        opacity: 0.8;
-        filter: alpha(opacity=80);
-        -moz-opacity: 0.8;
-        min-height: 100%;
-        width: 100%;
-    }*/
-    .loading
-    {
-        font-family: Arial;
-        font-size: 10pt;
-        border: 5px solid #67CFF5;
-        width: 200px;
-        height: 100px;
-        display: none;
-        position: fixed;
-        background-color: White;
-        z-index: 999;
-    }
-</style>
+    <asp:ScriptManager runat="server"></asp:ScriptManager>
+
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-      <script type="text/javascript">
-          function ShowProgress() {
-              setTimeout(function () {
-                  var modal = $('<div />');
-                  modal.addClass("modal");
-                  $('body').append(modal);
-                  var loading = $(".loading");
-                  loading.show();
-                  var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
-                  var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
-                  loading.css({ top: top, left: left });
-              }, 2);
-          }
-          $('form').live("submit", function () {
-              ShowProgress();
-          });
-          $(document).ready(function () {
-              $('.btn').click(function () {
-                  if (Page_IsValid) {
-                      $('#spinner').show();
-                  }
-              });
-          });
-       
+    <script type="text/javascript">
+
+        /* ── Loading overlay ── */
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        /* ── Poll cookie until download token detected, then hide spinner ── */
+        function waitForDownload(tokenName) {
+            showLoading();
+            var poller = setInterval(function () {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var c = cookies[i].trim();
+                    if (c.indexOf(tokenName + '=') === 0) {
+                        // clear the cookie
+                        document.cookie = tokenName + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                        clearInterval(poller);
+                        hideLoading();
+                        return;
+                    }
+                }
+            }, 500);
+            // Safety fallback: hide after 30 s
+            setTimeout(function () { clearInterval(poller); hideLoading(); }, 30000);
+        }
+
+        $(document).ready(function () {
+
+            /* ── Import button: show loading (page will reload) ── */
+            document.getElementById('<%= btnImport.ClientID %>').addEventListener('click', function () {
+                showLoading();
+            });
+
+            /* ── Sample/Export button: show loading, poll for download cookie ── */
+            var btnExp = document.getElementById('<%= btnExport.ClientID %>');
+            if (btnExp) {
+                btnExp.addEventListener('click', function (e) {
+                    var txtEx = document.getElementById('<%= txtEx.ClientID %>');
+                    if (txtEx && txtEx.value.trim() === '') {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        var fname = prompt('Masukkan nama file sample (tanpa .xlsx):', '');
+                        if (fname !== null && fname.trim() !== '') {
+                            txtEx.value = fname.trim();
+                            setTimeout(function () { btnExp.click(); }, 50);
+                        }
+                        return false;
+                    }
+                    // nama sudah diisi -> mulai polling download token
+                    waitForDownload('fileDownloadToken');
+                }, true);
+            }
+        });
     </script>
-      <!-- Content Header (Page header) -->
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+         background:rgba(0,0,0,0.35); z-index:9999; justify-content:center; align-items:center;">
+        <div style="background:#fff; border-radius:10px; padding:32px 40px; text-align:center;
+                    box-shadow:0 4px 24px rgba(0,0,0,0.18); min-width:200px;">
+            <div style="margin-bottom:14px;">
+                <img src="/images/loader.gif" alt="loading" style="width:48px; height:48px;" />
+            </div>
+            <div style="font-family:Arial,sans-serif; font-size:14px; color:#444; font-weight:600;">
+                Mohon tunggu&hellip;
+            </div>
+            <div style="font-family:Arial,sans-serif; font-size:12px; color:#888; margin-top:4px;">
+                Sedang memproses data&hellip;
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Header -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Export/Import StockOpname</h1>
-          </div><!-- /.col -->
+            <h1 class="m-0 text-dark">Export / Import StockOpname</h1>
+          </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="inventoryHome.aspx">Home</a></li>
-              <li class="breadcrumb-item active">Export/Import StockOpname</li>
+              <li class="breadcrumb-item active">Export / Import StockOpname</li>
             </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-md-12"  style="background-color:white;">
-       
-    <!-- /.content-header -->
-   <%-- <h2>User Access</h2>--%>
-        <%--<div id="spinner" class="modal" style="display: none">
-        <div class="center">
-            <img alt="" src="/images/loader.gif" />
-        </div>
-    </div>--%>
-    <div class="row">
-        <div class="form-horizontal" id="formload">
-                   <div class="card-body">
-                        <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="lblfile" Text="File: "></asp:label>
-           <div class="input-group col-md-3">
-                     <asp:FileUpload ID="FileUpLoad1" AlternateText="You cannot upload files" 
-                    runat="server" Class="form-control"
-                    style="font-weight: 700; color: #000000; background-color: #FFFFFF; Width:max-content;" />
-                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="Fileupload1"
-                    ErrorMessage="Please Select excel files." ForeColor="Red"></asp:RequiredFieldValidator>
-                                
-                  </div>  
-            
-            
-        </div>
-                    <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label2" Text="File Name: "></asp:label>
-           <div class="input-group col-md-3">
-                     
-                      <asp:TextBox style="text-align:center;" runat="server" ID="txtEx" Class="form-control"/>
-              
-                                                       
-                  </div>  
-            
-            
-        </div>    
-                    <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label1" Text="Date: "></asp:label>
-           <div class="input-group col-md-3">
-                     
-                       <asp:TextBox style="text-align:center;" runat="server" id="txtDate" Class="form-control" AutoPostBack="false" />
-                          <ajaxtoolkit:CalendarExtender ID="cleFrom" runat="server" TargetControlID="txtDate" 
-                            Format="dd MMM yyyy"></ajaxtoolkit:CalendarExtender>  
-              
-                                                       
-                  </div>  
-            
-            
-        </div>      
-                       
-                      <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label4" Text="Import for: "></asp:label>
-           <div class="input-group col-md-3">
-                     
-                      <asp:DropDownList ID="ddladjustnow" runat="server" AppendDataBoundItems="True" CssClass="form-control"
-                        AutoPostBack="false" EnableViewState="True" ViewStateMode="Enabled">
-                           <%--<asp:ListItem Value="1">Current Stock</asp:ListItem>--%>
-                           <asp:ListItem Value="2">Opening Stock</asp:ListItem>
-                    </asp:DropDownList>
-                                        
-                  </div>  
-            
-            
-        </div>  
-                        
-              <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label3" Text="Cc Name: "></asp:label>
-           <div class="input-group col-md-3">
-                     
-                       <asp:DropDownList ID="ddlCCName" runat="server" AppendDataBoundItems="false" 
-                        AutoPostBack="false" EnableViewState="True" ViewStateMode="Enabled">
-                           <%--<asp:ListItem Value="0">----Select----</asp:ListItem>--%>
-                    </asp:DropDownList>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlCCName"
-                ErrorMessage="Cost Centre Must Be Choice" style="color: #FF0000"></asp:RequiredFieldValidator>                        
-                  </div>  
-            
-            
-        </div>     
-        
 
-               <div class="form-group row">
-                    <div class="col-md-offset-2 col-md-10">
-                            <table>
-                                <tr>
-                                    <td>
-                                        
-                                         <asp:Button runat="server" ID="btnImport" UseSubmitBehavior="true" OnClick="btnImport_Click" Text="Import" CssClass="btn btn-primary" Style="font-weight: 600; border-color:gray; width:108px;" />
-                                    </td>
-                                    <td>
-                                        
-                                         <asp:Button runat="server" ID="btnExport" OnClick="btnExport_Click" Text="Sample" CssClass="btn btn-primary" Style="font-weight: 600; border-color:gray; width:108px;" CausesValidation="false"/>
-                                    </td>
-                                    <td>
-                                         <asp:Button runat="server" ID="btnCancel" OnClick="btnCancel_Click" Text="Cancel" CssClass="btn btn-primary" Style="font-weight: 600; border-color:gray; width:108px;" CausesValidation="false" />
-                                    </td>
-                                </tr>
-                            </table>
-                           
+    <!-- Main Content -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-primary card-outline">
+
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-file-excel mr-1" style="color:#1D6F42;"></i>
+                            Import / Export StockOpname
+                        </h3>
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- File Upload -->
+                        <div class="form-group row">
+                            <asp:Label runat="server" ID="lblfile" Text="File Upload:"
+                                CssClass="col-auto col-form-label font-weight-bold text-nowrap" style="width: 140px;" />
+                            <div class="col" style="max-width: 360px;">
+                                <asp:FileUpload ID="FileUpLoad1" runat="server"
+                                    Class="form-control-file mt-1"
+                                    style="font-size:13px;" />
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
+                                    ControlToValidate="FileUpLoad1"
+                                    ErrorMessage="Pilih file Excel terlebih dahulu."
+                                    ForeColor="Red" Display="Dynamic" />
+                            </div>
                         </div>
-                   </div>       
-             
-     
 
-    </div>
+                        <!-- File Name -->
+                        <div class="form-group row">
+                            <asp:Label runat="server" ID="Label2" Text="Nama File:"
+                                CssClass="col-auto col-form-label font-weight-bold text-nowrap" style="width: 140px;" />
+                            <div class="col" style="max-width: 360px;">
+                                <asp:TextBox runat="server" ID="txtEx" Class="form-control" />
+                                <small class="form-text text-muted">Tanpa ekstensi .xlsx</small>
+                            </div>
+                        </div>
 
-   </div>
-        </div>
-     <span class="failureNotification">
-                <asp:Literal ID="FailureText" runat="server"></asp:Literal>
-            </span>
- <div class="loading" style="text-align:center">
-    Loading... Please wait...<br />
-    <br />
-    <img src="/images/loader.gif" alt="" />
-</div>
-    </div>
-     
-    
-          <script>
-       
-            if ($(window).width() >= 960) {
-                document.getElementById("formload").style.width = "100%";
-                } else {
-                document.getElementById("formload").style.width = "80%";
-                
-               }
-      
-       
-    </script>
+                        <!-- Date -->
+                        <div class="form-group row">
+                            <asp:Label runat="server" ID="Label1" Text="Tanggal:"
+                                CssClass="col-auto col-form-label font-weight-bold text-nowrap" style="width: 140px;" />
+                            <div class="col" style="max-width: 360px;">
+                                <div class="input-group">
+                                    <asp:TextBox runat="server" ID="txtDate" Class="form-control"
+                                        style="text-align:center;" AutoPostBack="false" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ajaxToolkit:CalendarExtender ID="cleFrom" runat="server"
+                                    TargetControlID="txtDate" Format="dd MMM yyyy" />
+                            </div>
+                        </div>
+
+                        <!-- Import For -->
+                        <div class="form-group row">
+                            <asp:Label runat="server" ID="Label4" Text="Import untuk:"
+                                CssClass="col-auto col-form-label font-weight-bold text-nowrap" style="width: 140px;" />
+                            <div class="col" style="max-width: 360px;">
+                                <asp:DropDownList ID="ddladjustnow" runat="server"
+                                    AppendDataBoundItems="True" CssClass="form-control"
+                                    AutoPostBack="false" EnableViewState="True" ViewStateMode="Enabled">
+                                    <%--<asp:ListItem Value="1">Current Stock</asp:ListItem>--%>
+                                    <asp:ListItem Value="2">Opening Stock</asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+
+                        <!-- CC Name -->
+                        <div class="form-group row">
+                            <asp:Label runat="server" ID="Label3" Text="Cost Centre:"
+                                CssClass="col-auto col-form-label font-weight-bold text-nowrap" style="width: 140px;" />
+                            <div class="col" style="max-width: 360px;">
+                                <asp:DropDownList ID="ddlCCName" runat="server"
+                                    AppendDataBoundItems="false" CssClass="form-control"
+                                    AutoPostBack="false" EnableViewState="True" ViewStateMode="Enabled" />
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server"
+                                    ControlToValidate="ddlCCName"
+                                    ErrorMessage="Cost Centre harus dipilih."
+                                    ForeColor="Red" Display="Dynamic" />
+                            </div>
+                        </div>
+
+                    </div><!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <asp:Button runat="server" ID="btnImport"
+                            UseSubmitBehavior="true" OnClick="btnImport_Click"
+                            Text="Import" CssClass="btn btn-success"
+                            Style="font-weight:600; width:108px; margin-right:6px;" />
+                        <asp:Button runat="server" ID="btnExport"
+                            OnClick="btnExport_Click"
+                            Text="Sample" CssClass="btn btn-primary"
+                            Style="font-weight:600; width:108px; margin-right:6px;"
+                            CausesValidation="false" />
+                        <asp:Button runat="server" ID="btnCancel"
+                            OnClick="btnCancel_Click"
+                            Text="Cancel" CssClass="btn btn-secondary"
+                            Style="font-weight:600; width:108px;"
+                            CausesValidation="false" />
+                    </div><!-- /.card-footer -->
+
+                </div><!-- /.card -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+        <span class="failureNotification">
+            <asp:Literal ID="FailureText" runat="server" />
+        </span>
+    </div><!-- /.container-fluid -->
+
 </asp:Content>

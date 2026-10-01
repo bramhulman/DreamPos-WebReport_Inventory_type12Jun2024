@@ -75,10 +75,28 @@ Public Class Pages_DailyOpname
                 Exit Sub
             End If
 
-            If Not IsPostBack Then
-                ' Default date: H-1 (yesterday)
-                Dim dtYesterday As Date = Date.Today.AddDays(-1)
+            ' ── Hak Akses Tanggal Opname ─────────────────────────────
+            Dim canChangePastDate As Boolean = IsAdminOrSupport()
+            Dim dtYesterday As Date = Date.Today.AddDays(-1)
+
+            If Not canChangePastDate Then
+                ' User biasa: tanggal dikunci di H-1 (kemarin)
                 txtDate.Text = dtYesterday.ToString("dd MMM yyyy")
+                txtDate.ReadOnly = True
+                txtDate.Attributes.Add("style", "height: 31px; font-size: 0.82rem; background-color: #e9ecef; cursor: not-allowed;")
+                txtDate.ToolTip = "Tanggal opname dikunci (H-1). Hanya user support dan admin yang dapat mengubah tanggal sebelum kemarin."
+                calExt.Enabled = False
+            Else
+                ' Admin / Support: bebas memilih tanggal
+                txtDate.ReadOnly = False
+                txtDate.Attributes.Add("style", "height: 31px; font-size: 0.82rem;")
+                calExt.Enabled = True
+            End If
+
+            If Not IsPostBack Then
+                If canChangePastDate AndAlso String.IsNullOrEmpty(txtDate.Text) Then
+                    txtDate.Text = dtYesterday.ToString("dd MMM yyyy")
+                End If
 
                 LoadCostCentres()
                 LoadData()
@@ -101,8 +119,28 @@ Public Class Pages_DailyOpname
                 End If
             End If
 
+            ' ── Guard: Pembatasan Tanggal Sebelum Kemarin (H-1) ──────
+            Dim dtYesterday As Date = Date.Today.AddDays(-1)
+            If targetDateHMinus1.Date < dtYesterday.Date AndAlso Not IsAdminOrSupport() Then
+                result("success") = False
+                result("message") = "Hanya user support dan admin yang dapat mengubah data sebelum kemarin."
+                Response.Write(Newtonsoft.Json.JsonConvert.SerializeObject(result))
+                Response.End()
+                Return
+            End If
+            ' ─────────────────────────────────────────────────────────
+
             Dim stkId As Integer = Val(Request("stkId"))
             Dim ccId As Integer = Val(Request("ccId"))
+
+            ' ── Guard: custid harus valid ────────────────────────────
+            If icustid <= 0 Then
+                result("success") = False
+                result("message") = "Sesi tidak valid. Silakan login ulang."
+                Response.Write(Newtonsoft.Json.JsonConvert.SerializeObject(result))
+                Response.End()
+                Return
+            End If
 
             If stkId <= 0 OrElse ccId <= 0 Then
                 result("success") = False
@@ -111,6 +149,24 @@ Public Class Pages_DailyOpname
                 Response.End()
                 Return
             End If
+
+            ' ── Guard: pastikan ccId memang milik custid ini ─────────
+            Dim ccCheckCmd As String = "SELECT COUNT(1) FROM cld_inv_cc WHERE id = " & ccId & " AND custid = " & icustid
+            Dim ccCheck As New clsDbo(ccCheckCmd)
+            Dim ccDs As DataSet = ccCheck.selectDataset
+            ccCheck.dispose()
+            Dim ccValid As Boolean = (ccDs IsNot Nothing AndAlso ccDs.Tables.Count > 0 AndAlso
+                                      ccDs.Tables(0).Rows.Count > 0 AndAlso
+                                      CInt(ccDs.Tables(0).Rows(0)(0)) > 0)
+            If Not ccValid Then
+                result("success") = False
+                result("message") = "Akses CC tidak diizinkan untuk akun ini."
+                Response.Write(Newtonsoft.Json.JsonConvert.SerializeObject(result))
+                Response.End()
+                Return
+            End If
+            ' ─────────────────────────────────────────────────────────
+
 
             Dim opnameVal As Decimal = 0
             If action = "save_row" Then
@@ -179,8 +235,8 @@ Public Class Pages_DailyOpname
             Dim cCc As New clsInventory_Cc
             Dim ds As DataSet = cCc.SelectDataset_Icc(icustid, sNameuser, iModPriv, 0)
 
-            ' If user is HQ / admin, add option for all cost centres
-            If Not (iModPriv And usrModulepriv.moduleuser = usrModulepriv.moduleuser) Then
+            Dim isModuleUser As Boolean = (iModPriv And usrModulepriv.moduleuser) = usrModulepriv.moduleuser
+            If Not isModuleUser Then
                 ddlCc.Items.Add(New ListItem("-- Semua Cost Centre --", "0"))
             End If
 
@@ -192,7 +248,10 @@ Public Class Pages_DailyOpname
                 Next
             End If
 
-            If ddlCc.Items.Count > 0 AndAlso ddlCc.SelectedIndex < 0 Then
+            ' Default ke outlet pertama yang aktif agar initial load cepat & ringan (~500 baris, bukan 12.000 baris)
+            If ddlCc.Items.Count > 1 AndAlso Not isModuleUser Then
+                ddlCc.SelectedIndex = 1
+            ElseIf ddlCc.Items.Count > 0 Then
                 ddlCc.SelectedIndex = 0
             End If
         Catch ex As Exception
@@ -235,18 +294,28 @@ Public Class Pages_DailyOpname
                     "INNER JOIN cld_inv_cc ON (TransStock.custId = cld_inv_cc.CustID AND TransStock.ccid = cld_inv_cc.ID) " &
                     "WHERE TransStock.invDate = @paramDate AND TransStock.custId = @custId "
 
-                ' Role filter
-                If (iModPriv And usrModulepriv.moduleuser = usrModulepriv.moduleuser) Then
+                ' ── Pembatasan akses CC mengikuti pola Pages_ListOpname ──────────────────
+                ' moduleuser (user outlet) → hanya CC yang ada di cld_userxstore milik user
+                ' non-moduleuser (admin/HQ)→ semua CC boleh dilihat
+                Dim isModuleUser As Boolean = (iModPriv And usrModulepriv.moduleuser) = usrModulepriv.moduleuser
+
+                If isModuleUser Then
+                    ' User outlet: selalu filter berdasarkan cld_userxstore
                     If filterCcId > 0 Then
-                        sql &= "AND TransStock.ccid = @ccId "
+                        ' Pilih CC tertentu, tapi tetap harus CC yang boleh diakses user
+                        sql &= "AND TransStock.ccid = @ccId " &
+                               "AND cld_inv_cc.olid IN (SELECT Store FROM cld_userxstore WHERE user = @userName) "
                     Else
-                        sql &= "AND TransStock.ccid IN (SELECT Store FROM cld_userxstore WHERE user = @userName) "
+                        ' Semua CC yang boleh diakses user ini
+                        sql &= "AND cld_inv_cc.olid IN (SELECT Store FROM cld_userxstore WHERE user = @userName) "
                     End If
                 Else
+                    ' Admin / HQ: lihat semua CC, bisa filter by ccId jika dipilih
                     If filterCcId > 0 Then
                         sql &= "AND TransStock.ccid = @ccId "
                     End If
                 End If
+                ' ─────────────────────────────────────────────────────────────────────────
 
                 sql &= "ORDER BY TransStock.stkNo ASC, TransStock.stkName ASC"
 
@@ -256,7 +325,7 @@ Public Class Pages_DailyOpname
                     If filterCcId > 0 Then
                         cmd.Parameters.AddWithValue("@ccId", filterCcId)
                     End If
-                    If (iModPriv And usrModulepriv.moduleuser = usrModulepriv.moduleuser) AndAlso filterCcId <= 0 Then
+                    If isModuleUser Then
                         cmd.Parameters.AddWithValue("@userName", sNameuser)
                     End If
 
@@ -293,16 +362,17 @@ Public Class Pages_DailyOpname
             Dim varianceItems As Integer = 0
 
             For Each r As DataRow In dt.Rows
-                Dim isClosed As Boolean = False
-                If r("bClose") IsNot DBNull.Value AndAlso Convert.ToInt32(r("bClose")) = 1 Then
-                    isClosed = True
-                End If
+                Dim isClosed As Boolean = IsOpnamed(r("bClose"))
 
                 If isClosed Then
                     opnamedItems += 1
-                    Dim varVal As Decimal = Convert.ToDecimal(r("Variance"))
-                    If Math.Abs(varVal) > 0.0001D Then
-                        varianceItems += 1
+                    If Not IsDBNull(r("Variance")) Then
+                        Dim varVal As Decimal
+                        If Decimal.TryParse(r("Variance").ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, varVal) Then
+                            If Math.Abs(varVal) > 0.0001D Then
+                                varianceItems += 1
+                            End If
+                        End If
                     End If
                 End If
             Next
@@ -323,6 +393,10 @@ Public Class Pages_DailyOpname
     End Sub
 
     Protected Sub btnFilter_Click(sender As Object, e As EventArgs)
+        LoadData()
+    End Sub
+
+    Protected Sub ddlCc_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCc.SelectedIndexChanged
         LoadData()
     End Sub
 
@@ -371,6 +445,14 @@ Public Class Pages_DailyOpname
         If Not Date.TryParse(txtDate.Text, targetDateHMinus1) Then
             targetDateHMinus1 = Date.Today.AddDays(-1)
         End If
+
+        ' ── Guard: Pembatasan Tanggal Sebelum Kemarin (H-1) ──────
+        Dim dtYesterday As Date = Date.Today.AddDays(-1)
+        If targetDateHMinus1.Date < dtYesterday.Date AndAlso Not IsAdminOrSupport() Then
+            ShowAlert("Hanya user support dan admin yang dapat mengubah data sebelum kemarin.", "danger")
+            Exit Sub
+        End If
+        ' ─────────────────────────────────────────────────────────
 
         Dim todayDate As Date = Date.Today
         Dim updateCount As Integer = 0
@@ -580,6 +662,47 @@ Public Class Pages_DailyOpname
     End Sub
 
 #Region "Formatting Helpers"
+    Public Function IsAdminOrSupport() As Boolean
+        Dim u As String = sNameuser
+        If String.IsNullOrEmpty(u) Then u = username()
+        If String.IsNullOrEmpty(u) Then Return False
+
+        Dim adminConfig As String = ""
+        Try
+            adminConfig = My.Settings.admin
+        Catch ex As Exception
+        End Try
+
+        Return (Not String.IsNullOrEmpty(adminConfig) AndAlso u.Equals(adminConfig, StringComparison.OrdinalIgnoreCase)) OrElse
+               u.Equals("support", StringComparison.OrdinalIgnoreCase)
+    End Function
+
+    Public Function IsOpnamed(ByVal bClose As Object) As Boolean
+        If bClose Is Nothing OrElse IsDBNull(bClose) Then Return False
+        Dim s As String = bClose.ToString().Trim().ToLower()
+        Return s = "1" OrElse s = "true" OrElse s = "-1"
+    End Function
+
+    Public Function GetOpnameVal(ByVal bClose As Object, ByVal closeQty As Object) As String
+        If Not IsOpnamed(bClose) Then Return ""
+        Return FormatInputQty(closeQty)
+    End Function
+
+    Public Function GetVarianceDisplay(ByVal bClose As Object, ByVal varianceVal As Object) As String
+        If Not IsOpnamed(bClose) Then Return "-"
+        Return FormatNumberQty(varianceVal)
+    End Function
+
+    Public Function HasVariance(ByVal bClose As Object, ByVal varianceVal As Object) As Boolean
+        If Not IsOpnamed(bClose) Then Return False
+        If varianceVal Is Nothing OrElse IsDBNull(varianceVal) Then Return False
+        Dim dec As Decimal
+        If Decimal.TryParse(varianceVal.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, dec) Then
+            Return Math.Abs(dec) > 0.0001D
+        End If
+        Return False
+    End Function
+
     Public Function FormatNumberQty(ByVal value As Object) As String
         If value Is Nothing OrElse IsDBNull(value) Then Return "0,00"
         Dim dbl As Decimal
@@ -599,9 +722,7 @@ Public Class Pages_DailyOpname
     End Function
 
     Public Function GetVarianceCss(ByVal bClose As Object, ByVal varianceVal As Object) As String
-        If bClose Is Nothing OrElse IsDBNull(bClose) OrElse Convert.ToInt32(bClose) <> 1 Then
-            Return ""
-        End If
+        If Not IsOpnamed(bClose) Then Return ""
         If varianceVal Is Nothing OrElse IsDBNull(varianceVal) Then Return ""
         Dim dec As Decimal
         If Decimal.TryParse(varianceVal.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, dec) Then

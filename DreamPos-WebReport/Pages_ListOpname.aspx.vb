@@ -288,12 +288,30 @@ Public Class Pages_ListOpname
             lblunit2.Text = OpnameInfo.unit2
             txtStockNameUpdate.Text = OpnameInfo.stkname
             'upEdit.Update()
-            Dim upEditPanel As UpdatePanel = CType(FindControl("upEdit"), UpdatePanel)
+            Dim upEditPanel As UpdatePanel = Nothing
+            If Me.Master IsNot Nothing Then
+                Dim cp As ContentPlaceHolder = CType(Me.Master.FindControl("BodyContent"), ContentPlaceHolder)
+                If cp IsNot Nothing Then
+                    upEditPanel = CType(cp.FindControl("upEdit"), UpdatePanel)
+                End If
+            End If
+            If upEditPanel Is Nothing Then
+                upEditPanel = CType(Me.FindControl("upEdit"), UpdatePanel)
+            End If
+            
             If upEditPanel IsNot Nothing Then
                 upEditPanel.Update()
             End If
-            Dim script As String = "$('#editModal').modal('show');"
-            ScriptManager.RegisterStartupScript(Me, Me.GetType(), "showModal", script, True)
+            Dim script As String = "$('#editModal').modal('show');" &
+                                   "$('#editModal').on('shown.bs.modal', function () { " &
+                                   "   setTimeout(function() { " &
+                                   "       var el = document.getElementById('" & txtcloseqtyu2.ClientID & "');" &
+                                   "       if(el) { el.focus(); el.select(); }" &
+                                   "   }, 100);" &
+                                   "   $(this).off('shown.bs.modal');" &
+                                   "});"
+            Dim ctrl As Control = If(upEditPanel IsNot Nothing, CType(upEditPanel, Control), Me)
+            ScriptManager.RegisterStartupScript(ctrl, ctrl.GetType(), "showModal", script, True)
             'Dim sb As System.Text.StringBuilder = New System.Text.StringBuilder()
             'sb.Append("<script type='text/javascript'>")
             'sb.Append("$('#editModal').modal('show');")

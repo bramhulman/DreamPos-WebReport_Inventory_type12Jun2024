@@ -1,4 +1,4 @@
-﻿Imports System.IO
+Imports System.IO
 Imports NPOI.XSSF.UserModel
 Imports NPOI.SS.UserModel
 Imports System.Net
@@ -341,6 +341,12 @@ Public Class Pages_StockOpname
                     Response.Charset = ""
                     Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     Response.AddHeader("content-disposition", "attachment;filename=" & sFile & ".xlsx")
+                    
+                    ' Set download token cookie agar JS bisa deteksi selesainya download
+                    Dim tokenCookie As New HttpCookie("fileDownloadToken", "1")
+                    tokenCookie.Path = "/"
+                    Response.Cookies.Add(tokenCookie)
+
                     Using MyMemoryStream As New MemoryStream()
                         wb.SaveAs(MyMemoryStream)
                         mfunction.errLog("save as", "export to excel")

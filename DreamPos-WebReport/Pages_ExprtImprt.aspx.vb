@@ -1,4 +1,4 @@
-﻿Imports System.IO
+Imports System.IO
 Imports NPOI.XSSF.UserModel
 Imports NPOI.SS.UserModel
 Imports System.Net
@@ -138,281 +138,237 @@ Public Class Pages_ExprtImprt
 
 
     Sub messagesuccesfull(ByVal msg As String, Optional ByVal bsuccess As Boolean = False)
-
-        Dim message As String = msg '"Import From Excel Successfully."
-        Dim url As String = ""
-
-        If bsuccess Then
-            url = "/Pages_StockOpname.aspx"
+        Dim message As String = msg
+        If message IsNot Nothing Then
+            message = message.Replace("\", "\\").Replace("'", "\'").Replace(vbCrLf, "\n").Replace(vbCr, "\n").Replace(vbLf, "\n")
         Else
-            url = "/Pages_ExprtImprt.aspx"
+            message = ""
         End If
 
-        Dim script As String = "window.onload = function(){ alert('"
-        script += message
-        script += "');"
-        script += "window.location = '"
-        script += url
-        script += "'; }"
-        ClientScript.RegisterStartupScript(Me.GetType(), "Redirect", script, True)
+        Dim url As String = ""
+        If bsuccess Then
+            url = ResolveUrl("~/Pages_StockOpname.aspx")
+        Else
+            url = ResolveUrl("~/Pages_ExprtImprt.aspx")
+        End If
 
+        Dim script As String = "window.onload = function(){ alert('" & message & "'); window.location = '" & url & "'; };"
+        ClientScript.RegisterStartupScript(Me.GetType(), "Redirect", script, True)
     End Sub
+
     Sub notsuccesfull()
-        Dim message As String = "File Does not exist"
-        Dim sb As New System.Text.StringBuilder()
-        Dim url As String = "~/Pages_ExprtImprt.aspx"
-        sb.Append("<script type = 'text/javascript'>")
-        sb.Append("window.onload=function(){")
-        sb.Append("alert('")
-        sb.Append(message)
-        sb.Append("')};")
-        sb.Append("</script>")
-        ClientScript.RegisterClientScriptBlock(Me.GetType(), "Alert", sb.ToString())
+        messagesuccesfull("File does not exist atau belum dipilih.", False)
     End Sub
 
     Sub fillplease()
-        Dim message As String = "Fill Please File Name"
-        Dim sb As New System.Text.StringBuilder()
-        Dim url As String = "~/Pages_ExprtImprt.aspx"
-        sb.Append("<script type = 'text/javascript'>")
-        sb.Append("window.onload=function(){")
-        sb.Append("alert('")
-        sb.Append(message)
-        sb.Append("')};")
-        sb.Append("</script>")
-        ClientScript.RegisterClientScriptBlock(Me.GetType(), "Alert", sb.ToString())
+        messagesuccesfull("Silakan pilih file Excel terlebih dahulu.", False)
     End Sub
+
+    Private Function GetCellStringVal(ByVal cel As ICell) As String
+        If cel Is Nothing Then Return ""
+        Try
+            Select Case cel.CellType
+                Case CellType.String
+                    Return cel.StringCellValue.Trim()
+                Case CellType.Numeric
+                    Return cel.NumericCellValue.ToString()
+                Case CellType.Formula
+                    Try
+                        Return cel.StringCellValue.Trim()
+                    Catch
+                        Return cel.NumericCellValue.ToString()
+                    End Try
+                Case CellType.Boolean
+                    Return cel.BooleanCellValue.ToString()
+                Case Else
+                    Return cel.ToString().Trim()
+            End Select
+        Catch ex As Exception
+            Return ""
+        End Try
+    End Function
+
+    Private Function GetCellDecimalVal(ByVal cel As ICell) As Decimal
+        If cel Is Nothing Then Return 0
+        Try
+            Select Case cel.CellType
+                Case CellType.Numeric
+                    Return CDec(cel.NumericCellValue)
+                Case CellType.String
+                    Dim valStr As String = cel.StringCellValue.Trim().Replace(",", ".")
+                    Dim res As Decimal = 0
+                    If Decimal.TryParse(valStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, res) Then
+                        Return res
+                    End If
+                    Return 0
+                Case CellType.Formula
+                    Try
+                        Return CDec(cel.NumericCellValue)
+                    Catch
+                        Dim valStr As String = cel.StringCellValue.Trim().Replace(",", ".")
+                        Dim res As Decimal = 0
+                        If Decimal.TryParse(valStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, res) Then
+                            Return res
+                        End If
+                        Return 0
+                    End Try
+                Case Else
+                    Dim valStr As String = cel.ToString().Trim().Replace(",", ".")
+                    Dim res As Decimal = 0
+                    If Decimal.TryParse(valStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, res) Then
+                        Return res
+                    End If
+                    Return 0
+            End Select
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
 
     Sub Import()
-
         Dim koder As String = ""
 
-        If FileUpLoad1.HasFile Then
+        If Not FileUpLoad1.HasFile Then
+            fillplease()
+            Exit Sub
+        End If
 
-            Dim stokNo As String = ""
-            Dim stokName As String = ""
-            Dim unit1 As Decimal = 0
+        Dim uploadDir As String = Server.MapPath("~/Uploads/")
+        If Not Directory.Exists(uploadDir) Then
+            Directory.CreateDirectory(uploadDir)
+        End If
 
-            Dim unitName As String = ""
-            Dim unit2 As Decimal = 0
-            Dim unitName2 As String = ""
+        Dim fileName As String = Path.GetFileName(FileUpLoad1.PostedFile.FileName)
+        Dim filePath As String = Path.Combine(uploadDir, fileName)
+        FileUpLoad1.PostedFile.SaveAs(filePath)
 
-            Dim factor1 As Decimal = 0
-            Dim cost As Decimal = 0
+        Dim wb As IWorkbook = Nothing
+        Try
+            Using fs As New FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                wb = WorkbookFactory.Create(fs)
+            End Using
+        Catch ex As Exception
+            messagesuccesfull("Gagal membaca file Excel: " & ex.Message, False)
+            Exit Sub
+        End Try
 
-            Dim name As String = ""
+        If wb Is Nothing Then
+            messagesuccesfull("File Excel kosong atau format tidak didukung.", False)
+            Exit Sub
+        End If
 
-            Dim bClose As Integer
+        Dim sheet As ISheet = wb.GetSheet("Sheet1")
+        If sheet Is Nothing Then sheet = wb.GetSheet("Sheet 1")
+        If sheet Is Nothing AndAlso wb.NumberOfSheets > 0 Then sheet = wb.GetSheetAt(0)
 
-            Dim fileName As String = System.IO.Path.GetFileName(FileUpLoad1.PostedFile.FileName)
-            FileUpLoad1.PostedFile.SaveAs(Server.MapPath(("~/Uploads/" + fileName)))
-            Dim Extension As String = Path.GetExtension(FileUpLoad1.PostedFile.FileName)
-            Dim FolderPath As String = Server.MapPath(FileUpLoad1.FileName)
+        If sheet Is Nothing Then
+            messagesuccesfull("Worksheet Excel tidak ditemukan.", False)
+            Exit Sub
+        End If
 
+        Dim lastRow As Integer = sheet.LastRowNum
+        Dim totalSuccess As Integer = 0
+        Dim totalSkipped As Integer = 0
+        Dim skippedList As New System.Collections.Generic.List(Of String)
+        Dim alreadyTransList As New System.Collections.Generic.List(Of String)
 
-            Dim wb As IWorkbook = WorkbookFactory.Create(New FileStream(Server.MapPath(("~/Uploads/" + fileName)), FileMode.Open, FileAccess.Read))
-            Dim sheet As ISheet = wb.GetSheet("Sheet1")
-            Dim row As IRow
-            Dim cel As ICell
+        Dim cInv As New clsInventory
+        Dim csStock As New clsInventory_stk
+        Dim csOname As New clsInventory_stkOpname
 
-            'ProgressBar1.Visible = True
-            Dim x As Integer
-            Dim ddd As Integer = sheet.LastRowNum
+        Dim defaultCCName As String = ""
+        If ddlCCName.SelectedItem IsNot Nothing Then
+            defaultCCName = ddlCCName.SelectedItem.Text
+        End If
 
-            x = 1
+        Dim iCustId As Integer = custid()
+        Dim sUser As String = username()
+        Dim opDate As Date
+        If Not Date.TryParse(txtDate.Text, opDate) Then
+            opDate = DateTime.Now.Date
+        End If
 
-            Dim lines As Integer = x
+        Try
+            For x As Integer = 1 To lastRow
+                Dim row As IRow = sheet.GetRow(x)
+                If row Is Nothing Then Continue For
 
-            Try
+                Dim stokNo As String = GetCellStringVal(row.GetCell(0))
+                If String.IsNullOrWhiteSpace(stokNo) Then Continue For
 
-                Do While sheet.GetRow(x) IsNot Nothing
+                Dim stokName As String = GetCellStringVal(row.GetCell(1))
+                Dim unit1 As Decimal = GetCellDecimalVal(row.GetCell(2))
+                Dim unitName As String = GetCellStringVal(row.GetCell(3))
+                Dim unit2 As Decimal = GetCellDecimalVal(row.GetCell(4))
+                Dim unitName2 As String = GetCellStringVal(row.GetCell(5))
+                Dim factor1 As Decimal = GetCellDecimalVal(row.GetCell(6))
+                Dim cost As Decimal = GetCellDecimalVal(row.GetCell(7))
+                Dim name As String = GetCellStringVal(row.GetCell(8))
 
-                    row = sheet.GetRow(x)
-                    If row IsNot Nothing Then
+                If String.IsNullOrWhiteSpace(name) Then
+                    name = defaultCCName
+                End If
 
-                        stokNo = ""
-                        stokName = ""
-                        unit1 = 0
+                If unit1 < 0 OrElse unit2 < 0 Then
+                    Continue For
+                End If
 
-                        unitName = ""
-                        unit2 = 0
-                        unitName2 = ""
-
-                        factor1 = 0
-                        cost = 0
-
-                        name = ""
-
-                        bClose = 0
-
-                        cel = row.GetCell(0)
-                        If cel IsNot Nothing Then
-                            If cel.CellType = CellType.STRING Then
-                                stokNo = cel.StringCellValue
-                            Else
-                                stokNo = cel.NumericCellValue
-                            End If
-                        End If
-
-                        cel = row.GetCell(1)
-                        If cel IsNot Nothing Then
-                            If cel.CellType = CellType.STRING Then
-                                stokName = cel.StringCellValue
-                            Else
-                                stokName = cel.NumericCellValue
-                            End If
-                        End If
-
-                        cel = row.GetCell(2)
-                        If cel IsNot Nothing Then
-                            If cel.CellType = CellType.STRING Then
-                                unit1 = cel.StringCellValue
-                            Else
-                                'If IsNumeric(cel.NumericCellValue) = True Then
-                                unit1 = cel.NumericCellValue
-                                    'End If
-
-                                End If
-                        End If
-
-                        cel = row.GetCell(3)
-                        If cel IsNot Nothing Then
-                            If cel.CellType = CellType.STRING Then
-                                unitName = cel.StringCellValue
-                            Else
-                                unitName = cel.NumericCellValue
-                            End If
-                        End If
-
-                        cel = row.GetCell(4)
-                        If cel IsNot Nothing Then
-                            If cel.CellType = CellType.STRING Then
-                                unit2 = cel.StringCellValue
-                            Else
-                                Try
-                                    'If IsNumeric(cel.NumericCellValue) = True Then
-                                    unit2 = cel.NumericCellValue
-                                    'End If
-                                Catch ex As Exception
-                                    GoTo loop1
-                                End Try
-
-
-                            End If
-                        End If
-
-                        If unit1 < 0 Or unit2 < 0 Then
-                            GoTo loop1
-                        End If
-
-                        cel = row.GetCell(5)
-                        If cel IsNot Nothing Then
-                            If cel.CellType = CellType.STRING Then
-                                unitName2 = cel.StringCellValue
-                            Else
-                                unitName2 = cel.NumericCellValue
-                            End If
-                        End If
-
-                        cel = row.GetCell(6)
-                        If cel IsNot Nothing Then
-                            If cel.CellType = CellType.STRING Then
-                                factor1 = 0
-                            Else
-                                factor1 = cel.NumericCellValue
-                            End If
-                        End If
-
-                        cel = row.GetCell(7)
-                        If cel IsNot Nothing Then
-                            If cel.CellType = CellType.STRING Then
-                                cost = 0
-                            Else
-                                cost = cel.NumericCellValue
-                            End If
-                        End If
-
-                        cel = row.GetCell(8)
-                        If cel IsNot Nothing Then
-                            If cel.CellType = CellType.STRING Then
-                                name = cel.StringCellValue
-                            Else
-                                name = cel.NumericCellValue
-                            End If
-                        End If
-
-                        'cel = row.GetCell(9)
-                        'If cel IsNot Nothing Then
-                        '    If cel.CellType = CellType.STRING Then
-                        '        bClose = 0
-                        '    Else
-                        '        bClose = cel.NumericCellValue
-                        '    End If
-                        'End If
-                        bClose = 1
-
-                        Dim cInv As New clsInventory
-                        If name <> "" And bClose <> 0 Then
-                            Try
-                                Dim csOname As New clsInventory_stkOpname
-                                Dim csStock As New clsInventory_stk
-
-                                If cInv.check_belumTrans(csStock.SelectDataset_StkByNumber(stokNo).Tables(0).Rows(0).Item("id"), csOname.get_ccID_ByName(name), custid) = False And ddladjustnow.SelectedValue = 1 Then
-                                    koder = koder + stokName + " today, already have transaction" & "\n"
-                                    'Exit Sub
-                                Else
-                                    cInv.insertStockOpname_wDate(name, stokNo, stokName, unit1, factor1, unit2, cost, username, CDate(txtDate.Text), ddladjustnow.SelectedValue)
-                                End If
-
-
-                                'WService.insertStk(0, cust(), Number, Name, _
-                                '                      grpcode, unit1, unit2, unit3, _
-                                '                     factor1, factor2, stkLimit, False, 0, username())
-                            Catch ex As Exception
-
-                                koder = "Error insert in Row " & lines & " " & Err.Description
-                                Err.Clear()
-
-                            End Try
-                        ElseIf name <> "" And bClose = 0 Then 'BClose 0
-                            Try
-                                cInv.DeleteInvTrans_ByBClose(custid, username, CDate(txtDate.Text), stokNo, ddlCCName.SelectedItem.ToString)
-
-                            Catch ex As Exception
-
-                                koder = "Error insert in Row " & lines & " " & Err.Description
-                                Err.Clear()
-                            End Try
-                        End If
-
-
+                ' Validasi apakah kode stok terdaftar di database
+                Dim dsStk As DataSet = csStock.SelectDataset_StkByNumber(stokNo)
+                If dsStk Is Nothing OrElse dsStk.Tables.Count = 0 OrElse dsStk.Tables(0).Rows.Count = 0 Then
+                    totalSkipped += 1
+                    If skippedList.Count < 5 Then
+                        skippedList.Add(stokNo)
                     End If
-loop1:
-                    x += 1
-                    lines = x
-                Loop
+                    Continue For
+                End If
 
-            Catch ex As Exception
-                koder = "Error in Row " & lines & " " & Err.Description
+                Dim stkId As Integer = CInt(dsStk.Tables(0).Rows(0).Item("id"))
+                Dim ccId As Integer = csOname.get_ccID_ByName(name)
+                If ccId = 0 AndAlso Not String.IsNullOrWhiteSpace(defaultCCName) Then
+                    name = defaultCCName
+                    ccId = csOname.get_ccID_ByName(name)
+                End If
 
-                Err.Clear()
+                If Not String.IsNullOrWhiteSpace(name) Then
+                    Try
+                        If cInv.check_belumTrans(stkId, ccId, iCustId) = False AndAlso ddladjustnow.SelectedValue = 1 Then
+                            If alreadyTransList.Count < 5 Then
+                                alreadyTransList.Add(stokName)
+                            End If
+                        Else
+                            cInv.insertStockOpname_wDate(name, stokNo, stokName, unit1, factor1, unit2, cost, sUser, opDate, ddladjustnow.SelectedValue)
+                            totalSuccess += 1
+                        End If
+                    Catch ex As Exception
+                        koder = "Baris " & (x + 1) & " error: " & ex.Message
+                    End Try
+                End If
+            Next
 
-            End Try
+        Catch ex As Exception
+            koder = "Error proses Excel: " & ex.Message
+        End Try
 
-            GC.Collect()
-            GC.WaitForPendingFinalizers()
+        GC.Collect()
+        GC.WaitForPendingFinalizers()
 
-        Else
-            notsuccesfull()
+        Dim finalMsg As String = "Import Selesai: " & totalSuccess & " item berhasil disimpan."
+        If totalSkipped > 0 Then
+            finalMsg &= "\n" & totalSkipped & " item dilewati karena kode barang tidak terdaftar di Master Stock (" & String.Join(", ", skippedList.ToArray())
+            If totalSkipped > skippedList.Count Then finalMsg &= ", dll"
+            finalMsg &= ")."
+        End If
+        If alreadyTransList.Count > 0 Then
+            finalMsg &= "\nBeberapa item dilewati karena sudah ada transaksi hari ini (" & String.Join(", ", alreadyTransList.ToArray()) & ")."
+        End If
+        If Not String.IsNullOrWhiteSpace(koder) Then
+            finalMsg &= "\nCatatan: " & koder
         End If
 
-        If koder <> "" Then
-            messagesuccesfull(koder, True)
-        Else
-            messagesuccesfull("Import From Excel Successfully", True)
-        End If
-
+        messagesuccesfull(finalMsg, True)
     End Sub
+
     Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         Try
 
@@ -432,14 +388,13 @@ loop1:
         Try
             If FileUpLoad1.FileName = "" Then
                 fillplease()
-                'txtDate.Focus()
                 Exit Sub
             Else
                 Import()
             End If
 
         Catch ex As Exception
-
+            messagesuccesfull("Error import: " & ex.Message, False)
         End Try
     End Sub
 
@@ -448,9 +403,15 @@ loop1:
 
         Try
 
+            ' Validasi custid: harus > 0 (aktif) dan tidak null
+            Dim iCustId As Integer = custid()
+            If iCustId <= 0 Then
+                messagesuccesfull("Export gagal: Customer ID tidak valid atau tidak aktif.")
+                Exit Sub
+            End If
 
             Dim ds As DataSet = 'clsInventory.SelectDataset_invStkOpnameSearch("", custid, modulepriv, username, ddlCCName.SelectedValue, CDate(txtDate.Text))
-            clsInventory.selectdata_invstockopname(custid, CDate(Now).ToString("yyyy-MM-dd"), ddlCCName.SelectedItem.Value)
+            clsInventory.selectdata_invstockopname(iCustId, CDate(Now).ToString("yyyy-MM-dd"), ddlCCName.SelectedItem.Value)
             'WService.get_datatableInvStock(cust) 'WService.getMemberExport(cust)
             Dim dt As DataTable = ds.Tables(0)
             Using wb As New XLWorkbook()
@@ -460,30 +421,26 @@ loop1:
                 Response.Charset = ""
                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 Response.AddHeader("content-disposition", "attachment;filename=" & txtEx.Text & ".xlsx")
+
+                ' Set download token cookie agar JS bisa deteksi selesainya download
+                Dim tokenCookie As New HttpCookie("fileDownloadToken", "1")
+                tokenCookie.Path = "/"
+                Response.Cookies.Add(tokenCookie)
+
                 Using MyMemoryStream As New MemoryStream()
                     wb.SaveAs(MyMemoryStream)
                     MyMemoryStream.WriteTo(Response.OutputStream)
-                    'Response.Flush()
-                    'Response.End()
 
                     HttpContext.Current.Response.Flush()
                     HttpContext.Current.Response.SuppressContent = True
                     HttpContext.Current.ApplicationInstance.CompleteRequest()
 
-
                 End Using
             End Using
-
 
         Catch ex As Exception
             errLog(Err.Description, "Pages_ExportStock:exportStockData")
             Err.Clear()
-        Finally
-            HttpContext.Current.Response.SuppressContent = True
-            HttpContext.Current.ApplicationInstance.CompleteRequest()
-
-            messagesuccesfull("Export Data Successfully")
-
         End Try
 
         Exit Sub

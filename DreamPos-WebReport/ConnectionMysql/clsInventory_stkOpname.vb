@@ -1,4 +1,4 @@
-﻿Public Class clsInventory_stkOpname
+Public Class clsInventory_stkOpname
 
     Public Function SelectDataset_invStkOpname(ByVal custid As Integer, ByVal ModPriv As Integer, ByVal user As String, ByVal ccid As Integer) As DataSet
         Dim ds As New DataSet
@@ -334,7 +334,8 @@
         strFilter = "  SELECT stk.number stk_no, stk.name stk_Name, 0 AS u1, stk.unit1 u1_nm , IFNULL(cls.ttlqty,0) u2, stk.unit2 u2_nm, stk.Factor1, 
                            IFNULL( cls.cost,0) cost, cc.Name FROM cld_inv_stk stk
                         LEFT JOIN (SELECT* FROM cld_inv_cc WHERE id = " & cc & ") cc ON stk.custid = cc.custid
-                        LEFT JOIN (SELECT * FROM cld_inv_transstockcls WHERE invdate = '" & paramFrom.ToString("yyyy-MM-dd") & "' AND ccid = " & cc & ") cls ON cls.stkid = stk.ID AND cls.custid = stk.custid"
+                        LEFT JOIN (SELECT * FROM cld_inv_transstockcls WHERE invdate = '" & paramFrom.ToString("yyyy-MM-dd") & "' AND ccid = " & cc & ") cls ON cls.stkid = stk.ID AND cls.custid = stk.custid" &
+                       " WHERE stk.custid = " & custID & " AND stk.custid <> 0"
         ', 1 AS BClose 
         Dim a As New clsDbo(strFilter)
 

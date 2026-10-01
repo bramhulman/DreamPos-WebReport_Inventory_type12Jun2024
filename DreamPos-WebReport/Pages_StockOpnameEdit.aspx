@@ -1,351 +1,212 @@
-﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/SiteInventoryHome.Master"
+<%@ Page Title="Stock Opname Edit" Language="vb" AutoEventWireup="false" MasterPageFile="~/SiteInventoryHome.Master"
   CodeBehind="Pages_StockOpnameEdit.aspx.vb" Inherits="DreamPos_WebReport.Pages_StockOpnameEdit" %>
-  <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
-    <%@ Register Assembly="EditableDropDownList" Namespace="EditableControls" TagPrefix="editable" %>
-      <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-        <style>
-          .input-group>.form-control {
-            width: 800px;
-          }
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style>
+        /* ── Modern Loading Overlay ── */
+        .modal-loading {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(255,255,255,0.75);
+            z-index: 9999; display: none; justify-content: center; align-items: center;
+        }
+        .loading-box {
+            background: #ffffff; padding: 24px 32px; border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15); text-align: center;
+        }
+        .loading-box img { width: 50px; height: 50px; margin-bottom: 12px; }
+        .loading-box h6 { font-weight: 600; color: #1e3a5f; margin: 0; }
+        .loading-box small { color: #6c757d; }
 
-          .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: black;
-            z-index: 99;
-            opacity: 0.8;
-            filter: alpha(opacity=80);
-            -moz-opacity: 0.8;
-            min-height: 100%;
-            width: 100%;
-          }
-
-          .loading {
-            position: fixed;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            background: #ffffff;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            min-width: 300px;
-            display: none;
-            border: none;
-          }
-        </style>
-        <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
-        <%--<script src="js/jquery-1.6.4.min.js" type="text/javascript"></script>--%>
-          <script src="js/jquery.ui.core.js" type="text/javascript"></script>
-          <script src="js/jquery.ui.widget.js" type="text/javascript"></script>
-          <script src="js/jquery.ui.button.js" type="text/javascript"></script>
-          <script src="js/jquery.ui.position.js" type="text/javascript"></script>
-          <script src="js/jquery.ui.autocomplete.js" type="text/javascript"></script>
-          <script src="js/jquery.ui.combobox.js" type="text/javascript"></script>
-          <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-          <script type="text/javascript">
-            function ShowProgress() {
-              setTimeout(function () {
-                var modal = $('<div />');
-                modal.addClass("modal");
-                $('body').append(modal);
-                var loading = $(".loading");
-                loading.show();
-              }, 200);
-            }
-            $('form').live("submit", function () {
-              ShowProgress();
+        /* ── Form Card Styling ── */
+        .edit-card { border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); border: none; }
+        .edit-card-header { background: #1e3a5f; color: #ffffff; border-radius: 8px 8px 0 0; padding: 12px 20px; }
+        .edit-card-body { background: #fdfdfd; padding: 20px 24px; }
+        .form-label { font-weight: 600; color: #34495e; font-size: 0.88rem; }
+        .input-group-text.unit-label { background: #e9ecef; font-weight: bold; font-size: 0.85rem; color: #495057; width: 70px; justify-content: center; }
+        
+        .form-control:read-only { background-color: #f4f6f9; cursor: not-allowed; }
+    </style>
+    <script type="text/javascript">
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+        function DisableButton() {
+            var btnInsert = document.getElementById("<%=btnInsert.ClientID %>");
+            if(btnInsert) btnInsert.disabled = true;
+        }
+        window.onbeforeunload = DisableButton;
+        
+        $(document).ready(function () {
+            $('.btn-loading-trigger').click(function () {
+                if (typeof Page_IsValid !== 'undefined' && !Page_IsValid) return;
+                showLoading();
             });
-            $(document).ready(function () {
-              $('.btn').click(function () {
-                if (Page_IsValid) {
-                  ShowProgress();
-                }
-              });
+            $('form').on("submit", function () {
+                showLoading();
             });
+        });
+    </script>
+</asp:Content>
 
-          </script>
-          <script type="text/javascript">
-            function DisableButton() {
-              document.getElementById("<%=btnInsert.ClientID %>").disabled = true;
-            }
-            window.onbeforeunload = DisableButton;
-          </script>
-      </asp:Content>
-      <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
-      </asp:Content>
-      <asp:Content ID="BodyContent" ContentPlaceHolderID="BodyContent" runat="server">
-        <asp:ScriptManager runat="server">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server"></asp:Content>
 
-        </asp:ScriptManager>
+<asp:Content ID="BodyContent" ContentPlaceHolderID="BodyContent" runat="server">
+    <asp:ScriptManager runat="server"></asp:ScriptManager>
 
-        <div id="spinner" class="loading">
-          <div style="font-size: 3rem; color: #007bff; margin-bottom: 15px;">
-            <i class="fas fa-circle-notch fa-spin"></i>
-          </div>
-          <div
-            style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 1.25rem; color: #333; font-weight: 600; margin-bottom: 5px;">
-            Processing...
-          </div>
-          <div style="font-family: 'Segoe UI', sans-serif; font-size: 0.9rem; color: #6c757d;">
-            Please wait a moment.
-          </div>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="modal-loading">
+        <div class="loading-box">
+            <img src="/images/loader.gif" alt="Loading" />
+            <h6>Processing...</h6>
+            <small>Please wait a moment</small>
         </div>
-
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-          <div class="container-fluid">
-            <div class="row mb-2">
-              <div class="col-sm-6">
-                <h1 class="m-0 text-dark">
-                  <asp:label runat="server" ID="lblh1">Stock Opname Edit</asp:label>
-                </h1>
-              </div><!-- /.col -->
-              <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item"><a href="inventoryHome.aspx">Home</a></li>
-                  <li class="breadcrumb-item active">
-                    <asp:label runat="server" ID="lblli1">Stock Opname Edit</asp:label>
-                  </li>
-                </ol>
-              </div><!-- /.col -->
-            </div><!-- /.row -->
-          </div><!-- /.container-fluid -->
-        </div>
-        <div class="col-md-12" style="background-color:white;">
-
-          <!-- /.content-header -->
-          <%-- <h2>User Access</h2>--%>
-
-            <div class="row">
-              <div class="form-horizontal" id="formload">
-                <div class="card-body">
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label7"
-                      Text="Cost Centre: "></asp:label>
-                    <div class="input-group col-md-3">
-
-                      <asp:DropDownList ID="DdlTo" runat="server" AppendDataBoundItems="True" CssClass="form-control"
-                        AutoPostBack="True" EnableViewState="True" ViewStateMode="Enabled">
-                        <asp:ListItem Value="0">----Select----</asp:ListItem>
-                      </asp:DropDownList>
-                      <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
-                        ControlToValidate="DdlTo" ErrorMessage="Cost Centre Must Be Choice" InitialValue="0"
-                        style="color: #FF0000"></asp:RequiredFieldValidator>--%>
-
-                    </div>
-
-
-                  </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label8" Text="Item: ">
-                    </asp:label>
-                    <div class="input-group col-md-3">
-
-                      <asp:DropDownList ID="ddlItem" runat="server" AppendDataBoundItems="True" CssClass="form-control"
-                        AutoPostBack="True" EnableViewState="True" ViewStateMode="Enabled">
-                        <asp:ListItem Value="0">----Select----</asp:ListItem>
-                      </asp:DropDownList>
-                      <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server"
-                        ControlToValidate="DdlItem" ErrorMessage="Item Must Be Choice" InitialValue="0"
-                        style="color: #FF0000"></asp:RequiredFieldValidator>--%>
-
-                    </div>
-
-
-                  </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label3" Text="for: ">
-                    </asp:label>
-                    <div class="input-group col-md-3">
-
-                      <asp:DropDownList ID="ddladjustnow" runat="server" AppendDataBoundItems="True"
-                        CssClass="form-control" AutoPostBack="True" EnableViewState="True" ViewStateMode="Enabled">
-                        <%--<asp:ListItem Value="1">Current Stock</asp:ListItem>--%>
-                          <asp:ListItem Value="2">Opening Stock</asp:ListItem>
-                      </asp:DropDownList>
-
-                    </div>
-
-
-                  </div>
-                  <div class="form-group row col-md-12" style="display:none;">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="lblStkno"
-                      Text="Stkno: "></asp:label>
-                    <div class="input-group col-md-3">
-
-                      <asp:TextBox style="text-align:center;" runat="server" ID="txtstkNo" Class="form-control" />
-
-                    </div>
-
-
-                  </div>
-
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="lblinstock"
-                      Text="In Stock: "></asp:label>
-                    <div class="input-group col-md-3">
-
-                      <asp:TextBox style="text-align:right;width:revert;" ReadOnly="true" runat="server"
-                        AutoPostBack="True" ID="txtinstock" Class="form-control" />
-
-                      <asp:label runat="server" ID="lblunit22" Text="" Style="padding:6px;" CssClass="align-middle"
-                        ForeColor="Black"></asp:label>
-
-
-
-                    </div>
-
-
-                  </div>
-
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label4"
-                      Text="Unit 1: "></asp:label>
-                    <div class="input-group col-md-3">
-
-                      <asp:TextBox style="text-align:right; width:revert;" runat="server" ID="txtUnit1"
-                        OnTextChanged="txtUnit1_TextChanged" AutoPostBack="True"
-                        onkeydown="return (!(event.keyCode!=32);" Class="form-control" />
-                      <asp:label runat="server" ID="lblUnit1" Text="Unit1" Style="padding:6px;" CssClass="align-middle"
-                        ForeColor="Black"></asp:label>
-
-                    </div>
-
-
-                  </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label9"
-                      Text="Unit 2: "></asp:label>
-                    <div class="input-group col-md-3">
-
-                      <asp:TextBox style="text-align:right; width:revert;" runat="server" ID="txtUnit2"
-                        OnTextChanged="txtUnit2_TextChanged" AutoPostBack="True"
-                        onkeydown="return (!(event.keyCode!=32);" Class="form-control" />
-                      <asp:label runat="server" ID="lblUnit2" Text="Unit2" Style="padding:6px;" CssClass="align-middle"
-                        ForeColor="Black"></asp:label>
-
-
-                    </div>
-
-
-                  </div>
-
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label11"
-                      Text="Factor: "></asp:label>
-                    <div class="input-group col-md-3">
-
-                      <asp:TextBox style="text-align:right; width:800px;padding: 0.375rem 0.75rem;" runat="server"
-                        onkeydown="return (!(event.keyCode>=65) && event.keyCode!=32);" AutoPostBack="True" ID="txtLosF"
-                        Enabled="false" Text="1" Class="form-control" />
-
-
-                    </div>
-
-
-                  </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label1"
-                      Text="Total Actual: "></asp:label>
-                    <div class="input-group col-md-3">
-
-                      <asp:TextBox style="text-align:right; width:800px;padding: 0.375rem 0.75rem;" runat="server"
-                        onkeydown="return (!(event.keyCode>=65) && event.keyCode!=32);" AutoPostBack="True"
-                        ID="txtTotalStk" Enabled="false" Text="1" Class="form-control" />
-
-
-                    </div>
-
-
-                  </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label5"
-                      Text="Cost U1: "></asp:label>
-                    <div class="input-group col-md-3">
-
-                      <asp:TextBox style="text-align:right; width:revert;" runat="server"
-                        onkeydown="return (!(event.keyCode>=65) && event.keyCode!=32);" AutoPostBack="True"
-                        ID="txtCostu1" Text="1" Class="form-control" />
-                      <asp:label runat="server" ID="lblcostu1" Text="Unit1" Style="padding:6px;" CssClass="align-middle"
-                        ForeColor="Black"></asp:label>
-
-                    </div>
-
-
-                  </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label2"
-                      Text="Cost U2: "></asp:label>
-                    <div class="input-group col-md-3">
-
-                      <asp:TextBox style="text-align:right; width:revert;" runat="server"
-                        onkeydown="return (!(event.keyCode>=65) && event.keyCode!=32);" AutoPostBack="True" ID="txtCost"
-                        Text="1" Class="form-control" />
-                      <asp:label runat="server" ID="lblcostu2" Text="Unit2" Style="padding:6px;" CssClass="align-middle"
-                        ForeColor="Black"></asp:label>
-
-                    </div>
-
-
-                  </div>
-
-
-
-
-                  <div class="form-group row">
-                    <div class="col-md-offset-2 col-md-10">
-                      <table>
-                        <tr>
-                          <td>
-                            <%--<asp:Button runat="server" ID="btnInsert" OnClick="btnInsert_Click" Text="Add"
-                              CssClass="btn btn-primary"
-                              Style="font-weight: 600; border-color:gray; width:108px;" />--%>
-                            <button runat="server" id="btnInsert" onserverclick="btnInsert_Click"
-                              class="btn btn-primary"
-                              style="font-weight: 600; border-color:gray; width:108px;">Add</button>
-                          </td>
-                          <td>
-                            <%--<asp:Button runat="server" ID="btnUpdate" OnClick="btnUpdate_Click" Text="Update"
-                              CssClass="btn btn-primary" Style="font-weight: 600; border-color:gray; width:108px;"
-                              Visible="false" />--%>
-                            <button runat="server" id="btnUpdate" onserverclick="btnUpdate_Click"
-                              class="btn btn-primary" style="font-weight: 600; border-color:gray; width:108px;"
-                              Visible="false">Update</button>
-                          </td>
-                          <td>
-                            <asp:Button runat="server" ID="btnCancel" OnClick="btnCancel_Click" Text="Cancel"
-                              CssClass="btn btn-primary" Style="font-weight: 600; border-color:gray; width:108px;"
-                              CausesValidation="false" />
-                          </td>
-                        </tr>
-                      </table>
-
-                    </div>
-                  </div>
-
-
-
+    </div>
+
+    <!-- Content Header -->
+    <div class="content-header py-2">
+        <div class="container-fluid">
+            <div class="row align-items-center mb-2">
+                <div class="col-sm-6">
+                    <h4 class="m-0 text-dark font-weight-bold">
+                        <i class="fas fa-edit text-primary mr-2"></i>
+                        <asp:Label runat="server" ID="lblh1">Stock Opname Edit</asp:Label>
+                    </h4>
                 </div>
-
-              </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right mb-0" style="background:transparent; padding:0;">
+                        <li class="breadcrumb-item"><a href="inventoryHome.aspx">Home</a></li>
+                        <li class="breadcrumb-item"><a href="Pages_StockOpname.aspx">Stock Opname</a></li>
+                        <li class="breadcrumb-item active"><asp:Label runat="server" ID="lblli1">Edit</asp:Label></li>
+                    </ol>
+                </div>
             </div>
-
         </div>
+    </div>
 
+    <!-- Main Content -->
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="card edit-card mb-4">
+                    <div class="edit-card-header d-flex align-items-center">
+                        <i class="fas fa-clipboard-check mr-2"></i>
+                        <h6 class="m-0 font-weight-bold">Form Adjustment Stock</h6>
+                    </div>
+                    
+                    <div class="edit-card-body">
+                        
+                        <%-- Cost Centre & Item Row --%>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Cost Centre</label>
+                                <asp:DropDownList ID="DdlTo" runat="server" AppendDataBoundItems="True" CssClass="form-control" AutoPostBack="True" EnableViewState="True" ViewStateMode="Enabled">
+                                    <asp:ListItem Value="0">---- Select Cost Centre ----</asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Item / Barang</label>
+                                <asp:DropDownList ID="ddlItem" runat="server" AppendDataBoundItems="True" CssClass="form-control" AutoPostBack="True" EnableViewState="True" ViewStateMode="Enabled">
+                                    <asp:ListItem Value="0">---- Select Item ----</asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
 
-        <script>
+                        <%-- Type & Hidden Stkno --%>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Type (For)</label>
+                                <asp:DropDownList ID="ddladjustnow" runat="server" AppendDataBoundItems="True" CssClass="form-control" AutoPostBack="True" EnableViewState="True" ViewStateMode="Enabled">
+                                    <asp:ListItem Value="2">Opening Stock</asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                            <div class="col-md-6 mb-3" style="display:none;">
+                                <label class="form-label">Stkno</label>
+                                <asp:TextBox runat="server" ID="txtstkNo" CssClass="form-control text-center" />
+                            </div>
+                        </div>
 
-          if ($(window).width() >= 960) {
-            document.getElementById("formload").style.width = "100%";
-          } else {
-            document.getElementById("formload").style.width = "80%";
+                        <hr class="mt-1 mb-3" />
 
-          }
+                        <%-- Stock Quantities Row 1 --%>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label text-info">In Stock (System)</label>
+                                <div class="input-group">
+                                    <asp:TextBox runat="server" ID="txtinstock" CssClass="form-control text-right font-weight-bold" ReadOnly="true" AutoPostBack="True" />
+                                    <div class="input-group-append">
+                                        <asp:Label runat="server" ID="lblunit22" CssClass="input-group-text unit-label"></asp:Label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Opname Unit 1</label>
+                                <div class="input-group">
+                                    <asp:TextBox runat="server" ID="txtUnit1" CssClass="form-control text-right" OnTextChanged="txtUnit1_TextChanged" AutoPostBack="True" />
+                                    <div class="input-group-append">
+                                        <asp:Label runat="server" ID="lblUnit1" Text="Unit1" CssClass="input-group-text unit-label"></asp:Label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Opname Unit 2</label>
+                                <div class="input-group">
+                                    <asp:TextBox runat="server" ID="txtUnit2" CssClass="form-control text-right" OnTextChanged="txtUnit2_TextChanged" AutoPostBack="True" />
+                                    <div class="input-group-append">
+                                        <asp:Label runat="server" ID="lblUnit2" Text="Unit2" CssClass="input-group-text unit-label"></asp:Label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+                        <%-- Stock Quantities Row 2 --%>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Conversion Factor</label>
+                                <asp:TextBox runat="server" ID="txtLosF" CssClass="form-control text-right" Enabled="false" Text="1" AutoPostBack="True" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label text-success">Total Actual Qty (U2)</label>
+                                <asp:TextBox runat="server" ID="txtTotalStk" CssClass="form-control text-right font-weight-bold" Enabled="false" Text="1" AutoPostBack="True" />
+                            </div>
+                        </div>
 
-        </script>
-      </asp:Content>
+                        <hr class="mt-1 mb-3" />
+
+                        <%-- Costs --%>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">Cost Unit 1</label>
+                                <div class="input-group">
+                                    <asp:TextBox runat="server" ID="txtCostu1" CssClass="form-control text-right" Text="1" AutoPostBack="True" />
+                                    <div class="input-group-append">
+                                        <asp:Label runat="server" ID="lblcostu1" Text="Unit1" CssClass="input-group-text unit-label"></asp:Label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">Cost Unit 2</label>
+                                <div class="input-group">
+                                    <asp:TextBox runat="server" ID="txtCost" CssClass="form-control text-right" Text="1" AutoPostBack="True" />
+                                    <div class="input-group-append">
+                                        <asp:Label runat="server" ID="lblcostu2" Text="Unit2" CssClass="input-group-text unit-label"></asp:Label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <%-- Action Buttons --%>
+                        <div class="d-flex justify-content-end align-items-center mt-2 pt-3 border-top">
+                            <asp:Button runat="server" ID="btnCancel" OnClick="btnCancel_Click" Text="Cancel" CssClass="btn btn-secondary mr-2" style="width: 110px; font-weight:600;" CausesValidation="false" />
+                            <button runat="server" id="btnInsert" onserverclick="btnInsert_Click" class="btn btn-primary btn-loading-trigger" style="width: 110px; font-weight:600;">
+                                <i class="fas fa-save mr-1"></i> Add
+                            </button>
+                            <button runat="server" id="btnUpdate" onserverclick="btnUpdate_Click" class="btn btn-success btn-loading-trigger" style="width: 110px; font-weight:600;" visible="false">
+                                <i class="fas fa-check mr-1"></i> Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</asp:Content>
