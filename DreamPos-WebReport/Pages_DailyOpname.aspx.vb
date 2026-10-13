@@ -113,8 +113,8 @@ Public Class Pages_DailyOpname
         Dim result As New Dictionary(Of String, Object)
         Try
             Dim targetDateHMinus1 As Date
-            If Not Date.TryParse(txtDate.Text, targetDateHMinus1) Then
-                If Not Date.TryParse(Request("date"), targetDateHMinus1) Then
+            If Not Date.TryParse(Request("date"), targetDateHMinus1) Then
+                If Not Date.TryParse(txtDate.Text, targetDateHMinus1) Then
                     targetDateHMinus1 = Date.Today.AddDays(-1)
                 End If
             End If
@@ -205,7 +205,11 @@ Public Class Pages_DailyOpname
                     End If
                 End If
 
-                cInv.insertStockOpname(ccId, stkId, stkName, 0, 0, factor1, opnameVal, cost, unit1, unit2, sNameuser, sNameuser, stkNo, ccName, sNameuser, icustid, 2)
+                If action = "cancel_row" Then
+                    cInv.CancelStockOpname(stkId, ccId, icustid, targetDateHMinus1)
+                Else
+                    cInv.insertStockOpname(ccId, stkId, stkName, 0, 0, factor1, opnameVal, cost, unit1, unit2, sNameuser, sNameuser, stkNo, ccName, sNameuser, icustid, 2)
+                End If
 
                 result("success") = True
                 result("stkId") = stkId
@@ -228,6 +232,7 @@ Public Class Pages_DailyOpname
         Response.Write(Newtonsoft.Json.JsonConvert.SerializeObject(result))
         Response.End()
     End Sub
+
 
     Private Sub LoadCostCentres()
         Try
@@ -287,7 +292,7 @@ Public Class Pages_DailyOpname
                     "IFNULL(TransStock.bClose, 0) AS bClose, " &
                     "IFNULL(TransStock.closeQty, 0) AS closeQty, " &
                     "CASE WHEN TransStock.bClose = 1 THEN IFNULL(TransStock.varianceQty, (TransStock.ttlQty - TransStock.closeQty)) " &
-                    "     ELSE (TransStock.ttlQty - IFNULL(TransStock.closeQty, 0)) END AS Variance, " &
+                    "     ELSE 0 END AS Variance, " &
                     "IFNULL(cld_inv_stk.unit2, IFNULL(cld_inv_stk.unit1, 'Pcs')) AS Unit " &
                     "FROM cld_inv_transstockcls AS TransStock " &
                     "INNER JOIN cld_inv_stk ON (TransStock.custId = cld_inv_stk.CustID AND TransStock.stkId = cld_inv_stk.ID) " &
@@ -684,7 +689,7 @@ Public Class Pages_DailyOpname
     End Function
 
     Public Function GetOpnameVal(ByVal bClose As Object, ByVal closeQty As Object) As String
-        If Not IsOpnamed(bClose) Then Return ""
+        If Not IsOpnamed(bClose) Then Return "0"
         Return FormatInputQty(closeQty)
     End Function
 

@@ -1,501 +1,549 @@
-30/09/26 12:14:20 PM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=mgr-lokasari (Occurred IN :Default.aspx:Page_Load)
+01/10/26 03:59:29 PM ==>Conversion from string "" to type 'Integer' is not valid. (Occurred IN :InventoryHome:Page_Load)
 
-30/09/26 12:33:10 PM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+01/10/26 03:59:29 PM ==>ERROR:Conversion from string "" to type 'Integer' is not valid. (Occurred IN :SiteInventoryHome:Page_Load)
+01/10/26 03:59:35 PM ==>Conversion from string "" to type 'Integer' is not valid. (Occurred IN :InventoryHome:Page_Load)
 
-30/09/26 01:06:00 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ExportInv_Stk:btnCancel_Click)
-30/09/26 01:44:46 PM ==>ERROR:SiteInventoryHome.Master: modul() < usrModul.moduleInv! modul=-1, user=, URL=/Pages_ExprtImprt.aspx (Occurred IN :SiteInventoryHome:Page_Load)
-30/09/26 01:44:47 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+01/10/26 03:59:35 PM ==>url (Occurred IN :http://dreamposweb.com:7357?login=ridwan1&username=ridwan1&custid=&modulepriv=&rptpriv=&modul=&rptf=&invpriv=&time=0BAACE7B358196772D63F73FEDFB5503FCF609CA1B785EB8655020FD80C4A26C4BA8C38D2A1045C4B2B55E7D22770A52E9F165E4AA2CAD902E51BF8DA2166A85)
 
-30/09/26 01:45:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 09:27:14 AM ==>ERROR:SiteInventoryHome.Master: modul() < usrModul.moduleInv! modul=0, user=ridwan1, URL=/Inventoryhome.aspx (Occurred IN :SiteInventoryHome:Page_Load)
+02/10/26 09:52:12 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-30/09/26 01:45:23 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:37:47 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-30/09/26 02:01:08 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ExportInv_Stk:btnCancel_Click)
-30/09/26 02:01:21 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
-30/09/26 02:01:21 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
-30/09/26 02:01:26 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ReceipeEdit:btnCancel_Click)
-30/09/26 02:01:33 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',,24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
-30/09/26 02:01:33 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
-30/09/26 02:01:58 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',,24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
-30/09/26 02:01:58 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
-30/09/26 02:02:02 PM ==>ERROR:Conversion from type 'DBNull' to type 'Integer' is not valid. (Occurred IN :Pages_ReceipeEdit:insert)
-30/09/26 02:02:04 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ReceipeEdit:btnCancel_Click)
-30/09/26 02:02:10 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',,24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
-30/09/26 02:02:10 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
-30/09/26 02:02:13 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ReceipeEdit:btnCancel_Click)
-30/09/26 02:02:21 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',,24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
-30/09/26 02:02:21 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
-30/09/26 02:02:39 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',,24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
-30/09/26 02:02:39 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
-30/09/26 02:02:43 PM ==>ERROR:Conversion from type 'DBNull' to type 'Integer' is not valid. (Occurred IN :Pages_ReceipeEdit:insert)
-30/09/26 02:02:44 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ReceipeEdit:btnCancel_Click)
-30/09/26 02:02:52 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
-30/09/26 02:02:52 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
-30/09/26 02:02:55 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ReceipeEdit:btnCancel_Click)
-30/09/26 02:03:00 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',,24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
-30/09/26 02:03:00 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
-30/09/26 02:03:02 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ReceipeEdit:btnCancel_Click)
-30/09/26 02:37:39 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:19 AM ==>session login nothing (Occurred IN :login=success)
 
-30/09/26 02:38:42 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:19 AM ==>request login (Occurred IN :login=success)
 
-30/09/26 04:39:00 PM ==>ERROR:SiteInventoryHome.Master: modul() < usrModul.moduleInv! modul=-1, user=, URL=/Pages_DailyOpname.aspx (Occurred IN :SiteInventoryHome:Page_Load)
-30/09/26 04:39:00 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_DailyOpname.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>hash compare (Occurred IN :server=9DD4B4AE14... client=9DD4B4AE14...)
 
-30/09/26 04:39:06 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_DailyOpname.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>process querystring (Occurred IN :make cookies)
 
-30/09/26 04:39:07 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_DailyOpname.aspx, logout=, cookieUser=NO_COOKIE, sessUser=support (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>username (Occurred IN :ridwan1)
 
-30/09/26 05:03:03 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>custid (Occurred IN :22)
 
-30/09/26 05:03:12 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>modulepriv (Occurred IN :0)
 
-30/09/26 05:11:00 PM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=ridwan1 (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>rptpriv (Occurred IN :1)
 
-01/10/26 09:16:34 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>modul (Occurred IN :5)
 
-01/10/26 09:16:36 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Calculate.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>rptf (Occurred IN :9)
 
-01/10/26 09:16:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>invpriv (Occurred IN :67108863)
 
-01/10/26 09:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>end process querystring (Occurred IN :make cookies)
 
-01/10/26 09:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>setauthcookie (Occurred IN :ridwan1)
 
-01/10/26 09:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 10:42:20 AM ==>login (Occurred IN :to home)
 
-01/10/26 09:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+02/10/26 01:54:53 PM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsDbo:selectDataset-FillData)
+02/10/26 01:57:05 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkEdit:btnCancel_Click)
+05/10/26 02:14:28 PM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:15:03 PM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:02 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:02 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:02 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:02 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:44 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:02 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:45 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:02 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:45 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:02 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:45 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:02 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:45 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:02 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:45 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:45 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:45 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:45 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:45 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:50 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:50 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:50 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:50 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:50 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:51 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:51 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:51 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:51 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:06 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:21:51 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:06 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:00 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:06 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:00 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:06 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:00 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:06 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:00 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:06 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:00 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:06 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:00 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:07 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:00 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:07 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:00 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:07 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:00 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:07 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:00 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:07 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:02 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:07 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:02 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:07 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:02 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:07 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:02 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:07 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:02 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:18:08 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Stk.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:02 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 02:24:37 PM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=Ridwan1 (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:02 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 03:33:01 PM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:02 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 03:33:26 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
+05/10/26 03:33:26 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
+05/10/26 03:33:42 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ReceipeEdit:btnCancel_Click)
+05/10/26 03:33:50 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',,24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
+05/10/26 03:33:50 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
+05/10/26 03:34:13 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ReceipeEdit:btnCancel_Click)
+05/10/26 03:34:21 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
+05/10/26 03:34:21 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
+05/10/26 03:35:13 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ReceipeEdit:btnCancel_Click)
+05/10/26 03:35:32 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',,24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
+05/10/26 03:35:32 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
+05/10/26 03:37:20 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ReceipeEdit:btnCancel_Click)
+05/10/26 03:37:56 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkEdit:btnCancel_Click)
+05/10/26 03:38:21 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkEdit:btnCancel_Click)
+05/10/26 03:38:39 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkEdit:btnCancel_Click)
+05/10/26 03:39:02 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkEdit:btnCancel_Click)
+05/10/26 04:20:05 PM ==>url (Occurred IN :http://dreamposweb.com:7357?login=ridwan1&username=ridwan1&custid=22&modulepriv=0&rptpriv=1&modul=5&rptf=9&invpriv=67108863&time=833AF4AE614DF2AFA2C7E70D92C67C6D49183DB185D889CF1CB55DFF2A7F323A1024603910A490174D8BD47ADD9D338736C8015B19E55ADC868385FA212CC520)
 
-01/10/26 09:22:02 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 04:20:31 PM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=ridwan1 (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:22:02 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_ExprtImprt.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+05/10/26 04:20:48 PM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=ridwan1 (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:31:14 AM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=Ridwan1 (Occurred IN :Default.aspx:Page_Load)
+05/10/26 04:21:53 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkEdit:btnCancel_Click)
+05/10/26 04:22:13 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkEdit:btnCancel_Click)
+05/10/26 04:22:41 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkEdit:btnCancel_Click)
+05/10/26 04:25:30 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkEdit:btnCancel_Click)
+05/10/26 04:51:03 PM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 09:51:35 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Calculate.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+06/10/26 09:24:00 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:10:37 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+06/10/26 09:24:10 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:10:48 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+06/10/26 09:24:54 AM ==>url (Occurred IN :http://dreamposweb.com:7357?login=ridwan1&username=ridwan1&custid=22&modulepriv=0&rptpriv=1&modul=5&rptf=9&invpriv=67108863&time=22A97896C0108A644F7CA8CAFE00C92DB5C0BD53F66A233522091356D4F5DF34C8762510926C8235DDF7CA753D21510D5A46C21684DF6A5513AA6433178CA2B8)
 
-01/10/26 11:12:47 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+07/10/26 01:15:06 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_InvRcv.aspx, logout=, cookieUser=ridwan, sessUser=ridwan1 (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:47 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+07/10/26 01:15:09 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_InvRcv.aspx, logout=, cookieUser=ridwan, sessUser=ridwan1 (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:47 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+07/10/26 01:16:28 PM ==>ERROR:Pages_InvRcvEdit: Start Page_Load (Occurred IN :Info)
+07/10/26 01:16:28 PM ==>ERROR:Pages_InvRcvEdit: Reading cookies (Occurred IN :Info)
+07/10/26 01:16:28 PM ==>ERROR:Pages_InvRcvEdit: Cookies read. IsPostBack = False (Occurred IN :Info)
+07/10/26 01:16:28 PM ==>ERROR:Pages_InvRcvEdit: Start loadFrom (Occurred IN :Info)
+07/10/26 01:16:28 PM ==>ERROR:Pages_InvRcvEdit: Start loadSup (Occurred IN :Info)
+07/10/26 01:16:28 PM ==>ERROR:Pages_InvRcvEdit: Loading data for MTID [RC10/26-00641] and CustID [22] (Occurred IN :Info)
+07/10/26 01:16:28 PM ==>ERROR:Pages_InvRcvEdit: PR Number query result for MTID [RC10/26-00641] is [NULL] (Occurred IN :Info)
+07/10/26 01:21:52 PM ==>ERROR:Pages_InvRcvEdit: Start Page_Load (Occurred IN :Info)
+07/10/26 01:21:52 PM ==>ERROR:Pages_InvRcvEdit: Reading cookies (Occurred IN :Info)
+07/10/26 01:21:52 PM ==>ERROR:Pages_InvRcvEdit: Cookies read. IsPostBack = True (Occurred IN :Info)
+07/10/26 01:21:54 PM ==>ERROR:Pages_InvRcvEdit: Start Page_Load (Occurred IN :Info)
+07/10/26 01:21:54 PM ==>ERROR:Pages_InvRcvEdit: Reading cookies (Occurred IN :Info)
+07/10/26 01:21:54 PM ==>ERROR:Pages_InvRcvEdit: Cookies read. IsPostBack = True (Occurred IN :Info)
+07/10/26 01:22:41 PM ==>ERROR:Pages_InvRcvEdit: Start Page_Load (Occurred IN :Info)
+07/10/26 01:22:41 PM ==>ERROR:Pages_InvRcvEdit: Reading cookies (Occurred IN :Info)
+07/10/26 01:22:41 PM ==>ERROR:Pages_InvRcvEdit: Cookies read. IsPostBack = False (Occurred IN :Info)
+07/10/26 01:22:41 PM ==>ERROR:Pages_InvRcvEdit: Start loadFrom (Occurred IN :Info)
+07/10/26 01:22:41 PM ==>ERROR:Pages_InvRcvEdit: Start loadSup (Occurred IN :Info)
+07/10/26 01:22:41 PM ==>ERROR:Pages_InvRcvEdit: Loading data for MTID [RC10/26-00641] and CustID [22] (Occurred IN :Info)
+07/10/26 01:22:41 PM ==>ERROR:Pages_InvRcvEdit: PR Number query result for MTID [RC10/26-00641] is [NULL] (Occurred IN :Info)
+07/10/26 01:22:51 PM ==>ERROR:Pages_InvRcvEdit: Start Page_Load (Occurred IN :Info)
+07/10/26 01:22:51 PM ==>ERROR:Pages_InvRcvEdit: Reading cookies (Occurred IN :Info)
+07/10/26 01:22:51 PM ==>ERROR:Pages_InvRcvEdit: Cookies read. IsPostBack = True (Occurred IN :Info)
+08/10/26 08:43:57 AM ==>Default.aspx Page_Load: ReturnUrl=/printprev_supp.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:47 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+08/10/26 08:49:36 AM ==>Default.aspx Page_Load: ReturnUrl=/printprev_supp.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:47 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+08/10/26 08:49:37 AM ==>Default.aspx Page_Load: ReturnUrl=/printprev_supp.aspx, logout=, cookieUser=NO_COOKIE, sessUser=ridwan1 (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:47 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+08/10/26 11:45:59 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:47 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+08/10/26 11:46:03 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:47 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+08/10/26 11:47:24 AM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkGroup:btnNew_Click)
+08/10/26 11:47:32 AM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkGroup:btnNew_Click)
+08/10/26 11:47:36 AM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkGroup:btnNew_Click)
+08/10/26 11:47:56 AM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkGroupEdit:insert)
+08/10/26 12:02:58 PM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=ridwan1 (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:47 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+08/10/26 02:15:19 PM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:47 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+08/10/26 02:16:29 PM ==>url (Occurred IN :http://dreamposweb.com:7357?login=ridwan1&username=ridwan1&custid=22&modulepriv=0&rptpriv=1&modul=5&rptf=9&invpriv=67108863&time=514EC67AE88A9A4DCE2C49CB26FF33DF0E601261CE0E359DBFE3B53C11852066B435DAB5212B0B594A3ED2BB51C0F434820F15EFB661081B8D7019B203075437)
 
-01/10/26 11:12:48 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+09/10/26 08:41:55 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:48 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+09/10/26 04:03:09 PM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:48 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 08:38:20 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:49 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:04:43 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsDbo:selectDataset-FillData)
+12/10/26 09:04:43 AM ==>Cannot find table 0. (Occurred IN :Default:Login)
 
-01/10/26 11:12:49 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:12 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:49 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:12 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:49 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:12 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:49 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:12 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:49 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:12 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:49 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:12 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:52 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:12 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:52 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:12 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:52 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:12 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:52 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:12 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:52 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:13 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:52 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:13 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:52 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:14 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:52 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:14 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:52 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:14 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:52 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:14 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:53 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:14 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:53 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:14 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:54 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:14 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:54 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:20:14 AM ==>Default.aspx Page_Load: ReturnUrl=/ChangedCost.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:54 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:49:48 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:54 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+12/10/26 09:49:55 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+
+12/10/26 09:53:03 AM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
+12/10/26 09:53:03 AM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
+12/10/26 10:10:36 AM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=ridwan1 (Occurred IN :Default.aspx:Page_Load)
+
+12/10/26 10:13:26 AM ==>Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=ridwan1 (Occurred IN :Default.aspx:Page_Load)
+
+12/10/26 10:17:20 AM ==>url (Occurred IN :http://dreamposweb.com:7357?login=ridwan1&username=ridwan1&custid=22&modulepriv=0&rptpriv=1&modul=5&rptf=9&invpriv=67108863&time=425134B6102C6914276D89746451D0EDD5901B205E3C3FB0D36EB796501DAB3C2D76B73170C0BDF3EB0E5FADFE1C6A6EC95000D934963D6817F51D3221D76165)
+
+12/10/26 11:54:52 AM ==>ERROR:SiteInventoryHome.Master: modul() < usrModul.moduleInv! modul=0, user=ridwan1, URL=/Inventoryhome.aspx (Occurred IN :SiteInventoryHome:Page_Load)
+12/10/26 11:55:18 AM ==>Conversion from string "" to type 'Integer' is not valid. (Occurred IN :InventoryHome:Page_Load)
+
+12/10/26 11:55:18 AM ==>ERROR:Conversion from string "" to type 'Integer' is not valid. (Occurred IN :SiteInventoryHome:Page_Load)
+13/10/26 04:42:20 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Calculate.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+
+13/10/26 04:42:27 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Calculate.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+
+13/10/26 04:44:22 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+
+13/10/26 04:44:25 AM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+
+13/10/26 04:56:38 AM ==>ERROR:update cld_inv_transstockcls set  openqty = 37.9973, varianceQty = 0,ttlqty = 37.9973+-6.9642,
+                                     opencost = 58074.9562, cost = 58072.4490691494
+                                    where stkid = 279 and ccid = 3 and invdate = '2026-09-09' and custid = 22 Fatal error encountered during command execution. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 04:56:38 AM ==>ERROR:update cld_inv_stk_cc set cost = 58074.2772750751 where stkid = 279 and ccid = 3 and custid = 22 Reading from the stream has failed. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 04:56:38 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 279 and ccid = 3 and invdate = '2026-09-06' and custid = 22 Reading from the stream has failed. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 04:56:42 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 279 and ccid = 3 and invdate = '2026-09-09' and custid = 22 Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 04:56:42 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryprocess:setstock_cost)
+13/10/26 04:56:43 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 04:56:43 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryprocess:getrecqty)
+13/10/26 04:56:47 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 04:56:47 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 318 and ccid = 3 and invdate = '2026-09-10' and custid = 22 Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 04:56:47 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 04:56:47 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryprocess:getreccost)
+13/10/26 04:56:51 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 04:56:51 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 04:56:51 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 04:56:51 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryprocess:insertStockCLosing)
+13/10/26 05:36:10 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 05:36:10 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 05:36:10 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 05:36:10 AM ==>ERROR:update cld_inv_stk_cc set cost = 22923.4934 where stkid = 318 and ccid = 1 and custid = 22 Reading from the stream has failed. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 05:36:10 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryprocess:getopenqty)
+13/10/26 05:36:10 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 318 and ccid = 21 and invdate = '2026-09-23' and custid = 22 Reading from the stream has failed. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 05:36:14 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 05:36:14 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 318 and ccid = 1 and invdate = '2026-09-29' and custid = 22 Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 05:36:14 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryprocess:getreccost)
+13/10/26 05:36:14 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 05:36:14 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 05:36:18 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 05:36:18 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 35 and ccid = 8 and invdate = '2026-09-29' and custid = 22 Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 05:36:18 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 05:36:18 AM ==>ERROR:update cld_inv_transstockcls set  openqty = 0.0000, varianceQty = 0.0000,ttlqty = 0.0000+0,
+                                     opencost = 48482.9458, cost = 48482.9458
+                                    where stkid = 35 and ccid = 25 and invdate = '2026-10-01' and custid = 22 Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 05:36:18 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 05:36:18 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:50 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryprocess:setstock_cost)
+13/10/26 06:13:50 AM ==>ERROR:update cld_inv_transstockcls set  openqty = -11.6429, varianceQty = 0,ttlqty = -11.6429+0,
+                                     opencost = 55342.2785, cost = 55342.2785
+                                    where stkid = 35 and ccid = 18 and invdate = '2026-10-01' and custid = 22 Reading from the stream has failed. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:13:50 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 35 and ccid = 18 and invdate = '2026-10-01' and custid = 22 Reading from the stream has failed. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:13:50 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:50 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:50 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:50 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryprocess:setstock_cost)
+13/10/26 06:13:54 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:54 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 44 and ccid = 25 and invdate = '2026-10-08' and custid = 22 Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:13:54 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:54 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:54 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 318 and ccid = 21 and invdate = '2026-09-28' and custid = 22 Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:13:54 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:58 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:58 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:58 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:58 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 642 and ccid = 14 and invdate = '2026-10-11' and custid = 22 Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:13:58 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:13:58 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:30:10 AM ==>ERROR:Reading from the stream has failed.-SELECT invdate, cld_inv_transstockcls.custid, stkid stk_id, stkno stk_no, cld_inv_stk.name stk_name, cld_inv_stk.`Unit2` u2_nm,
+                                        ccid cc,ccname cc_name, (CASE 
+                                        WHEN bclose = 0 THEN cost 
+                                        WHEN bclose = 1 THEN closecost END) cost, 
+                                        (CASE 
+                                        WHEN bclose = 0 THEN ttlqty 
+                                        WHEN bclose = 1 THEN closeqty END) ttlqty,
+                                        (CASE 
+                                        WHEN bclose = 0 THEN cost 
+                                        WHEN bclose = 1 THEN closecost END) cost, rcvqty, rtnqty, tinQty, toutQty, rwasteQty, fwasteQty, usageqty, bClose, closeqty, closecost,hooutqty hoout,HoInQty hoin,bpin, bpout
+                                        FROM cld_inv_transstockcls
+                                        INNER JOIN cld_inv_stk ON cld_inv_transstockcls.`stkId` = cld_inv_stk.id
+                                          WHERE `invDate` >= '2026-09-27' AND `invDate` <= '2026-09-27' AND cld_inv_transstockcls.`ccid` = 25 AND cld_inv_transstockcls.stkid = 318 AND cld_inv_transstockcls.`custid` = 22 (Occurred IN :Cls_command:ReturnDataset:FillData)
+13/10/26 06:30:10 AM ==>ERROR:Reading from the stream has failed.-SELECT invdate, cld_inv_transstockcls.custid, stkid stk_id, stkno stk_no, cld_inv_stk.name stk_name, cld_inv_stk.`Unit2` u2_nm,
+                                        ccid cc,ccname cc_name, (CASE 
+                                        WHEN bclose = 0 THEN cost 
+                                        WHEN bclose = 1 THEN closecost END) cost, 
+                                        (CASE 
+                                        WHEN bclose = 0 THEN ttlqty 
+                                        WHEN bclose = 1 THEN closeqty END) ttlqty,
+                                        (CASE 
+                                        WHEN bclose = 0 THEN cost 
+                                        WHEN bclose = 1 THEN closecost END) cost, rcvqty, rtnqty, tinQty, toutQty, rwasteQty, fwasteQty, usageqty, bClose, closeqty, closecost,hooutqty hoout,HoInQty hoin,bpin, bpout
+                                        FROM cld_inv_transstockcls
+                                        INNER JOIN cld_inv_stk ON cld_inv_transstockcls.`stkId` = cld_inv_stk.id
+                                          WHERE `invDate` >= '2026-10-12' AND `invDate` <= '2026-10-12' AND cld_inv_transstockcls.`ccid` = 24 AND cld_inv_transstockcls.stkid = 279 AND cld_inv_transstockcls.`custid` = 22 (Occurred IN :Cls_command:ReturnDataset:FillData)
+13/10/26 06:30:10 AM ==>ERROR:Cannot find table 0. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:30:10 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsDbo:selectDataset-FillData)
+13/10/26 06:30:10 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:30:10 AM ==>ERROR:Cannot find table 0. (Occurred IN :clsInventory:Process_InvUsage)
+13/10/26 06:30:10 AM ==>ERROR:Reading from the stream has failed.-SELECT * from cld_inv_transusagesum where flag = 1 and invdate = '2026-09-25' and custid = 22 (Occurred IN :Cls_command:ReturnDataset:FillData)
+13/10/26 06:30:10 AM ==>ERROR:Cannot find table 0. (Occurred IN :clsInventory:Process_InvUsage)
+13/10/26 06:30:10 AM ==>ERROR:update cld_inv_stk_cc set cost = 58453.452 where stkid = 279 and ccid = 14 and custid = 22 Reading from the stream has failed. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:30:10 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:30:14 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts.-SELECT * from cld_inv_transusagesum where flag = 1 and invdate = '2026-09-26' and custid = 22 (Occurred IN :Cls_command:ReturnDataset:FillData)
+13/10/26 06:30:14 AM ==>ERROR:Cannot find table 0. (Occurred IN :clsInventory:Process_InvUsage)
+13/10/26 06:30:14 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 279 and ccid = 14 and invdate = '2026-09-27' and custid = 22 Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:30:14 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:30:14 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryprocess:getopenqty)
+13/10/26 06:30:14 AM ==>ERROR:UPDATE cld_inv_transusagesum SET flag=0 WHERE invdate = '2026-09-24' and custid = 22 and cc=24 and stk_id=279  Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:30:14 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:30:14 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:30:18 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts.-SELECT * from cld_inv_transusagesum where flag = 1 and invdate = '2026-09-27' and custid = 22 (Occurred IN :Cls_command:ReturnDataset:FillData)
+13/10/26 06:30:18 AM ==>ERROR:Cannot find table 0. (Occurred IN :clsInventory:Process_InvUsage)
+13/10/26 06:30:18 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsDbo:selectDataset-FillData)
+13/10/26 06:30:18 AM ==>ERROR:Cannot find table 0. (Occurred IN :clsInventory:Process_InvUsage)
+13/10/26 06:30:18 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryprocess:getreccost)
+13/10/26 06:30:18 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:30:18 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:56:28 AM ==>ERROR:Reading from the stream has failed.-SELECT cld_inv_trans.InvDate,  cld_inv_trans.cc AS Cc, `cld_inv_cc`.`Name`  AS `Cc_name`, `cld_inv_trans`.`Stk_Id`   AS `Stk_id`
+                        , (SUM(`cld_inv_trans`.`Cost`*`cld_inv_trans`.`ttlStock`)/SUM(`cld_inv_trans`.`ttlStock`)) AS `Cost`
+                        , SUM(`cld_inv_trans`.`ttlStock`) AS `CostQty`
+                        FROM cld_inv_trans 
+                        INNER JOIN `cld_inv_stk` ON `cld_inv_trans`.`CustID` = `cld_inv_stk`.`CustID` AND `cld_inv_stk`.`ID` = `cld_inv_trans`.`Stk_Id`
+                        INNER JOIN cld_inv_cc ON cld_inv_cc.ID = cld_inv_trans.Cc AND cld_inv_cc.custid = cld_inv_trans.custid 
+                        WHERE cld_inv_trans.type IN (1,3,8,9) AND cld_inv_trans.`flagtrans` = 1  AND cld_inv_trans.`ttlstock` > 0
+                        AND cld_inv_trans.InvDate >= '2026-10-08' AND 
+                    cld_inv_trans.invDate <= '2026-10-08' and `cld_inv_trans`.`Stk_Id`='44'
+                        AND cld_inv_trans.Cc = '25' AND `cld_inv_trans`.`CustID` = 22
+                        Group BY cld_inv_trans.InvDate,  cld_inv_trans.cc, `cld_inv_cc`.`Name`, `cld_inv_trans`.`Stk_Id` (Occurred IN :Cls_command:ReturnDataset:FillData)
+13/10/26 06:56:28 AM ==>ERROR:Cannot find table 0. (Occurred IN :clsInventoryprocess:executeNonQuery_Inv_ProcessCls)
+13/10/26 06:56:28 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryprocess:setstock_cost)
+13/10/26 06:56:28 AM ==>ERROR:Cannot find table 0. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:56:28 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryprocess:setstock_cost)
+13/10/26 06:56:28 AM ==>ERROR:Reading from the stream has failed. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:56:32 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:56:32 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 35 and ccid = 24 and invdate = '2026-10-13' and custid = 22 Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:56:32 AM ==>ERROR:update cld_inv_transstockcls set  ttlqty = Openqty + rcvqty-rtnqty+tinqty-toutqty-rwasteqty-fwasteqty-usageqty-hooutqty+hoinqty-bpout+bpin where stkid = 35 and ccid = 20 and invdate = '2026-10-11' and custid = 22 Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:56:32 AM ==>ERROR:UPDATE cld_inv_transusagesum SET flag=0 WHERE invdate = '2026-10-07' and custid = 22 and cc=24 and stk_id=35  Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:56:32 AM ==>ERROR:UPDATE cld_inv_transusagesum SET flag=0 WHERE invdate = '2026-10-08' and custid = 22 and cc=25 and stk_id=44  Unable to connect to any of the specified MySQL hosts. (Occurred IN :Cls_command.executeNONQuery)
+13/10/26 06:56:36 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:56:36 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:56:36 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsDbo:selectDataset-FillData)
+13/10/26 06:56:36 AM ==>ERROR:Cannot find table 0. (Occurred IN :clsInventory:Process_InvUsage)
+13/10/26 06:56:36 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsInventoryProcess:Inv_Proc_trans_stckClsbyid)
+13/10/26 06:56:36 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsDbo:selectDataset-FillData)
+13/10/26 06:56:36 AM ==>ERROR:Cannot find table 0. (Occurred IN :clsInventory:Process_InvUsage)
+13/10/26 07:06:08 AM ==>ERROR:SiteInventoryHome.Master: modul() < usrModul.moduleInv! modul=0, user=ridwan1, URL=/Inventoryhome.aspx (Occurred IN :SiteInventoryHome:Page_Load)
+13/10/26 07:06:19 AM ==>ERROR:SiteInventoryHome.Master: modul() < usrModul.moduleInv! modul=0, user=ridwan1, URL=/Inventoryhome.aspx (Occurred IN :SiteInventoryHome:Page_Load)
+13/10/26 07:06:31 AM ==>ERROR:SiteInventoryHome.Master: modul() < usrModul.moduleInv! modul=0, user=ridwan1, URL=/Inventoryhome.aspx (Occurred IN :SiteInventoryHome:Page_Load)
+13/10/26 07:06:44 AM ==>ERROR:SiteInventoryHome.Master: modul() < usrModul.moduleInv! modul=0, user=ridwan1, URL=/Inventoryhome.aspx (Occurred IN :SiteInventoryHome:Page_Load)
+13/10/26 07:06:57 AM ==>ERROR:SiteInventoryHome.Master: modul() < usrModul.moduleInv! modul=0, user=ridwan1, URL=/Inventoryhome.aspx (Occurred IN :SiteInventoryHome:Page_Load)
+13/10/26 10:31:47 AM ==>ERROR:SiteInventoryHome.Master: modul() < usrModul.moduleInv! modul=0, user=ridwan1, URL=/Inventoryhome.aspx (Occurred IN :SiteInventoryHome:Page_Load)
+13/10/26 01:21:29 PM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:54 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:21:38 PM ==>Default.aspx Page_Load: ReturnUrl=/Inventoryhome.aspx, logout=, cookieUser=NO_COOKIE, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:54 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:21:59 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:54 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:00 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:12:54 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:00 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:36 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:00 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:36 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:00 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:36 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:00 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:36 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:00 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:36 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:00 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:36 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:00 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:36 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:00 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:37 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:01 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:37 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:01 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:37 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:01 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:38 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:01 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:38 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:01 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:38 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:01 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:38 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:01 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:38 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:01 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:38 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:01 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:38 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:01 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:38 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:03 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:38 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:03 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:38 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:04 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:43 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:21:44 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:05 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:06 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:06 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 01:22:42 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
+13/10/26 01:22:42 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)
+13/10/26 02:00:48 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ReceipeEdit:btnCancel_Click)
+13/10/26 02:00:48 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:48 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:48 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:27 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:48 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:27 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:48 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:27 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:48 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:27 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:48 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:27 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:48 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:27 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:48 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:27 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:49 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:27 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:49 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:27 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:49 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:27 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:50 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:31 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:50 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:31 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:50 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:31 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:50 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:31 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:50 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:31 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:51 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:31 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
+13/10/26 02:00:51 PM ==>Default.aspx Page_Load: ReturnUrl=/Pages_Receipe.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
 
-01/10/26 11:22:32 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:32 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:32 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:32 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:33 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:33 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:33 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:33 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:33 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:33 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:33 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:33 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:33 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:22:33 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:25:10 AM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_StkEdit:btnCancel_Click)
-01/10/26 11:27:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:14 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:15 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:15 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:15 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:15 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:15 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:16 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:16 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:16 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:16 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:16 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:16 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:16 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:16 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:16 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:16 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:18 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:18 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:18 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:18 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:18 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:19 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:19 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:19 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:19 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:19 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:20 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:20 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:20 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:20 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:20 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:20 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:21 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:21 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:21 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:27:21 AM ==>Default.aspx Page_Load: ReturnUrl=/Pages_StockOpname.aspx, logout=, cookieUser=Ridwan1, sessUser=NO_SESSION (Occurred IN :Default.aspx:Page_Load)
-
-01/10/26 11:37:49 AM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ExportInv_Stk:btnCancel_Click)
-01/10/26 11:47:55 AM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ExportInv_Stk:btnCancel_Click)
-01/10/26 11:47:55 AM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ExportInv_Stk:btnCancel_Click)
-01/10/26 11:47:55 AM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ExportInv_Stk:btnCancel_Click)
-01/10/26 11:47:55 AM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ExportInv_Stk:btnCancel_Click)
-01/10/26 11:48:35 AM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ExportInv_Stk:btnCancel_Click)
-01/10/26 11:49:35 AM ==>ERROR:Unable to connect to any of the specified MySQL hosts. (Occurred IN :clsDbo:selectDataset-FillData)
-01/10/26 02:31:00 PM ==>get datatable (Occurred IN :export to excel)
-
-01/10/26 02:31:02 PM ==>save as (Occurred IN :export to excel)
-
-01/10/26 02:31:02 PM ==>write (Occurred IN :export to excel)
-
-01/10/26 02:31:02 PM ==>flush (Occurred IN :export to excel)
-
-01/10/26 02:31:02 PM ==>SuppressContent (Occurred IN :export to excel)
-
-01/10/26 02:31:02 PM ==>CompleteRequest (Occurred IN :export to excel)
-
-01/10/26 03:11:27 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ExportInv_Stk:btnCancel_Click)
-01/10/26 03:11:28 PM ==>ERROR:Thread was being aborted. (Occurred IN :Pages_ExportInv_Stk:btnCancel_Click)
-01/10/26 03:11:32 PM ==>get datatable (Occurred IN :export to excel)
-
-01/10/26 03:11:33 PM ==>save as (Occurred IN :export to excel)
-
-01/10/26 03:11:33 PM ==>write (Occurred IN :export to excel)
-
-01/10/26 03:11:33 PM ==>flush (Occurred IN :export to excel)
-
-01/10/26 03:11:33 PM ==>SuppressContent (Occurred IN :export to excel)
-
-01/10/26 03:11:33 PM ==>CompleteRequest (Occurred IN :export to excel)
-
-01/10/26 03:22:17 PM ==>ERROR:Table 'cldmemberbarburger7.cld_inv_w_del' doesn't exist (Occurred IN :clsDbo:selectDataset-FillData)
+13/10/26 02:01:28 PM ==>ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',24,25)   and name like '%%' order by name' at line 1 (Occurred IN :clsDbo:selectDataset-FillData)
+13/10/26 02:01:28 PM ==>ERROR:Cannot find table 0. (Occurred IN :Pages_StkGroupEdit:editlist)

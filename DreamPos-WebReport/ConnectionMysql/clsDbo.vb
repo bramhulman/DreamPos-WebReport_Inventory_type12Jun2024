@@ -219,40 +219,41 @@ Public Class clsDbo
 
         Try
             _sw.Start()
+            Dim scalarResult As Object = myCmd.ExecuteScalar()
             If tipe = 1 Then
 
-                If IsDBNull(myCmd.ExecuteScalar()) Then
+                If IsDBNull(scalarResult) Then
                     hasil = 1
                 Else
-                    hasil = Val(myCmd.ExecuteScalar()) + 1
+                    hasil = Val(scalarResult) + 1
                 End If
 
             ElseIf tipe = 10 Then
 
-                If IsDBNull(myCmd.ExecuteScalar()) Then
+                If IsDBNull(scalarResult) Then
                     hasil = ""
-                ElseIf IsNothing(myCmd.ExecuteScalar()) Then
+                ElseIf IsNothing(scalarResult) Then
                     hasil = ""
                 Else
-                    hasil = myCmd.ExecuteScalar()
+                    hasil = scalarResult
                 End If
 
             ElseIf tipe = 100 Then
 
-                If IsDBNull(myCmd.ExecuteScalar()) Then
+                If IsDBNull(scalarResult) Then
                     hasil = -3550
-                ElseIf IsNothing(myCmd.ExecuteScalar()) Then
+                ElseIf IsNothing(scalarResult) Then
                     hasil = -3550
                 Else
-                    hasil = myCmd.ExecuteScalar()
+                    hasil = scalarResult
                 End If
 
             Else
 
-                If IsDBNull(myCmd.ExecuteScalar()) Then
+                If IsDBNull(scalarResult) Then
                     hasil = 0
                 Else
-                    hasil = myCmd.ExecuteScalar()
+                    hasil = scalarResult
                 End If
 
             End If

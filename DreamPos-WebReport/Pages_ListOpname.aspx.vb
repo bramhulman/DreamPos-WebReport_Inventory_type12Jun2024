@@ -279,12 +279,12 @@ Public Class Pages_ListOpname
             HfUpdatedate.Value = OpnameInfo.invdate
             txtcostcentre.Text = OpnameInfo.ccname
             txtcost.Text = OpnameInfo.cost
-            txtclosecost.Text = OpnameInfo.opencost
+            txtclosecost.Text = If(OpnameInfo.bclose <> 0, OpnameInfo.closecost, OpnameInfo.opencost)
             txtttlqty.Text = OpnameInfo.ttlqty
             lblttlu2.Text = OpnameInfo.unit2
             txtcloseqtyu1.Text = 0 'OpnameInfo.openqtyu1
             lblunit1.Text = OpnameInfo.unit1
-            txtcloseqtyu2.Text = OpnameInfo.openqty
+            txtcloseqtyu2.Text = If(OpnameInfo.bclose <> 0, OpnameInfo.closeqty, OpnameInfo.openqty)
             lblunit2.Text = OpnameInfo.unit2
             txtStockNameUpdate.Text = OpnameInfo.stkname
             'upEdit.Update()
@@ -343,6 +343,16 @@ Public Class Pages_ListOpname
         Dim newLine As String = "\n"
 
         Try
+            If info.bclose <> 0 AndAlso IsNumeric(txtcloseqtyu1.Text) AndAlso
+               IsNumeric(txtcloseqtyu2.Text) AndAlso IsNumeric(txtclosecost.Text) AndAlso
+               CDec(txtcloseqtyu1.Text) = 0 AndAlso CDec(txtcloseqtyu2.Text) = 0 AndAlso CDec(txtclosecost.Text) = 0 Then
+                If info.custid <> custid() Then Throw New InvalidOperationException("Akses opname tidak diizinkan.")
+                cInv.CancelStockOpname(info.stkid, info.ccid, info.custid, info.invdate, info.trtype)
+                insertLogModule(username(), "InvStockOpname", "Cancel", info.custid)
+                Response.Redirect("~/Pages_ListOpname.aspx", False)
+                Context.ApplicationInstance.CompleteRequest()
+                Return
+            End If
 
             If Val(txtclosecost.Text) <= 0 And cInv.cekstocklink(custid, HfUpdatestock.Value) = 1 Then
                 msg = "Cost cannot 0" & newLine
@@ -402,7 +412,9 @@ Public Class Pages_ListOpname
             'Response.Redirect("~/Pages_ListOpname.aspx", False)
 
         Catch ex As Exception
-            'MsgBox(ex.Message)
+            errLog(ex.Message, "Pages_ListOpname:btnUpdate_Click")
+            ScriptManager.RegisterStartupScript(Me, Me.GetType(), "opnameUpdateError",
+                "alert('Perubahan opname gagal. Silakan periksa log error.');", True)
         End Try
     End Sub
 

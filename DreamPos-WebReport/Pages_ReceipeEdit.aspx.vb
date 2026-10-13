@@ -170,7 +170,7 @@ Public Class Pages_ReceipeEdit
             btnUpdate.Visible = True
             btnInsert.Visible = False
         Catch ex As Exception
-            errLog(Err.Description, "Pages_StkGroupEdit:editlist")
+            errLog(Err.Description, "Pages_ReceipeEdit:editlist")
             Err.Clear()
         End Try
 

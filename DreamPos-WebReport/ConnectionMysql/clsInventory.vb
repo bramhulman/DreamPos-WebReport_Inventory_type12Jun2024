@@ -1440,6 +1440,39 @@ nextrow:
 
 
     'StockOpname Today
+    Public Sub CancelStockOpname(ByVal stkId As Integer, ByVal ccId As Integer, ByVal customerId As Integer, ByVal closingDate As Date, Optional ByVal opnameType As Integer = 12)
+        If stkId <= 0 OrElse ccId <= 0 OrElse customerId <= 0 OrElse (opnameType <> 11 AndAlso opnameType <> 12) Then
+            Throw New ArgumentException("Parameter pembatalan opname tidak valid.")
+        End If
+        Using conn As New MySqlConnection(My.Settings.ServerStr)
+            conn.Open()
+            Using trans As MySqlTransaction = conn.BeginTransaction()
+                Try
+                    Using cmd As New MySqlCommand("UPDATE cld_inv_transstockcls SET bClose = b'00000000', closeQty = 0, closeCost = 0, varianceQty = 0 " &
+                                                 "WHERE custid = @custid AND stkid = @stkid AND ccid = @ccid AND invdate = @closingDate", conn, trans)
+                        cmd.Parameters.AddWithValue("@custid", customerId)
+                        cmd.Parameters.AddWithValue("@stkid", stkId)
+                        cmd.Parameters.AddWithValue("@ccid", ccId)
+                        cmd.Parameters.AddWithValue("@closingDate", closingDate.Date)
+                        cmd.Parameters.AddWithValue("@transactionDate", closingDate.Date.AddDays(1))
+                        cmd.Parameters.AddWithValue("@transactionEnd", closingDate.Date.AddDays(2))
+                        cmd.Parameters.AddWithValue("@opnameType", opnameType)
+                        cmd.ExecuteNonQuery()
+
+                        ' Types 11/12 are stored on the day after the closing date.
+                        cmd.CommandText = "DELETE FROM cld_inv_trans WHERE custid = @custid AND stk_id = @stkid AND cc = @ccid " &
+                                          "AND type = @opnameType AND invdate >= @transactionDate AND invdate < @transactionEnd"
+                        cmd.ExecuteNonQuery()
+                    End Using
+                    trans.Commit()
+                Catch
+                    trans.Rollback()
+                    Throw
+                End Try
+            End Using
+        End Using
+    End Sub
+
     Public Sub insertStockOpname(ByVal cc As Integer, ByVal stkid As Integer, ByVal stkanme As String, ByVal U1 As Decimal, ByVal U2 As Decimal, ByVal factor1 As Decimal, ByVal ttlstock As Decimal, ByVal cost As Decimal, ByVal U1_nm As String, ByVal U2_nm As String, ByVal createby As String, ByVal modifby As String, ByVal skno As String, ByVal cc_name As String, ByVal username As String, ByVal custid As Integer, Optional ByVal adjustnow As Integer = 0)
         Dim c_cmd As New clsDbo("")
         Dim strheader As String = ""

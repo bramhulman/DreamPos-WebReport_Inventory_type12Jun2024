@@ -421,7 +421,7 @@
                                                 placeholder="0" autocomplete="off" />
                                             <button type="button" class="btn-cancel-opname"
                                                 data-toggle="tooltip" data-placement="top" title="Batalkan opname"
-                                                style='<%# If(IsOpnamed(Eval("bClose")) AndAlso Val(Eval("closeQty").ToString()) > 0, "", "display:none;") %>'>
+                                                style='<%# If(IsOpnamed(Eval("bClose")), "", "display:none;") %>'>
                                                 <i class="fas fa-times"></i>
                                             </button>
                                             <span class="save-status-icon" style="display:none;"></span>
@@ -745,7 +745,7 @@
                 e.preventDefault();
             });
         });
-        $(document).on('input keyup', '.opname-input', function () {
+        $(document).on('input', '.opname-input', function () {
             $(this).attr('data-modified', 'true');
             recalculateRow($(this));
         });
@@ -798,9 +798,7 @@
                         setTimeout(function () { $input.removeClass('saved'); }, 1200);
                         $statusIcon.html('<i class="fas fa-check text-success"></i>').show();
                         setTimeout(function () { $statusIcon.fadeOut(200); }, 1500);
-                        var numVal = parseFloat((val || '').replace(/,/g, '')) || 0;
-                        if (numVal > 0) { $cancelBtn.show(); $cancelBtn.tooltip({ boundary: 'window' }); }
-                        else { $cancelBtn.hide(); }
+                        $cancelBtn.show(); $cancelBtn.tooltip({ boundary: 'window' });
                         $row.attr('data-bclose', '1');
                         showToast('<i class="fas fa-check mr-1"></i>' + stkName + ' (' + val + ') tersimpan', 'success');
                     } else {
@@ -823,6 +821,7 @@
             var $row        = $btn.closest('tr');
             var $input      = $row.find('.opname-input');
             var $statusIcon = $row.find('.save-status-icon');
+            if ($input.hasClass('saving')) return;
             var stkId       = $input.attr('data-stkid');
             var ccId        = $input.attr('data-ccid');
             var targetDate  = $('#<%= txtDate.ClientID %>').val();
@@ -830,6 +829,7 @@
 
             if (!confirm('Batalkan opname untuk ' + stkName + '?\n\nNilai opname akan dikembalikan menjadi 0.')) return;
             $btn.tooltip('hide').hide();
+            $input.addClass('saving').prop('disabled', true);
             $statusIcon.html('<i class="fas fa-spinner fa-spin text-muted"></i>').show();
 
             $.ajax({
@@ -840,7 +840,9 @@
                 success: function (res) {
                     if (res && res.success) {
                         $input.val('0').attr('data-orig', '0').removeAttr('data-modified');
-                        recalculateRow($input);
+                        $row.attr('data-bclose', '0').attr('data-hasvariance', '0').attr('data-variance', '0');
+                        $row.find('.variance-cell').text('-').attr('data-order', '999999999')
+                            .removeClass('var-zero var-positive var-negative');
                         $statusIcon.html('<i class="fas fa-check text-info"></i>').show();
                         setTimeout(function () { $statusIcon.fadeOut(200); }, 1500);
                         showToast('<i class="fas fa-undo mr-1"></i>Opname ' + stkName + ' dibatalkan (0)', 'info');
@@ -854,6 +856,9 @@
                     $btn.show();
                     $statusIcon.html('<i class="fas fa-times text-danger"></i>').show();
                     showToast('<i class="fas fa-times mr-1"></i>Gagal koneksi saat membatalkan', 'danger');
+                },
+                complete: function () {
+                    $input.removeClass('saving').prop('disabled', false);
                 }
             });
         });

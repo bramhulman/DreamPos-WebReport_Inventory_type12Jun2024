@@ -253,7 +253,7 @@ Public Class clsInventory_Receive
 
 
             Dim a As New clsDbo("")
-            u1_0 = a.ExecuteScalar("SELECT count(id) from cld_inv_trans where linkid = '" & ID & "' AND u2>0", 0)
+            u1_0 = a.ExecuteScalar("SELECT EXISTS(SELECT 1 FROM cld_inv_trans WHERE linkid = '" & ID & "' AND u2>0)", 0)
 
 
             a.dispose()

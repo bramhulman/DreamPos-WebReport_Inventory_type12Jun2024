@@ -197,7 +197,7 @@
                                         <th class="text-right">Total Qty</th>
                                         <th class="text-right">Stock Opname</th>
                                         <th class="text-right">Variance Qty</th>
-                                        <th style="display:none;">Action</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -231,14 +231,14 @@
                                         Text='<%# Eval("varianceqty", "{0:#,0}")%>'
                                         CssClass='<%# If(CDec(If(Eval("varianceqty"), 0)) > 0, "var-positive", If(CDec(If(Eval("varianceqty"), 0)) < 0, "var-negative", "var-zero")) %>'></asp:Label>
                                 </td>
-                                <td style="display:none; text-align:center; width:8%;">
+                                <td style="text-align:center; width:8%;">
                                     <asp:ImageButton ID="imgBtnEdit" CommandName="Edt" ToolTip="Edit"
                                         CommandArgument='<%#Eval("stkid").ToString + ";" + Eval("Ccid").ToString%>'
-                                        runat="server" ImageUrl="/images/edit.png" />
-                                    <asp:ImageButton ID="imgBtnDelete" ToolTip="Delete" OnClientClick="Confirm()"
+                                        runat="server" ImageUrl="/images/edit.png" Visible="false" />
+                                    <asp:LinkButton ID="imgBtnDelete" ToolTip="Batalkan opname" OnClientClick="return confirm('Batalkan proses opname untuk barang ini?');" CausesValidation="false" CssClass="btn btn-sm btn-outline-danger"
                                         CommandName="Del"
-                                        CommandArgument='<%#Eval("stkid").ToString + ";" + Eval("Ccid").ToString%>'
-                                        runat="server" ImageUrl="~/images/delete.png"></asp:ImageButton>
+                                        CommandArgument='<%# Eval("stkid").ToString() & ";" & Eval("Ccid").ToString() & ";" & CDate(Eval("invdate")).ToString("yyyy-MM-dd") & ";" & If(Eval("type").ToString() = "Current", "11", "12") %>'
+                                        runat="server"><i class="fas fa-trash-alt" aria-hidden="true"></i></asp:LinkButton>
                                 </td>
                             </tr>
                         </ItemTemplate>

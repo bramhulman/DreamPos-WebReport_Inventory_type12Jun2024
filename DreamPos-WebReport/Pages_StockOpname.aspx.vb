@@ -147,51 +147,46 @@ Public Class Pages_StockOpname
         End Try
 
     End Sub
-    Sub delete(ByVal id As String, ByVal ccid As Integer)
+    Sub delete(ByVal id As String, ByVal ccid As Integer, ByVal closingDate As Date, ByVal opnameType As Integer)
         Try
-            DeleteInvStkOpname(id, ccid, custid, username)
+            DeleteInvStkOpname(id, ccid, custid, username, closingDate, opnameType)
             binding()
         Catch ex As Exception
-
+            errLog(ex.Message, "Pages_StockOpname:delete")
+            ScriptManager.RegisterStartupScript(Me, Me.GetType(), "cancelError",
+                "alert('Pembatalan opname gagal. Silakan periksa log error.');", True)
         End Try
     End Sub
-    Public Sub DeleteInvStkOpname(ByVal id As String, ByVal ccid As Integer, ByVal Custid As Integer, ByVal username As String)
-        'Dim pc As String = pic.ToString
-        Try
-            'perubahan dari type = 5 menjadi type = 12
-
-            Dim strTr As String
-            Dim c_cmd As New Cls_command
-
-            strTr = "DELETE FROM cld_inv_trans where stk_id = " & id & " and cc = " & ccid & " and type = 12 and custid = " & Custid & ""
-            c_cmd.executeNonQuery(strTr)
-            c_cmd.ReNew()
-            c_cmd.executeNonQuery("update cld_inv_transstockcls set  bclose = 0, closeqty = 0, closecost = 0
-            where stkid = " & id & " and ccid = " & ccid & " and invdate = '" & Now.Date.ToString("yyyy-MM-dd") & "' and custid = " & Custid & "")
-
-            insertLogModule(username, "Inv_inv_transstock", "Delete", Custid)
-        Catch ex As Exception
-            errLog(Err.Description, "webservice:Deleteinv_transstock")
-            Err.Clear()
-        End Try
+    Public Sub DeleteInvStkOpname(ByVal id As String, ByVal ccid As Integer, ByVal Custid As Integer, ByVal username As String, ByVal closingDate As Date, ByVal opnameType As Integer)
+        Dim stkId As Integer = Convert.ToInt32(id)
+        Dim allowedRows As DataSet = cInv.getInvStkOpnameSearch("", Custid, modulepriv(), username, ccid, closingDate)
+        If allowedRows Is Nothing OrElse allowedRows.Tables.Count = 0 Then
+            Throw New InvalidOperationException("Data opname tidak ditemukan.")
+        End If
+        Dim selectedRow As DataRow = Nothing
+        For Each row As DataRow In allowedRows.Tables(0).Rows
+            If Convert.ToInt32(row("stkid")) = stkId AndAlso Convert.ToInt32(row("ccid")) = ccid AndAlso
+               If(row("type").ToString() = "Current", 11, 12) = opnameType Then
+                selectedRow = row
+                Exit For
+            End If
+        Next
+        If selectedRow Is Nothing Then Throw New InvalidOperationException("Data opname tidak ditemukan atau akses tidak diizinkan.")
+        cInv.CancelStockOpname(stkId, ccid, Custid, closingDate, opnameType)
+        insertLogModule(username, "InvStockOpname", "Cancel", Custid)
     End Sub
-    Protected Sub lstView_ItemCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.ListViewCommandEventArgs) Handles lstViewDetails.ItemCommand
+    Protected Sub lstView_ItemCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.ListViewCommandEventArgs)
         '<%--autocomplete="off"--%>
         Try
             Select Case (e.CommandName)
                 Case "Del"
 
-                    Dim confirmValue As String = Request.Form("confirm_value")
-                    If confirmValue = "Yes" Then
-                        Dim arg As String() = e.CommandArgument.ToString().Split(";")
-
-                        Dim id As Integer = arg(0)
-                        Dim ccid As Integer = arg(1)
-                        delete(id, ccid)
-
-                    Else
-                        Exit Sub
-                    End If
+                    Dim arg As String() = e.CommandArgument.ToString().Split(";")
+                    Dim id As Integer = arg(0)
+                    Dim ccid As Integer = arg(1)
+                    Dim closingDate As Date = Date.ParseExact(arg(2), "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                    Dim opnameType As Integer = Convert.ToInt32(arg(3))
+                    delete(id, ccid, closingDate, opnameType)
 
 
                 Case "Edt"

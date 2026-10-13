@@ -65,15 +65,6 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("D:\PCL\DreamPos-WebReport_Inventory_type12Jun2024\DreamPos-WebReport\ErrLog.txt")>  _
-        Public ReadOnly Property errLog() As String
-            Get
-                Return CType(Me("errLog"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("'PayATTable','PAY@TABLE','PatAtTable'")>  _
         Public ReadOnly Property patSales() As String
             Get
@@ -83,37 +74,10 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("'DIRDELIVER','DIRDELIVERY'")>  _
-        Public ReadOnly Property dirdeliver() As String
-            Get
-                Return CType(Me("dirdeliver"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("'GRAB', 'GRAB KITCHEN'")>  _
         Public ReadOnly Property grab() As String
             Get
                 Return CType(Me("grab"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("'WA ORDER'")>  _
-        Public ReadOnly Property waorder() As String
-            Get
-                Return CType(Me("waorder"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("http://localhost:57115")>  _
-        Public ReadOnly Property webreport() As String
-            Get
-                Return CType(Me("webreport"),String)
             End Get
         End Property
         
@@ -132,15 +96,6 @@ Namespace My
         Public ReadOnly Property session() As String
             Get
                 Return CType(Me("session"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("12")>  _
-        Public ReadOnly Property price1() As String
-            Get
-                Return CType(Me("price1"),String)
             End Get
         End Property
         
@@ -173,15 +128,6 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
-        Public ReadOnly Property itemmaster_cc() As String
-            Get
-                Return CType(Me("itemmaster_cc"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
         Public ReadOnly Property recalcost() As String
             Get
@@ -200,48 +146,10 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("D:\PCL\DreamPos-WebReport_Inventory_type12Jun2024\DreamPos-WebReport\ErrClose.txt"& _ 
-            "")>  _
-        Public ReadOnly Property errClose() As String
-            Get
-                Return CType(Me("errClose"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("D:\PCL\DreamPos-WebReport_Inventory_type12Jun2024\DreamPos-WebReport\Err.csv")>  _
-        Public ReadOnly Property errcsv() As String
-            Get
-                Return CType(Me("errcsv"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("200")>  _
-        Public ReadOnly Property limitday() As String
-            Get
-                Return CType(Me("limitday"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("30")>  _
         Public ReadOnly Property limitorder() As String
             Get
                 Return CType(Me("limitorder"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Server=localhost;port=3307;user id=root;password=t4v14n4ul1;database=cldmemberbar"& _ 
-            "burger7; Connection Timeout=3000; default command timeout=2400;")>  _
-        Public ReadOnly Property slssvr() As String
-            Get
-                Return CType(Me("slssvr"),String)
             End Get
         End Property
         
@@ -328,9 +236,9 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Server=localhost;port=3307;user id=root;password=t4v14n4ul1;database=cldmemberbar"& _ 
-            "burger7; Connection Timeout=3000; default command timeout=6000;SslMode=None;Allo"& _ 
-            "wPublicKeyRetrieval=True;CharSet=utf8mb4;")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Server=localhost;user id=root;password=12QRorderPoS21;database=cldmemberbarburger"& _ 
+            "; Connection Timeout=3000; default command timeout=6000;SslMode=None;AllowPublic"& _ 
+            "KeyRetrieval=True;CharSet=utf8mb4;")>  _
         Public ReadOnly Property ServerStr() As String
             Get
                 Return CType(Me("ServerStr"),String)
@@ -339,10 +247,102 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("ridwan")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\Z WebReport Customer\web_test\CloudInv\ErrLog.txt")>  _
+        Public ReadOnly Property errLog() As String
+            Get
+                Return CType(Me("errLog"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("''")>  _
+        Public ReadOnly Property dirdeliver() As String
+            Get
+                Return CType(Me("dirdeliver"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("''")>  _
+        Public ReadOnly Property waorder() As String
+            Get
+                Return CType(Me("waorder"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://dreamposweb.com:7357")>  _
+        Public ReadOnly Property webreport() As String
+            Get
+                Return CType(Me("webreport"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("10")>  _
+        Public ReadOnly Property price1() As String
+            Get
+                Return CType(Me("price1"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public ReadOnly Property itemmaster_cc() As String
+            Get
+                Return CType(Me("itemmaster_cc"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("95")>  _
+        Public ReadOnly Property limitday() As String
+            Get
+                Return CType(Me("limitday"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("ridwan1")>  _
         Public ReadOnly Property admin() As String
             Get
                 Return CType(Me("admin"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Server=localhost;user id=root;password=12QRorderPoS21;database=cldmemberbarburger"& _ 
+            "; Connection Timeout=3000; default command timeout=6000;SslMode=None;AllowPublic"& _ 
+            "KeyRetrieval=True;CharSet=utf8mb4;")>  _
+        Public ReadOnly Property slssvr() As String
+            Get
+                Return CType(Me("slssvr"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\Z WebReport Customer\web_test\CloudInv\ErrClose.txt")>  _
+        Public ReadOnly Property errClose() As String
+            Get
+                Return CType(Me("errClose"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\Z WebReport Customer\web_test\CloudInv\Err.csv")>  _
+        Public ReadOnly Property errcsv() As String
+            Get
+                Return CType(Me("errcsv"),String)
             End Get
         End Property
     End Class
