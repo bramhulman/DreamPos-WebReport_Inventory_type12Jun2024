@@ -121,7 +121,7 @@
             font-size: 0.82rem !important; font-weight: bold;
             color: #1a5276; background-color: #fffde7;
             border: 1px solid #f9a825; border-radius: 3px;
-            padding: 1px 4px !important; text-align: right;
+            padding: 1px 8px 1px 4px !important; text-align: right;
             transition: all 0.2s ease-in-out; display: inline-block;
         }
         .opname-input:focus {
@@ -133,8 +133,8 @@
 
         /* cancel opname button */
         .btn-cancel-opname {
-            width: 22px; height: 22px; padding: 0;
-            font-size: 0.72rem; line-height: 20px; text-align: center;
+            width: 18px; height: 18px; padding: 0;
+            font-size: 0.6rem; line-height: 16px; text-align: center;
             border-radius: 50%; border: 1px solid #dc3545;
             color: #dc3545; background: #ffffff; cursor: pointer;
             transition: all 0.2s ease-in-out;
@@ -412,7 +412,7 @@
 
                                     <%-- Opname Input --%>
                                     <td class="text-center opname-input-cell">
-                                        <div class="d-flex align-items-center justify-content-center" style="gap:3px;">
+                                        <div class="d-flex align-items-center justify-content-center" style="gap:8px;">
                                             <input type="text" class="opname-input"
                                                 data-stkid='<%# Eval("stkid") %>'
                                                 data-ccid='<%# Eval("ccid") %>'
@@ -494,6 +494,7 @@
                     responsive: false,
                 // Disable column ordering for opname input; Variance is sortable numeric
                 columnDefs: [
+                    { targets: [11], visible: false },                       // Hide Ending Qty to prevent user bias
                     { targets: [12], orderable: false, searchable: false },  // Opname input non-orderable
                     { targets: [13], type: 'num' },                          // Variance is numeric & sortable
                     { targets: '_all', className: 'dt-body-center' }
@@ -737,6 +738,13 @@
         }
 
         /* ── Input events ─────────────────────────────────────────── */
+        $(document).on('focus', '.opname-input', function () {
+            var $this = $(this);
+            $this.select();
+            $this.one('mouseup', function (e) {
+                e.preventDefault();
+            });
+        });
         $(document).on('input keyup', '.opname-input', function () {
             $(this).attr('data-modified', 'true');
             recalculateRow($(this));

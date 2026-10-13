@@ -498,3 +498,4 @@
 
 01/10/26 03:11:33 PM ==>CompleteRequest (Occurred IN :export to excel)
 
+01/10/26 03:22:17 PM ==>ERROR:Table 'cldmemberbarburger7.cld_inv_w_del' doesn't exist (Occurred IN :clsDbo:selectDataset-FillData)
