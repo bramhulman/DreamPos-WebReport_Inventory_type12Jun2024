@@ -1,5 +1,0 @@
-.mysql-state.json*
-.iis-state.json*
-*.local.json
-
-.process-state.json*

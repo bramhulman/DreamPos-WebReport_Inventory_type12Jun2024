@@ -3,13 +3,13 @@ body.inventory-light {
     --inventory-ink: #334155;
     --inventory-line: #dce3e9;
     --inventory-accent: #007bff;
-    --inventory-header: #f3f6f8;
+    --inventory-header: #e8f1f5;
 }
 body.inventory-light .content-wrapper {
     background-color: #f5f7fa;
 }
 body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar) {
-    background: #ffffff !important;
+    background: #f0f6fc !important;
     color: var(--inventory-ink) !important;
     border: 1px solid var(--inventory-line);
     border-left: 3px solid var(--inventory-accent);
@@ -86,4 +86,75 @@ body.inventory-light .content-wrapper .pagination-container span {
     background: #eaf3fe;
     color: #145b9b;
     border: 1px solid #bdd7f2;
+}
+
+/* Keep toolbar actions distinct from inputs, including legacy inline colors. */
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar) .btn {
+    --action-bg: #e0edff;
+    --action-ink: #18579a;
+    --action-border: #9fbee5;
+    --action-hover: #175fa8;
+    background: var(--action-bg) !important;
+    color: var(--action-ink) !important;
+    border: 1px solid var(--action-border) !important;
+    box-shadow: none !important;
+    border-radius: 4px;
+    min-height: 38px;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar)
+:is(.btn-success, .buttons-excel, [title^="New" i], [title="new" i]) {
+    --action-bg: #e0f2e7;
+    --action-ink: #21613c;
+    --action-border: #9ac6aa;
+    --action-hover: #267245;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar)
+:is(.btn-info, [title^="Import" i]) {
+    --action-bg: #dff3f3;
+    --action-ink: #176064;
+    --action-border: #95c9cc;
+    --action-hover: #176b70;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar)
+[title^="Export" i] {
+    --action-bg: #fff0d7;
+    --action-ink: #805113;
+    --action-border: #ddbd87;
+    --action-hover: #875616;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar) .btn-danger {
+    --action-bg: #fce7e9;
+    --action-ink: #a12635;
+    --action-border: #e0a6ae;
+    --action-hover: #ac2939;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar)
+.btn:not(:disabled):not(.disabled):not([aria-disabled="true"]):is(:hover, :active) {
+    background: var(--action-hover) !important;
+    border-color: var(--action-hover) !important;
+    color: #ffffff !important;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar) .btn :is(i, span, b) {
+    color: inherit !important;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar)
+:is(.btn, .form-control):focus-visible {
+    outline: 3px solid #2374b9;
+    outline-offset: 3px;
+}
+body.inventory-light .content-wrapper .inventory-search-button {
+    width: 42px;
+    min-width: 42px;
+    min-height: 38px;
+    padding: 6px !important;
+}
+@media (max-width: 767.98px) {
+    body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar) .btn {
+        min-height: 44px;
+    }
+    body.inventory-light .content-wrapper .inventory-search-button {
+        width: 44px;
+        min-width: 44px;
+    }
 }

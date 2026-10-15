@@ -116,8 +116,7 @@
                 <div class="form-inline" id="formload" runat="server"
                     style="margin:0 20px; width:100%;background: #3a4f63;padding:0.2rem 0.8rem">
                     <div class="form-group mx-sm-3 mt-mb-1" style="display:none;">
-                        <asp:label for="txtsearch" runat="server"> <b style="color: #FFFFFF;margin-right:0.5rem;">Item
-                                Name:</b></asp:label>
+                        <asp:label AssociatedControlID="txtsearch" runat="server">Nama:</asp:Label>
                         <asp:TextBox id="txtsearch" runat="server" Width="300px" CssClass="form-control"
                             placeholder="Search" type="search" aria-label="Search"></asp:TextBox>
                     </div>
@@ -135,10 +134,8 @@
                     </div>
                     <div class="form-group mx-sm-3 mt-mb-1">
                         <div class="btn-group" role="group" style="margin:0.5rem; display:none;">
-                            <button runat="server" id="btnsrc" onserverclick="btnsearch" class="btn btn-mini"
-                                title="Search" style="background:#FFFFFF;color:#3a4f63;">
-                                <i class="fas fa-search"></i>
-                            </button>
+                            <button runat="server" id="btnsrc" onserverclick="btnsearch" class="btn btn-mini inventory-search-button"
+                                title="Search" style="background:#FFFFFF;color:#3a4f63;" aria-label="Cari nama"><i class="fas fa-search" aria-hidden="true"></i></button>
                         </div>
                         <div class="btn-group" role="group" style="margin:0.5rem">
                             <button type="button" runat="server" id="btnnew" onserverclick="btnNew_Click"

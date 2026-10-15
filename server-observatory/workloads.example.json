@@ -1,6 +1,0 @@
-{
-  "workloads": [
-    {"label":"Inventory","databaseAlias":"inventory-db","iisSiteIds":[1,2],"applicationPools":["InventoryWeb","InventoryService"],"desktopJobAlias":"InventorySummary","schedule":"confirm locally","owner":"internal-team"}
-  ],
-  "notes":"Example only. Confirm mapping manually without exporting connection strings. A shared DB account cannot reliably distinguish web, webservice and desktop queries."
-}

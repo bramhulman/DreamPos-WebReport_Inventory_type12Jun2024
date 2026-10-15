@@ -554,3 +554,4 @@
 14/10/26 04:42:57 PM ==>ERROR:Table 'cldmemberbarburger7.cld_inv_w_del' doesn't exist (Occurred IN :clsDbo:selectDataset-FillData)
 15/10/26 09:54:02 AM ==>ERROR:Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=support (Occurred IN :Default.aspx:Page_Load)
 15/10/26 10:09:50 AM ==>ERROR:Table 'cldmemberbarburger7.cld_inv_pr' doesn't exist (Occurred IN :clsDbo:selectDataset-FillData)
+15/10/26 01:25:09 PM ==>ERROR:Default.aspx Page_Load: ReturnUrl=, logout=timeout, cookieUser=, sessUser=support (Occurred IN :Default.aspx:Page_Load)

@@ -331,7 +331,7 @@
                     }
                 </style>
         <asp:ContentPlaceHolder ID="head" runat="server" />
-        <link rel="stylesheet" href="~/css/inventory-light.css?v=20261015" runat="server" />
+        <link rel="stylesheet" href="~/css/inventory-light.css?v=20261015b" runat="server" />
         <!-- MATIKAN VECTOR MAP SELAMANYA (INI PENYEBAB UTAMA!) -->
     <%--<script>
         $(function () {

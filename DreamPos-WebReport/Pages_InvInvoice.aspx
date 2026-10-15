@@ -110,15 +110,13 @@ background-color:#ffc;
                 </div>
              <%--       
              <div class="form-group mx-sm-3 mt-mb-1">
-                    <asp:label for="txtsearch" runat="server"> <b style="color: #FFFFFF;margin-right:0.5rem;">Name:</b></asp:label>
+                    <asp:label AssociatedControlID="txtsearch" runat="server">Nama:</asp:Label>
                     <asp:TextBox id="txtsearch" runat="server" Width="300px" CssClass="form-control" placeholder="Search" type="search" aria-label="Search"></asp:TextBox>
                 </div>--%>
              
                 <div class="form-group mx-sm-3 mt-mb-1">
                          <div class="btn-group" role="group" style="margin:0.5rem" >
-                        <button runat="server" id="btnSearch" onserverclick="btnSearch_Click" class="btn btn-mini" title="Search" style="background:#FFFFFF;color:#3a4f63;">
-                            <i class="fas fa-search"></i>
-                        </button>
+                        <button runat="server" id="btnSearch" onserverclick="btnSearch_Click" class="btn btn-mini inventory-search-button" title="Search" style="background:#FFFFFF;color:#3a4f63;" aria-label="Cari nama"><i class="fas fa-search" aria-hidden="true"></i></button>
                         </div>
                     <div class="btn-group" role="group" style="margin:0.5rem">
                         <button type="button" runat="server" id="btnnew" onserverclick="btnNew_Click" class="btn btn-primary" title="new" style="background:#FFFFFF;color:#3a4f63;">

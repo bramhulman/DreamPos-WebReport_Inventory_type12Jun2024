@@ -120,19 +120,15 @@
         <div class="filter-card" id="Div1" runat="server">
             <div class="form-row align-items-center">
                 <div class="col-auto">
-                    <asp:Label for="txtsearch" runat="server" CssClass="text-white font-weight-bold mb-0">
-                        <i class="fas fa-search mr-1"></i>Search Name:
-                    </asp:Label>
+                    <asp:Label AssociatedControlID="txtsearch" runat="server" CssClass="text-white font-weight-bold mb-0">Nama:</asp:Label>
                 </div>
                 <div class="col-md-4 col-sm-6 my-1">
                     <asp:TextBox id="txtsearch" runat="server" CssClass="form-control form-control-sm"
                         placeholder="Search stock group..." type="search" aria-label="Search"></asp:TextBox>
                 </div>
                 <div class="col-auto my-1">
-                    <button runat="server" id="btnsrc" onserverclick="btnsearch" class="btn btn-sm btn-light text-primary font-weight-bold shadow-sm"
-                        title="Search">
-                        <i class="fas fa-search mr-1"></i>Search
-                    </button>
+                    <button runat="server" id="btnsrc" onserverclick="btnsearch" class="btn btn-sm btn-light text-primary font-weight-bold shadow-sm inventory-search-button"
+                        title="Search" aria-label="Cari nama"><i class="fas fa-search" aria-hidden="true"></i></button>
                     <button type="button" runat="server" id="btnnew" onserverclick="btnNew_Click"
                         class="btn btn-sm btn-success font-weight-bold shadow-sm ml-1" title="New Stock Group">
                         <i class="fas fa-plus mr-1"></i><asp:Label runat="server" Text="New"></asp:Label>
