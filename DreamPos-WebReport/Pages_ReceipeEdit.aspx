@@ -55,7 +55,6 @@
         }
         #spinner img { width: 64px; height: 64px; }
     </style>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap4.min.js"></script>
@@ -118,6 +117,9 @@
     <div class="container-fluid mb-4">
         <div id="recipeLoadError" class="alert alert-danger" role="alert" style="display:none;">
             Unable to load recipe data. Please reload the page or contact support.
+        </div>
+        <div id="recipeExportError" class="alert alert-warning" role="status" hidden>
+            Excel export is unavailable. You can still view and edit the recipe. Reload the page to try again.
         </div>
 
         <!-- Upper Section: Recipe Form & Cost Centre Table -->
@@ -422,6 +424,14 @@
         // =============================================
         $(document).ready(function () {
             if ($('#tblEmpDetails').length > 0) {
+                var notice = document.getElementById('recipeExportError');
+                if (!$.fn.DataTable || !$.fn.dataTable.Buttons || !window.JSZip ||
+                    !$.fn.dataTable.ext.buttons.excelHtml5) {
+                    notice.hidden = false;
+                    return;
+                }
+                if ($.fn.dataTable.isDataTable('#tblEmpDetails')) return;
+                try {
                 var totalCols = $('#tblEmpDetails thead tr th').length;
                 var actionColIdx = totalCols - 1;
 
@@ -453,6 +463,12 @@
                 });
 
                 table.buttons().container().appendTo('#dtExportContainer');
+                notice.hidden = false;
+                // The Excel plugin can decline availability even when its script loaded.
+                if ($('#dtExportContainer button').length > 0) notice.hidden = true;
+                } catch (error) {
+                    notice.hidden = false;
+                }
             }
         });
     </script>

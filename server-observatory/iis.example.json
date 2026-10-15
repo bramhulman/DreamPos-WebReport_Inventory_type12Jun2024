@@ -1,0 +1,8 @@
+{
+  "endpoint": "http://127.0.0.1:8787/api/ingest",
+  "stateFile": ".iis-state.json",
+  "sites": [
+    {"id":"iis-site-1","name":"Inventory Web","server":"SERVER-01","logDirectory":"C:\\inetpub\\logs\\LogFiles\\W3SVC1"},
+    {"id":"iis-site-2","name":"Inventory Webservice","server":"SERVER-01","logDirectory":"C:\\inetpub\\logs\\LogFiles\\W3SVC2"}
+  ]
+}
