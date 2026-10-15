@@ -43,30 +43,50 @@ Module mHelper
     Public ServerString As String = My.Settings.ServerStr   'My.Settings.ConStr
     'Public ServerString As String = My.Settings.ConStr
 
+    Private ReadOnly ErrorLogSync As New Object()
+
     Public Sub errLog(ByVal strErrDesc As String, ByVal strAccurIn As String)
-        Dim reader As New System.Configuration.AppSettingsReader
-        Dim strErrPath As String
-        strErrPath = My.Settings.errLog
+        Dim entry As String = DateTime.Now.ToString("dd/MM/yy hh:mm:ss tt") &
+            " ==>ERROR:" & strErrDesc & " (Occurred IN :" & strAccurIn & ")"
+        Dim primaryFailure As String
         Try
-
-            If strErrPath <> "" Then
-                Dim strDire As String
-                strDire = Path.GetDirectoryName(strErrPath)
-
-                'If Not Directory.Exists(strErrPath) Then
-                '    Directory.CreateDirectory(strDire)
-                'End If
-
-                Dim objWriter As New StreamWriter(strErrPath, True)
-
-                strErrDesc &= " (Occurred IN :" & strAccurIn & ")"
-                strErrDesc = "ERROR:" & strErrDesc
-                objWriter.WriteLine(Format(Now, "dd/MM/yy hh:mm:ss tt") & " ==>" & strErrDesc)
-                objWriter.Close()
-                objWriter.Dispose()
-            End If
+            AppendErrorLog(My.Settings.errLog, entry)
+            Return
         Catch ex As Exception
-            Err.Clear()
+            primaryFailure = ex.GetType().Name
+        End Try
+
+        Try
+            Dim fallbackPath As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                                                     "App_Data", "Logs", "ErrLog.txt")
+            AppendErrorLog(fallbackPath, entry & " [Primary log unavailable: " & primaryFailure & "]")
+        Catch ex As Exception
+            ' Never recurse into errLog when both destinations fail.
+            TraceErrorLog(entry & " [Logging failed: " & primaryFailure & "; " & ex.GetType().Name & "]")
+        End Try
+    End Sub
+
+    Private Sub AppendErrorLog(ByVal logPath As String, ByVal entry As String)
+        If String.IsNullOrWhiteSpace(logPath) Then
+            Throw New IOException("Error log path is empty.")
+        End If
+        If Not Path.IsPathRooted(logPath) Then
+            logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logPath)
+        End If
+        ' Serialize writers in this application; file contention from other processes uses fallback.
+        SyncLock ErrorLogSync
+            Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(logPath)))
+            Using writer As New StreamWriter(logPath, True)
+                writer.WriteLine(entry)
+            End Using
+        End SyncLock
+    End Sub
+
+    Friend Sub TraceErrorLog(ByVal entry As String)
+        Try
+            System.Diagnostics.Trace.TraceError(entry)
+        Catch
+            ' A failing trace listener must not replace the original application error.
         End Try
     End Sub
 

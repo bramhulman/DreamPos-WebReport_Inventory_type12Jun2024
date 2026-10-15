@@ -1,8 +1,9 @@
 <%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/SiteInventoryHome.Master"
     CodeBehind="Pages_CPO.aspx.vb" Inherits="DreamPos_WebReport.Pages_CPO" %>
     <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
-        <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-        </asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+        <link rel="stylesheet" href="css/inventory-mobile.css" />
+</asp:Content>
         <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
         </asp:Content>
         <asp:Content ID="Content3" ContentPlaceHolderID="BodyContent" runat="server">

@@ -193,6 +193,7 @@
     <Content Include="bin\PdfSharp.Charting.dll" />
     <Content Include="bin\PdfSharp.dll" />
     <Content Include="CCoutlet.aspx" />
+    <Content Include="Error404.aspx" />
     <Content Include="ChangedCost.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -300,6 +301,7 @@
     <Content Include="index.html" />
     <Content Include="index2.html" />
     <Content Include="index3.html" />
+    <Content Include="css\inventory-mobile.css" />
     <Content Include="Inventoryhome.aspx" />
     <Content Include="kstock.aspx" />
     <Content Include="Logout.aspx" />

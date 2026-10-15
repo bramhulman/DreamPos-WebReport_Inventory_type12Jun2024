@@ -1,4 +1,6 @@
-﻿Public Class Cls_IStkGroup
+﻿Imports MySql.Data.MySqlClient
+
+Public Class Cls_IStkGroup
 
     Public Function SelectDataStkGroup(ByVal id As Integer) As DataSet
         Dim ds As New DataSet
@@ -49,19 +51,16 @@
 
     End Function
     Public Function SelectDataset_StkGroupSearch(ByVal name As String, ByVal custid As Integer) As DataSet
-        Dim ds As New DataSet
-        Dim strFilter As String = ""
-
-
-        Dim a As New clsDbo("SELECT cld_inv_stkgroup.*, cld_cust.nama as custname from cld_inv_stkgroup inner join cld_cust On cld_cust.id = cld_inv_stkgroup.custid  where cld_inv_stkgroup.custid = " & custid & "  and cld_inv_stkgroup.code like  '%" & name & "%' Or cld_inv_stkgroup.name like '%" & name & "%' order by code")
-
-        ds = a.selectDataset
-
-        a.dispose()
-        a = Nothing
-
-        Return ds
-
+        Dim a As New clsDbo("SELECT grp.id, grp.custid, grp.code, grp.name, cust.nama AS custname " &
+                           "FROM cld_inv_stkgroup AS grp INNER JOIN cld_cust AS cust ON cust.id = grp.custid " &
+                           "WHERE grp.custid = @custid AND (grp.code LIKE @search OR grp.name LIKE @search) ORDER BY grp.code")
+        Try
+            a.addParam(custid, "@custid", MySqlDbType.Int32)
+            a.addParam("%" & If(name, "") & "%", "@search", MySqlDbType.VarChar)
+            Return a.selectDataset(True)
+        Finally
+            a.dispose()
+        End Try
     End Function
     Public Function SelectDataset_StkGroupEdit(ByVal Id As Integer, ByVal custid As Integer) As DataSet
         Dim ds As New DataSet

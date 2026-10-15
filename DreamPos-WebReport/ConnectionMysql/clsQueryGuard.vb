@@ -1,16 +1,81 @@
 Imports MySql.Data.MySqlClient
 Imports System.IO
+Imports System.Security.Cryptography
+Imports System.Text
+Imports System.Threading
 
 ''' <summary>
 ''' clsQueryGuard — Query Safety Wrapper
 ''' Fitur:
 '''   1. Timeout otomatis dengan nilai default yang bisa dikonfigurasi
 '''   2. Pending Query Log: simpan query SEBELUM dieksekusi
-'''      - Jika SUKSES  -> entry dihapus dari pending log
+'''      - Jika SUKSES -> ditandai selesai, lalu dihapus secara batch
 '''      - Jika CRASH/TIMEOUT -> entry tetap di pending log untuk analisa
 '''   3. Durasi eksekusi dicatat ke slow_queries.log jika melebihi threshold
 ''' </summary>
 Public Class clsQueryGuard
+    Private Const CompletionPrefix As String = "[COMPLETED]|"
+    Private Const CompactionBatchSize As Integer = 100
+    Private Const CompactionIntervalSeconds As Integer = 60
+    Private Shared ReadOnly LogSync As New Object()
+    Private Shared CompletedSinceCompaction As Integer = 0
+    Private Shared LastCompactionUtc As DateTime = DateTime.UtcNow
+
+    Private Shared Sub WithLogLock(ByVal writeLog As Action)
+        SyncLock LogSync
+            Dim mutexName As String
+            Using hash As SHA256 = SHA256.Create()
+                mutexName = "Local\DreamPosQueryGuard_" & BitConverter.ToString(
+                    hash.ComputeHash(Encoding.UTF8.GetBytes(Path.GetFullPath(PendingLogPath).ToUpperInvariant()))).Replace("-", "")
+            End Using
+            Using logMutex As New Mutex(False, mutexName)
+                Dim acquired As Boolean = False
+                Try
+                    Try
+                        acquired = logMutex.WaitOne(1000)
+                    Catch ex As AbandonedMutexException
+                        acquired = True
+                    End Try
+                    If acquired Then writeLog()
+                Finally
+                    If acquired Then logMutex.ReleaseMutex()
+                End Try
+            End Using
+        End SyncLock
+    End Sub
+
+    Private Shared Sub CompactPendingLogIfDue()
+        If CompletedSinceCompaction < CompactionBatchSize AndAlso
+           (DateTime.UtcNow - LastCompactionUtc).TotalSeconds < CompactionIntervalSeconds Then Return
+
+        If File.Exists(PendingLogPath) Then
+            Dim lines As String() = File.ReadAllLines(PendingLogPath)
+            Dim completed As New HashSet(Of String)(StringComparer.Ordinal)
+            For Each line As String In lines
+                If line.StartsWith(CompletionPrefix, StringComparison.Ordinal) Then
+                    completed.Add(line.Substring(CompletionPrefix.Length))
+                End If
+            Next
+            If completed.Count > 0 Then
+                Dim remaining As New List(Of String)
+                For Each line As String In lines
+                    If line.StartsWith(CompletionPrefix, StringComparison.Ordinal) Then Continue For
+                    Dim separator As Integer = line.IndexOf("|"c)
+                    If separator < 0 OrElse Not completed.Contains(line.Substring(0, separator)) Then remaining.Add(line)
+                Next
+                ' Replace atomically: a crash must not truncate the existing journal.
+                Dim tempPath As String = PendingLogPath & "." & Guid.NewGuid().ToString("N") & ".tmp"
+                Try
+                    File.WriteAllLines(tempPath, remaining.ToArray())
+                    File.Replace(tempPath, PendingLogPath, Nothing)
+                Finally
+                    If File.Exists(tempPath) Then File.Delete(tempPath)
+                End Try
+            End If
+        End If
+        CompletedSinceCompaction = 0
+        LastCompactionUtc = DateTime.UtcNow
+    End Sub
 
     ' == KONFIGURASI ================================================
     ''' <summary>Timeout per query dalam detik. Default 30 detik.</summary>
@@ -42,36 +107,33 @@ Public Class clsQueryGuard
     ''' </summary>
     Public Shared Function BeginQuery(ByVal sql As String, ByVal caller As String) As String
         If String.IsNullOrWhiteSpace(sql) Then Return ""
-        Dim token As String = Guid.NewGuid().ToString("N").Substring(0, 12)
+        Dim token As String = Guid.NewGuid().ToString("N")
         Dim entry As String = String.Format("{0}|{1}|{2}|{3}",
             token,
             Format(Now, "yyyy-MM-dd HH:mm:ss"),
             caller,
             sql.Replace(vbCrLf, " ").Replace(vbLf, " ").Trim())
         Try
-            SyncLock GetType(clsQueryGuard)
-                File.AppendAllText(PendingLogPath, entry & Environment.NewLine)
-            End SyncLock
+            WithLogLock(Sub()
+                            File.AppendAllText(PendingLogPath, entry & Environment.NewLine)
+                            CompactPendingLogIfDue()
+                        End Sub)
         Catch
         End Try
         Return token
     End Function
 
     ''' <summary>
-    ''' Hapus entry dari pending log setelah query SUKSES.
+    ''' Tandai query sukses tanpa menulis ulang seluruh file pada setiap query.
     ''' </summary>
     Public Shared Sub CommitQuery(ByVal token As String)
         If String.IsNullOrWhiteSpace(token) Then Exit Sub
         Try
-            SyncLock GetType(clsQueryGuard)
-                If Not File.Exists(PendingLogPath) Then Exit Sub
-                Dim lines() As String = File.ReadAllLines(PendingLogPath)
-                Dim remaining As New List(Of String)
-                For Each line As String In lines
-                    If Not line.StartsWith(token) Then remaining.Add(line)
-                Next
-                File.WriteAllLines(PendingLogPath, remaining.ToArray())
-            End SyncLock
+            WithLogLock(Sub()
+                            File.AppendAllText(PendingLogPath, CompletionPrefix & token & Environment.NewLine)
+                            CompletedSinceCompaction += 1
+                            CompactPendingLogIfDue()
+                        End Sub)
         Catch
         End Try
     End Sub
@@ -86,21 +148,17 @@ Public Class clsQueryGuard
                 Format(Now, "yyyy-MM-dd HH:mm:ss"), token, caller,
                 ex.Message.Replace(vbCrLf, " "),
                 sql.Replace(vbCrLf, " ").Replace(vbLf, " ").Trim())
-            SyncLock GetType(clsQueryGuard)
-                File.AppendAllText(SlowLogPath, entry & Environment.NewLine)
-            End SyncLock
+            WithLogLock(Sub() File.AppendAllText(SlowLogPath, entry & Environment.NewLine))
         Catch
         End Try
     End Sub
 
-    Private Shared Sub LogSlowQuery(ByVal sql As String, ByVal caller As String, ByVal elapsedMs As Long)
+    Public Shared Sub LogSlowQuery(ByVal sql As String, ByVal caller As String, ByVal elapsedMs As Long)
         Try
             Dim entry As String = String.Format("[SLOW {0}ms] {1} | Caller:{2} | SQL:{3}",
                 elapsedMs, Format(Now, "yyyy-MM-dd HH:mm:ss"), caller,
                 sql.Replace(vbCrLf, " ").Replace(vbLf, " ").Trim())
-            SyncLock GetType(clsQueryGuard)
-                File.AppendAllText(SlowLogPath, entry & Environment.NewLine)
-            End SyncLock
+            WithLogLock(Sub() File.AppendAllText(SlowLogPath, entry & Environment.NewLine))
         Catch
         End Try
     End Sub

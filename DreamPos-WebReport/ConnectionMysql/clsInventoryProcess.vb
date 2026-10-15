@@ -686,7 +686,7 @@ Public Class clsInventoryProcess
                 clsInv.InvIn(InvCustId, "Sysadmin", 0)
             End If
             dTotalQty = c_cmd.ExecuteScalar("SELECT ttlqty FROM cld_inv_transstockcls WHERE stkid = " & InvstkId & " AND ccid = " & InvCc & " AND invdate = '" & InvDate.Date.ToString("yyyy-MM-dd") & "' AND custid = " & InvCustId & "", 0)
-            varianceqty = dTotalQty - closeqty
+            varianceqty = closeqty - dTotalQty
             'klo gada insert
             If c_cmd.ExecuteScalar("SELECT COUNT(stkid) FROM cld_inv_transstockcls WHERE stkid = " & InvstkId & " AND ccid = " & InvCc & " AND invdate = '" & InvDate.Date.ToString("yyyy-MM-dd 00:00:00") & "' AND custid = " & InvCustId & "", 0) = 0 Then
                 'dTotalQty = Invrcvqty

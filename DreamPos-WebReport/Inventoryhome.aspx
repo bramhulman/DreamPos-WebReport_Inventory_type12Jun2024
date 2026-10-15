@@ -268,6 +268,11 @@
 
 
 
+                                <div class="mb-2">
+                                    <span id="inventoryTableLoadingStatus" class="badge badge-warning" role="status" aria-live="polite">
+                                        <i class="fas fa-spinner fa-spin mr-1" aria-hidden="true"></i>Preparing table...
+                                    </span>
+                                </div>
                                 <div class="table-responsive">
                                     <asp:GridView ID="gvHome" runat="server" Width="99%" AutoGenerateColumns="False" EnableViewState="false"
                                         DataKeyNames="custid,ccid,stkid,ccname,stkname,sgname,ttlqty,ttlqty_with_unit,cost,Total,stkLimit,unit2,stat"
@@ -438,6 +443,24 @@
                         // VARIABEL GLOBAL UNTUK MENYIMPAN FILTER GRUP
                         var currentGroupFilter = null;
                         var enableGrouping = false;
+                        var inventoryTableInitTimer = null;
+
+                        function setInventoryTableStatus(state) {
+                            var $status = $('#inventoryTableLoadingStatus');
+                            var ready = state === 'ready';
+                            $status.stop(true, true).show().removeClass('badge-warning badge-success badge-danger');
+                            $('#<%= gvHome.ClientID %>').attr('aria-busy', state === 'loading' ? 'true' : 'false');
+                            $('#<%= ddlCcFilter.ClientID %>, #<%= ddlGrpFilter.ClientID %>, #ddlStatusFilter, #btnToggleGroup, #btnResetFilter')
+                                .prop('disabled', !ready);
+                            if (ready) {
+                                $status.addClass('badge-success').html('<i class="fas fa-check mr-1" aria-hidden="true"></i>Ready')
+                                    .delay(1500).fadeOut(500);
+                            } else if (state === 'error') {
+                                $status.addClass('badge-danger').html('<i class="fas fa-exclamation-triangle mr-1" aria-hidden="true"></i>Unable to prepare table. Reload the page.');
+                            } else {
+                                $status.addClass('badge-warning').html('<i class="fas fa-spinner fa-spin mr-1" aria-hidden="true"></i>Preparing table...');
+                            }
+                        }
 
                         // FUNGSI FILTER GRUP (DI LUAR SEMUA FUNCTION!)
                         function groupFilterFunction(settings, data, dataIndex) {
@@ -464,9 +487,17 @@
 
                         function initializeDataTable() {
                             var tableId = '#<%= gvHome.ClientID %>';
+                            clearTimeout(inventoryTableInitTimer);
+                            setInventoryTableStatus('loading');
+                            if (!$(tableId).length || !$.fn.DataTable) {
+                                setInventoryTableStatus('error');
+                                return;
+                            }
 
                             if ($.fn.DataTable.isDataTable(tableId)) {
-                                $(tableId).DataTable().destroy();
+                                table = $(tableId).DataTable();
+                                setInventoryTableStatus('ready');
+                                return;
                             }
                             // PLUGIN sum() — VERSI TERBAIK & BENAR UNTUK FORMAT INDONESIA
                             jQuery.fn.dataTable.Api.register('sum()', function () {
@@ -489,7 +520,9 @@
                                 return parseFloat(d.replace(/\./g, '').replace(',', '.')) || 0;
                             };
 
-                            setTimeout(function () {
+                            inventoryTableInitTimer = setTimeout(function () {
+                                inventoryTableInitTimer = null;
+                                try {
                                 table = $(tableId).DataTable({
                                     destroy: true,
                                     paging: true,
@@ -504,6 +537,9 @@
                                     deferRender: true,
                                     processing: false,
                                     searchDelay: 500,
+                                    initComplete: function () {
+                                        setInventoryTableStatus('ready');
+                                    },
                                     columnDefs: [
                                         { targets: 1, responsivePriority: 1 }, // Item Name (Prioritas 1: selalu tampil)
                                         { targets: 3, responsivePriority: 2, className: 'text-end' }, // Total Stock (Prioritas 2: tampil di mobile)
@@ -710,6 +746,10 @@
                                     });
                                 });
 
+                                } catch (error) {
+                                    setInventoryTableStatus('error');
+                                    console.error('Inventory Home DataTables initialization failed:', error);
+                                }
                             }, 600);
                         }
 

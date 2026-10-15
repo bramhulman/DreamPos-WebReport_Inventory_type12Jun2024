@@ -1,0 +1,30 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>QueryGuardTests</RootNamespace>
+    <AssemblyName>QueryGuard.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OutputPath>bin\</OutputPath>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionInfer>On</OptionInfer>
+    <OptionStrict>Off</OptionStrict>
+    <StartupObject>QueryGuardTests.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\DreamPos-WebReport\bin\MySql.Data.dll</HintPath>
+    </Reference>
+    <Import Include="System" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Compile Include="..\..\DreamPos-WebReport\ConnectionMysql\clsQueryGuard.vb">
+      <Link>clsQueryGuard.vb</Link>
+    </Compile>
+    <Compile Include="Program.vb" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+</Project>

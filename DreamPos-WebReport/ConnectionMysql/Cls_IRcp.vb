@@ -1,17 +1,12 @@
 ﻿Public Class Cls_IRcp
     Public Function SelectDataRcp(ByVal sCode As String) As DataSet
-        Dim ds As New DataSet
-        Dim strFilter As String = ""
-
-        Dim a As New clsDbo("SELECT ID FROM cld_Inv_rcp where Code = '" & sCode & "'")
-
-        ds = a.selectDataset
-
-        a.dispose()
-        a = Nothing
-
-        Return ds
-
+        Dim a As New clsDbo("SELECT ID FROM cld_inv_rcp WHERE code = @code")
+        Try
+            a.addParam(sCode, "@code", MySql.Data.MySqlClient.MySqlDbType.VarChar)
+            Return a.selectDataset(True)
+        Finally
+            a.dispose()
+        End Try
     End Function
     Public Function SelectDataset_rcp(ByVal custid As Integer) As DataSet
         Dim ds As New DataSet
@@ -115,80 +110,57 @@
     End Function
 
     Public Function SelectDataset_rcpSearch(ByVal name As String, ByVal custid As Integer) As DataSet
-        Dim ds As New DataSet
-        Dim strFilter As String = ""
-
-
-        Dim a As New clsDbo("SELECT * FROM cld_inv_rcp rcp 
-                 
-where rcp.custid = " & custid & "  and rcp.code like  '%" & name & "%' Or rcp.name like '%" & name & "%' order by rcp.code")
-
-        ds = a.selectDataset
-
-        a.dispose()
-        a = Nothing
-
-        Return ds
-
+        Dim a As New clsDbo("SELECT * FROM cld_inv_rcp rcp WHERE rcp.custid = @custid " &
+                           "AND (rcp.code LIKE @search OR rcp.name LIKE @search) ORDER BY rcp.code")
+        Try
+            a.addParam(custid, "@custid", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            a.addParam("%" & name & "%", "@search", MySql.Data.MySqlClient.MySqlDbType.VarChar)
+            Return a.selectDataset(True)
+        Finally
+            a.dispose()
+        End Try
     End Function
 
     Public Function Selectdt_rcpsearchdt(ByVal dta As DataTable, ByVal custid As Integer, ByVal name As String) As DataSet
-        Dim ds As New DataSet
-        Dim strFilter As String = ""
-        Dim strf As String = ""
+        Dim excludedIds As New System.Collections.Generic.List(Of Integer)()
         If dta IsNot Nothing Then
-            If dta.Rows.Count > 0 Then
-                For Each row As DataRow In dta.Rows
-                    If strFilter = "" Then
-                        strFilter = row.Item("rcpid")
-                    Else
-                        strFilter = strFilter & "," & row.Item("rcpid")
-                    End If
-
-                Next
-                strf = " and id  not in  (" & strFilter & ") "
-            End If
+            For Each row As DataRow In dta.Rows
+                If row.RowState = DataRowState.Deleted OrElse row.IsNull("rcpid") Then Continue For
+                Dim recipeId As Integer
+                If Integer.TryParse(Convert.ToString(row("rcpid"), Globalization.CultureInfo.InvariantCulture), recipeId) AndAlso recipeId > 0 Then
+                    If Not excludedIds.Contains(recipeId) Then excludedIds.Add(recipeId)
+                End If
+            Next
         End If
-
-
-
-        strFilter = "SELECT * FROM cld_inv_rcp rcp where rcp.custid = " & custid & " " & strf & " and (rcp.code like  '%" & name & "%' Or rcp.name like '%" & name & "%') order by name"
-
-
-
-
-
-
-        Dim a As New clsDbo(strFilter)
-
-        try
-             ds = a.selectDataset
-
-        Catch ex As Exception
-
+        Dim placeholders As New System.Collections.Generic.List(Of String)()
+        For i As Integer = 0 To excludedIds.Count - 1
+            placeholders.Add("@excluded" & i.ToString(Globalization.CultureInfo.InvariantCulture))
+        Next
+        Dim sql As String = "SELECT * FROM cld_inv_rcp rcp WHERE rcp.custid = @custid "
+        If placeholders.Count > 0 Then sql &= "AND rcp.id NOT IN (" & String.Join(",", placeholders.ToArray()) & ") "
+        sql &= "AND (rcp.code LIKE @search OR rcp.name LIKE @search) ORDER BY rcp.name"
+        Dim a As New clsDbo(sql)
+        Try
+            a.addParam(custid, "@custid", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            a.addParam("%" & name & "%", "@search", MySql.Data.MySqlClient.MySqlDbType.VarChar)
+            For i As Integer = 0 To excludedIds.Count - 1
+                a.addParam(excludedIds(i), placeholders(i), MySql.Data.MySqlClient.MySqlDbType.Int32)
+            Next
+            Return a.selectDataset(True)
+        Finally
+            a.dispose()
         End Try
-       
-        a.dispose()
-        a = Nothing
-
-        Return ds
-
     End Function
 
     Public Function SelectDataset_rcpEdit(ByVal Id As Integer, ByVal custid As Integer) As DataSet
-        Dim ds As New DataSet
-        Dim strFilter As String = ""
-
-
-        Dim a As New clsDbo("SELECT * from cld_inv_rcp where id = " & Id & " and custid = " & custid & "")
-
-        ds = a.selectDataset
-
-        a.dispose()
-        a = Nothing
-
-        Return ds
-
+        Dim a As New clsDbo("SELECT * FROM cld_inv_rcp WHERE id = @id AND custid = @custid")
+        Try
+            a.addParam(Id, "@id", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            a.addParam(custid, "@custid", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            Return a.selectDataset(True)
+        Finally
+            a.dispose()
+        End Try
     End Function
     Public Function SelectDataset_Idrcp(ByVal blink As Integer) As Integer
         Dim ds, dsb As New DataSet
@@ -214,41 +186,24 @@ where rcp.custid = " & custid & "  and rcp.code like  '%" & name & "%' Or rcp.na
 
     End Function
     Public Function SelectDataset_rcpCost(ByVal custid As Integer, ByVal code As String, Optional ByVal usr As String = "", Optional ByVal modpriv As Integer = 0) As DataSet
-        Dim ds As New DataSet
-        Dim strFilter As String = ""
-
-
-        'Dim a As New clsDbo("SELECT rcp.id,rcp.custid,rcp.code,rcp.name, rcc.cost cost2, cc.name AS ccname ,cc.id ccid
-        '     FROM cld_inv_rcp rcp 
-        '         INNER JOIN cld_inv_rcp_cc rcc ON rcc.custid = rcp.custid  AND rcc.rcpid = rcp.id
-        '         LEFT JOIN cld_inv_cc cc ON cc.id = rcc.ccid AND cc.custid = rcc.custid
-        '    where rcp.custid = " & custid & "  and rcp.code = '" & code & "' order by rcp.code")
-
-        If modpriv And usrModulepriv.moduleuser = usrModulepriv.moduleuser Then
-            strFilter = "SELECT rcp.id,rcp.custid,rcp.code,rcp.name, rcc.cost cost2, cc.name AS ccname ,cc.id ccid
-             FROM cld_inv_rcp rcp 
-                 INNER JOIN cld_inv_rcp_cc rcc ON rcc.custid = rcp.custid  AND rcc.rcpid = rcp.id
-                 LEFT JOIN cld_inv_cc cc ON cc.id = rcc.ccid AND cc.custid = rcc.custid
-                left Join cld_outlet ON cc.Olid = cld_outlet.id and cc.custid = cld_outlet.custid
-           where rcp.custid = " & custid & "  and rcp.code = '" & code & "' and olid IN (SELECT Store FROM cld_userxstore WHERE USER = '" & usr & "') order by rcp.code"
-
-        Else
-            strFilter = "SELECT rcp.id,rcp.custid,rcp.code,rcp.name, rcc.cost cost2, cc.name AS ccname ,cc.id ccid
-             FROM cld_inv_rcp rcp 
-                 INNER JOIN cld_inv_rcp_cc rcc ON rcc.custid = rcp.custid  AND rcc.rcpid = rcp.id
-                 LEFT JOIN cld_inv_cc cc ON cc.id = rcc.ccid AND cc.custid = rcc.custid
-                left Join cld_outlet ON cc.Olid = cld_outlet.id and cc.custid = cld_outlet.custid
-           where rcp.custid = " & custid & "  and rcp.code = '" & code & "' order by rcp.code"
-
-        End If
-        Dim a As New clsDbo(strFilter)
-        ds = a.selectDataset
-
-        a.dispose()
-        a = Nothing
-
-        Return ds
-
+        Dim sql As String = "SELECT rcp.id,rcp.custid,rcp.code,rcp.name,rcc.cost cost2,cc.name AS ccname,cc.id ccid " &
+            "FROM cld_inv_rcp rcp " &
+            "INNER JOIN cld_inv_rcp_cc rcc ON rcc.custid = rcp.custid AND rcc.rcpid = rcp.id " &
+            "LEFT JOIN cld_inv_cc cc ON cc.id = rcc.ccid AND cc.custid = rcc.custid " &
+            "LEFT JOIN cld_outlet ON cc.olid = cld_outlet.id AND cc.custid = cld_outlet.custid " &
+            "WHERE rcp.custid = @custid AND rcp.code = @code "
+        Dim restricted As Boolean = (modpriv And usrModulepriv.moduleuser) = usrModulepriv.moduleuser
+        If restricted Then sql &= "AND cc.olid IN (SELECT Store FROM cld_userxstore WHERE USER = @usr) "
+        sql &= "ORDER BY rcp.code"
+        Dim a As New clsDbo(sql)
+        Try
+            a.addParam(custid, "@custid", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            a.addParam(code, "@code", MySql.Data.MySqlClient.MySqlDbType.VarChar)
+            If restricted Then a.addParam(usr, "@usr", MySql.Data.MySqlClient.MySqlDbType.VarChar)
+            Return a.selectDataset(True)
+        Finally
+            a.dispose()
+        End Try
     End Function
     Public Function insertRcp(ByVal code As String, ByVal nama As String, ByVal remarks As String, ByVal custid As Integer, ByVal username As String)
 

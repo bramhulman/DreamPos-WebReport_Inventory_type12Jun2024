@@ -1,3 +1,6 @@
+Imports MySql.Data.MySqlClient
+Imports System.Globalization
+
 Public Class Cls_ICc
 
     Public Function SelectDataIcc(ByVal id As Integer) As DataSet
@@ -105,94 +108,67 @@ Public Class Cls_ICc
     End Function
 
     Public Function Selectdt_CCsearch(ByVal dta As DataTable, ByVal custid As Integer, ByVal name As String) As DataTable
-        Dim dt As New DataTable
-        Dim strFilter As String = ""
-        Dim strf As String = ""
-        'Dim colBValues = New List(Of String)
-
-        If dta.Rows.Count > 0 Then
-            For Each row As DataRow In dta.Rows
-                If strFilter = "" Then
-                    strFilter = row.Item("ccid")
-                Else
-                    strFilter = strFilter & "," & row.Item("ccid")
-                End If
-
-            Next
-            strf = "and id  not in  (" & strFilter & ") "
-        End If
-
-        Dim a As New clsDbo("SELECT id, cc.custid ,NAME ccname FROM cld_inv_cc cc
-                               
-                                WHERE cc.custid = " & custid & " " & strf & "  and name like '%" & name & "%' order by name ")
-        ' INNER JOIN cld_inv_rcp_cc rcc ON cc.id = rcc.ccid AND cc.custid = rcc.custid 
-
-        dt = a.selectDatatable
-
-        a.dispose()
-        a = Nothing
-
-        Return dt
-
+        Return SelectAvailableCostCentres(dta, custid, name, "", 0, 0).Tables(0)
     End Function
+
     Public Function Selectdt_CCsearchdt(ByVal dta As DataTable, ByVal custid As Integer, ByVal name As String, ByVal usr As String, ByVal modpriv As Integer, ByVal itipe As Integer) As DataSet
+        Return SelectAvailableCostCentres(dta, custid, name, usr, modpriv, itipe)
+    End Function
+
+    Private Function SelectAvailableCostCentres(ByVal dta As DataTable, ByVal custid As Integer, ByVal name As String, ByVal usr As String, ByVal modpriv As Integer, ByVal itipe As Integer) As DataSet
+        If itipe <> 0 AndAlso itipe <> 1 Then Throw New ArgumentOutOfRangeException("itipe")
         Dim ds As New DataSet
-        Dim strFilter As String = ""
-        Dim strf As String = ""
-        If dta.Rows.Count > 0 Then
-            For Each row As DataRow In dta.Rows
-                If strFilter = "" Then
-                    strFilter = row.Item("ccid")
-                Else
-                    strFilter = strFilter & "," & row.Item("ccid")
-                End If
+        Try
+            Using conn As New MySqlConnection(My.Settings.ServerStr)
+                Using cmd As New MySqlCommand()
+                    cmd.Connection = conn
+                    cmd.CommandTimeout = clsQueryGuard.DefaultTimeoutSeconds
+                    Dim conditions As New List(Of String) From {
+                        "cc.custid = @custid",
+                        "cc.name LIKE @name"
+                    }
+                    cmd.Parameters.AddWithValue("@custid", custid)
+                    cmd.Parameters.AddWithValue("@name", "%" & If(name, "") & "%")
 
-            Next
-            strf = " and cc.id  not in  (" & strFilter & ") "
-        End If
-        If itipe = 0 Then
+                    Dim excludedIds As New HashSet(Of Integer)
+                    Dim excludedParameters As New List(Of String)
+                    If dta IsNot Nothing AndAlso dta.Rows.Count > 0 Then
+                        If Not dta.Columns.Contains("ccid") Then Throw New ArgumentException("Cost centre data must include ccid.")
+                        For Each row As DataRow In dta.Rows
+                            If row.RowState = DataRowState.Deleted OrElse row.IsNull("ccid") Then Continue For
+                            Dim ccId As Integer
+                            If Integer.TryParse(Convert.ToString(row("ccid"), CultureInfo.InvariantCulture),
+                                                NumberStyles.Integer, CultureInfo.InvariantCulture, ccId) AndAlso
+                               ccId > 0 AndAlso excludedIds.Add(ccId) Then
+                                Dim parameterName As String = "@excludedCc" & excludedParameters.Count.ToString(CultureInfo.InvariantCulture)
+                                excludedParameters.Add(parameterName)
+                                cmd.Parameters.AddWithValue(parameterName, ccId)
+                            End If
+                        Next
+                    End If
+                    If excludedParameters.Count > 0 Then
+                        conditions.Add("cc.id NOT IN (" & String.Join(",", excludedParameters.ToArray()) & ")")
+                    End If
+                    If itipe = 1 Then conditions.Add("cc.olid <> 0")
+                    If (modpriv And usrModulepriv.moduleuser) = usrModulepriv.moduleuser Then
+                        conditions.Add("cc.olid IN (SELECT Store FROM cld_userxstore WHERE `User` = @user)")
+                        cmd.Parameters.AddWithValue("@user", If(usr, ""))
+                    End If
 
-            If modpriv And usrModulepriv.moduleuser = usrModulepriv.moduleuser Then
-
-                strFilter = "SELECT cc.id, cc.custid ,cc.NAME ccname " &
-                            "from cld_inv_cc cc inner join cld_cust On cld_cust.id = cc.custid left Join cld_outlet ON cc.Olid = cld_outlet.id and cc.custid = cld_outlet.custid " &
-                            "where cc.custid = " & custid & "" & strf & "  and name like '%" & name & "%' and olid IN (SELECT Store FROM cld_userxstore WHERE USER = '" & usr & "') order by name"
-            Else
-                strFilter = "SELECT cc.id, cc.custid ,cc.NAME ccname " &
-                            "from cld_inv_cc cc inner join cld_cust On cld_cust.id = cc.custid left Join cld_outlet ON cc.Olid = cld_outlet.id and cc.custid = cld_outlet.custid " &
-                            "where cc.custid = " & custid & "" & strf & "  and name like '%" & name & "%' order by name"
-
-            End If
-
-        ElseIf itipe = 1 Then
-
-
-            If modpriv And usrModulepriv.moduleuser = usrModulepriv.moduleuser Then
-
-                strFilter = "SELECT cc.id, cc.custid ,cc.NAME ccname " &
-                            "from cld_inv_cc cc inner join cld_cust On cld_cust.id = cc.custid left Join cld_outlet ON cc.Olid = cld_outlet.id and cc.custid = cld_outlet.custid " &
-                            "where cc.olid <> 0 and cc.custid = " & custid & "" & strf & "  and name like '%" & name & "%' and olid IN (SELECT Store FROM cld_userxstore WHERE USER = '" & usr & "') order by name"
-            Else
-                strFilter = "SELECT cc.id, cc.custid ,cc.NAME ccname " &
-                            "from cld_inv_cc cc inner join cld_cust On cld_cust.id = cld_inv_cc.custid left Join cld_outlet ON cld_inv_cc.Olid = cld_outlet.id and cld_inv_cc.custid = cld_outlet.custid " &
-                            "where cc.olid <> 0 and cc.custid = " & custid & "" & strf & "  and name like '%" & name & "%' order by name"
-
-            End If
-
-
-
-        End If
-
-
-        Dim a As New clsDbo(strFilter)
-
-        ds = a.selectDataset
-
-        a.dispose()
-        a = Nothing
-
+                    ' Only fixed SQL fragments and parameter names are joined here.
+                    cmd.CommandText = "SELECT cc.id, cc.custid, cc.name AS ccname FROM cld_inv_cc AS cc " &
+                                      "INNER JOIN cld_cust AS cust ON cust.id = cc.custid WHERE " &
+                                      String.Join(" AND ", conditions.ToArray()) & " ORDER BY cc.name"
+                    Using adapter As New MySqlDataAdapter(cmd)
+                        adapter.Fill(ds)
+                    End Using
+                End Using
+            End Using
+        Catch ex As Exception
+            errLog(ex.Message, "Cls_ICc:SelectAvailableCostCentres")
+            Throw
+        End Try
         Return ds
-
     End Function
 
     Public Function SelectDataset_Icc_SelectionReport(ByVal custid As Integer, ByVal usr As String, ByVal modpriv As Integer) As DataSet

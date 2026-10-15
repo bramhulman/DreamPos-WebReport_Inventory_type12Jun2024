@@ -291,7 +291,7 @@ Public Class Pages_DailyOpname
                     "IFNULL(TransStock.Cost, 0) AS Cost, " &
                     "IFNULL(TransStock.bClose, 0) AS bClose, " &
                     "IFNULL(TransStock.closeQty, 0) AS closeQty, " &
-                    "CASE WHEN TransStock.bClose = 1 THEN IFNULL(TransStock.varianceQty, (TransStock.ttlQty - TransStock.closeQty)) " &
+                    "CASE WHEN TransStock.bClose = 1 THEN IFNULL(TransStock.varianceQty, (TransStock.closeQty - TransStock.ttlQty)) " &
                     "     ELSE 0 END AS Variance, " &
                     "IFNULL(cld_inv_stk.unit2, IFNULL(cld_inv_stk.unit1, 'Pcs')) AS Unit " &
                     "FROM cld_inv_transstockcls AS TransStock " &

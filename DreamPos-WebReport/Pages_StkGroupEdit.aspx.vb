@@ -75,7 +75,6 @@ Public Class Pages_StkGroupEdit
                 irptpriv = rptpriv()
                 irptf = rptf()
                 If IsPostBack = False Then
-                    editlist(MTid)
                     If MTid = 0 Then
                         hapus()
                         'loadCust()
@@ -134,6 +133,9 @@ Public Class Pages_StkGroupEdit
         Try
             Dim ds As New DataSet
             ds = CStkGrp.SelectDataset_StkGroupEdit(id, custid)
+            If ds Is Nothing OrElse ds.Tables.Count = 0 Then
+                Throw New InvalidOperationException("Unable to load stock group data.")
+            End If
             If ds.Tables(0).Rows.Count = 0 Then
                 Exit Sub
             End If

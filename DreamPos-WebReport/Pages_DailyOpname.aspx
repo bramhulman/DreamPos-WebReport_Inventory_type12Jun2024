@@ -454,7 +454,7 @@
             <div class="card-footer bg-light py-2 px-3">
                 <span class="small text-muted font-italic" style="font-size:0.75rem;">
                     <i class="fas fa-info-circle mr-1"></i>
-                    <b>Variance = Total Qty - Opname</b>. Nilai opname otomatis tersimpan saat berpindah baris / tekan Enter.
+                    <b>Variance = Opname - Total Qty</b>. Nilai opname otomatis tersimpan saat berpindah baris / tekan Enter.
                 </span>
                 <asp:Button ID="btnSubmitBottom" runat="server" Text="SIMPAN SEMUA PERUBAHAN"
                     OnClick="btnSubmit_Click" style="display:none;" />
@@ -709,7 +709,7 @@
                 return;
             }
             var opnameVal = parseFloat(valStr.replace(/,/g, '')) || 0;
-            var variance = totalQty - opnameVal;
+            var variance = opnameVal - totalQty;
             var formatted = variance.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 4 });
             $varCell.text(formatted);
             $varCell.attr('data-order', variance);

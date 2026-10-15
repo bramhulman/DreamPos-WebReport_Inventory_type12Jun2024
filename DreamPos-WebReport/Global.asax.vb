@@ -43,7 +43,13 @@ Public Class Global_asax
     End Sub
 
     Sub Application_Error(ByVal sender As Object, ByVal e As EventArgs)
-        ' Fires when an error occurs
+        Dim failure As Exception = Server.GetLastError()
+        If failure Is Nothing Then Return
+        Try
+            mHelper.errLog(failure.ToString(), "Application_Error: " & Request.Url.AbsolutePath)
+        Catch
+            ' Error reporting must not prevent ASP.NET from showing the friendly page.
+        End Try
     End Sub
 
     Sub Session_End(ByVal sender As Object, ByVal e As EventArgs)

@@ -151,8 +151,11 @@ Public Class Pages_ReceipeEdit
         Try
             Dim ds As New DataSet
             ds = CRcp.SelectDataset_rcpEdit(id, custid)
+            If ds Is Nothing OrElse ds.Tables.Count = 0 Then
+                Throw New InvalidOperationException("Unable to load recipe details.")
+            End If
             If ds.Tables(0).Rows.Count = 0 Then
-                Exit Sub
+                Throw New InvalidOperationException("Recipe not found for the current customer.")
             End If
 
             txtNo.Text = ds.Tables(0).Rows(0).Item("code")
@@ -162,15 +165,22 @@ Public Class Pages_ReceipeEdit
             txtRemarks.Text = ds.Tables(0).Rows(0).Item("Remarks")
             'DdlType.SelectedValue = ds.Tables(0).Rows(0).Item("Type")
 
-            Dim dt As New DataTable
-            dt = CRcp.SelectDataset_rcpCost(custid, txtNo.Text, username, modulepriv).Tables(0)
+            Dim costData As DataSet = CRcp.SelectDataset_rcpCost(custid, txtNo.Text, username, modulepriv)
+            If costData Is Nothing OrElse costData.Tables.Count = 0 Then
+                Throw New InvalidOperationException("Unable to load recipe cost centres.")
+            End If
+            Dim dt As DataTable = costData.Tables(0)
             ViewState("costcc") = dt
             binding2()
             bindingcc()
             btnUpdate.Visible = True
             btnInsert.Visible = False
         Catch ex As Exception
-            errLog(Err.Description, "Pages_ReceipeEdit:editlist")
+            errLog(ex.Message, "Pages_ReceipeEdit:editlist")
+            btnUpdate.Visible = False
+            btnInsert.Visible = False
+            ScriptManager.RegisterStartupScript(Me, Me.GetType(), "recipeLoadError",
+                "document.getElementById('recipeLoadError').style.display = 'block';", True)
             Err.Clear()
         End Try
 
@@ -213,7 +223,9 @@ Public Class Pages_ReceipeEdit
 
             mfunction.CreateCookie("rcp", 0)
 
-            Response.Redirect("~/Pages_Receipe.aspx")
+            Response.Redirect("~/Pages_Receipe.aspx", False)
+            Context.ApplicationInstance.CompleteRequest()
+            Return
 
 
         Catch ex As Exception
@@ -655,7 +667,7 @@ Public Class Pages_ReceipeEdit
 
 
 
-                dt2.DefaultView.RowFilter = "ccname like '%" & txtSearchcc.Text & "%'"
+                dt2.DefaultView.RowFilter = "ccname like '%" & txtSearchcc.Text.Replace("'", "''") & "%'"
                 ViewState("invcc") = dt2
             End If
             'disable supaya kosong bisa

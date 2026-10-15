@@ -1,7 +1,8 @@
 <%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/SiteInventoryHome.Master"
     CodeBehind="Pages_Receipe.aspx.vb" Inherits="DreamPos_WebReport.Pages_Receipe" %>
-    <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    </asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link rel="stylesheet" href="css/inventory-mobile.css" />
+</asp:Content>
     <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
     </asp:Content>
     <asp:Content ID="Content3" ContentPlaceHolderID="BodyContent" runat="server">
@@ -19,6 +20,17 @@
         #dtExcelBtnContainer .dt-button:hover {
             background: #e2e6ea !important;
             color: #3a4f63 !important;
+        }
+        #tblEmpDetails tbody tr.recipe-row {
+            cursor: pointer;
+        }
+        #tblEmpDetails tbody tr.recipe-row:hover > td,
+        #tblEmpDetails tbody tr.recipe-row:focus > td {
+            background-color: #edf5ff;
+        }
+        #tblEmpDetails tbody tr.recipe-row:focus {
+            outline: 2px solid #007bff;
+            outline-offset: -2px;
         }
         </style>
     <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" />
@@ -210,7 +222,7 @@
 
 
                             <ItemTemplate>
-
+                                <tr class="recipe-row" tabindex="0" title="Edit recipe" aria-label="Edit recipe">
                                 <td>
                                     <asp:Label ID="Label2" runat="server" Text=' <%# Eval("code")%>'></asp:Label>
                                 </td>
@@ -234,6 +246,7 @@
                                                 button is clicked and we have passed our primary key to CommandArgument
                                                 property.====//--%>
                                                 <asp:ImageButton ID="imgBtnEdit" CommandName="Edt"
+                                                    CssClass="recipe-edit-trigger"
                                                     ToolTip="Edit a record." CommandArgument='<%#Eval("id") %>'
                                                     runat="server" ImageUrl="/images/edit.png" />
                                                 <asp:ImageButton ToolTip="Delete a record." OnClientClick="Confirm()"
@@ -260,7 +273,20 @@
 
 
                 <script>
-
+                    $(document).on('click.recipeRowEdit keydown.recipeRowEdit', '#tblEmpDetails tbody tr.recipe-row', function (event) {
+                        if ($(event.target).closest('a, button, input, select, textarea, label, [role="button"]').length) return;
+                        if (event.type === 'keydown') {
+                            if (event.target !== this || (event.key !== 'Enter' && event.key !== ' ')) return;
+                            event.preventDefault();
+                        } else if (window.getSelection && window.getSelection().toString()) {
+                            return;
+                        }
+                        var editButton = $(this).find('.recipe-edit-trigger')[0];
+                        if (editButton && !editButton.disabled) {
+                            $('#spinner').show();
+                            editButton.click();
+                        }
+                    });
                     if ($(window).width() >= 960) {
                         document.getElementById('<%= Div1.ClientID %>').style.width = "100%";
                     } else {

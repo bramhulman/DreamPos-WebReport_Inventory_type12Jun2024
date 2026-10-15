@@ -69,6 +69,7 @@
         }
         .btn-close:hover { opacity: 1; }
     </style>
+<link rel="stylesheet" href="css/inventory-mobile.css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
 </asp:Content>

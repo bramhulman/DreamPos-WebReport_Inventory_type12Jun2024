@@ -55,14 +55,9 @@ Public Class ModFunction
         moduleuser = &H1
     End Enum
     Public Sub errLog(ByVal strErrDesc As String, ByVal occurIn As String, Optional ByVal showErrMsg As Boolean = False)
-        Dim objWriter As New StreamWriter(My.Settings.errLog, True)
-
-        strErrDesc &= " (Occurred IN :" & occurIn & ")"
-        strErrDesc = strErrDesc
-        objWriter.WriteLine(Format(Now, "dd/MM/yy hh:mm:ss tt") & " ==>" & strErrDesc & vbCrLf)
-        objWriter.Close()
-        objWriter.Dispose()
-        If showErrMsg = True Then MsgBox(strErrDesc)
+        mHelper.errLog(strErrDesc, occurIn)
+        ' A web request must never open a desktop message box on the server.
+        If showErrMsg Then mHelper.TraceErrorLog(strErrDesc & " (Occurred IN :" & occurIn & ")")
 
     End Sub
 

@@ -261,8 +261,7 @@ Public Class clsDbo
             clsQueryGuard.CommitQuery(_qToken) ' sukses
 
             If _sw.ElapsedMilliseconds >= clsQueryGuard.SlowQueryThresholdMs Then
-                clsQueryGuard.MarkTimeout(_qToken, strQuery, "clsDbo.ExecuteScalar[SLOW " & _sw.ElapsedMilliseconds & "ms]",
-                    New Exception("Slow query: " & _sw.ElapsedMilliseconds & "ms"))
+                clsQueryGuard.LogSlowQuery(strQuery, "clsDbo.ExecuteScalar", _sw.ElapsedMilliseconds)
             End If
 
         Catch ex As Exception
@@ -317,8 +316,7 @@ Public Class clsDbo
                 clsQueryGuard.CommitQuery(_qToken) ' sukses
 
                 If _sw.ElapsedMilliseconds >= clsQueryGuard.SlowQueryThresholdMs Then
-                    clsQueryGuard.MarkTimeout(_qToken, strQuery, "clsDbo.executeNonQuery[SLOW " & _sw.ElapsedMilliseconds & "ms]",
-                        New Exception("Slow query: " & _sw.ElapsedMilliseconds & "ms"))
+                    clsQueryGuard.LogSlowQuery(strQuery, "clsDbo.executeNonQuery", _sw.ElapsedMilliseconds)
                 End If
 
                 hslFunction = True

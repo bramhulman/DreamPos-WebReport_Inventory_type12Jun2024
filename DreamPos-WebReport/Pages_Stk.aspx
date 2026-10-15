@@ -1,34 +1,65 @@
 <%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/SiteInventoryHome.Master" CodeBehind="Pages_Stk.aspx.vb" Inherits="DreamPos_WebReport.Pages_Stk" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="BodyContent" runat="server">
-    <style type="text/css">
-        .mycheckbox input[type="checkbox"] 
-        { 
-            margin-right: 10px; 
-        }
-        #dtExcelBtnContainer .dt-button {
-            background: #FFFFFF !important;
-            color: #3a4f63 !important;
-            border: 1px solid transparent !important;
-            background-image: none !important;
-            vertical-align: top !important;
-        }
-        #dtExcelBtnContainer .dt-button:hover {
-            background: #e2e6ea !important;
-            color: #3a4f63 !important;
-        }
-    </style>
+    <link rel="stylesheet" href="css/inventory-mobile.css" />
     <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" />
     <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css" />
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <style type="text/css">
+        .table-custom thead th {
+            background-color: #1e3a5f !important;
+            color: #ffffff !important;
+            font-weight: 700;
+            text-align: center;
+            vertical-align: middle;
+            border-color: #142841 !important;
+            padding: 9px 8px;
+            font-size: 0.88rem;
+        }
+        .table-custom tbody td {
+            vertical-align: middle;
+            font-size: 0.86rem;
+            padding: 7px 10px;
+        }
+        .table-custom tbody tr:hover {
+            background-color: #f1f7fd;
+            cursor: pointer;
+        }
+        .filter-card {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c3e50 100%);
+            border-radius: 6px;
+            padding: 10px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        #dtExcelBtnContainer .dt-button {
+            background: #28a745 !important;
+            color: #ffffff !important;
+            border: none !important;
+            font-weight: 600 !important;
+            font-size: 0.875rem !important;
+            border-radius: 4px !important;
+            padding: 4px 10px !important;
+            margin-left: 4px !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        }
+        #dtExcelBtnContainer .dt-button:hover {
+            background: #218838 !important;
+        }
+        #spinner.modal {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(255,255,255,0.75);
+            z-index: 9999; text-align: center;
+        }
+        #spinner .center {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+        }
+        #spinner img { width: 64px; height: 64px; }
+    </style>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
-    
     <script type="text/javascript">
         $(document).ready(function () {
             $('.btnstyle').click(function () {
@@ -48,12 +79,12 @@
         }
         $(function () {
             var table = $("#tblEmpDetails").DataTable({
-                dom: 'rtip', // remove f (search) and B (buttons) from default location
+                dom: 'rtip',
                 buttons: [
                     {
                         extend: 'excelHtml5',
-                        text: 'Export Excel',
-                        className: 'btn btn-primary',
+                        text: '<i class="fas fa-file-excel mr-1"></i>Export Excel',
+                        className: 'btn btn-success btn-sm',
                         exportOptions: {
                             columns: [ 0, 1, 2 ]
                         }
@@ -61,201 +92,127 @@
                 ]
             });
             
-            // Move the export button to our custom container (extract button directly without the wrapper)
             $('#dtExcelBtnContainer').append(table.buttons().container().find('button'));
 
-            // Wire the existing search textbox to datatables search
             $("[id$='txtsearch']").on('keyup change', function () {
                 table.search(this.value).draw();
             });
             
-            // Prevent search button postback, let it just trigger client search if clicked
             $("[id$='btnsrc']").on('click', function(e){
                 e.preventDefault();
                 table.search($("[id$='txtsearch']").val()).draw();
             });
         });
     </script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="BodyContent" runat="server">
 
-      <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Stock Master</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="inventoryHome.aspx">Home</a></li>
-              <li class="breadcrumb-item active">Stock Master</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-   <%-- <h2>User Access</h2>--%>
+    <!-- Loading Spinner -->
     <div id="spinner" class="modal" style="display: none">
         <div class="center">
-            <img alt="" src="/images/loader.gif" />
+            <img alt="Loading..." src="/images/loader.gif" />
+            <div class="font-weight-bold text-primary mt-2">Loading data...</div>
         </div>
     </div>
-    <div class="row">
-         <div class="form-inline" id="formload" runat="server" style="margin:0 20px; width:100%;background: #3a4f63;padding:0.2rem 0.8rem">
-                  <div class="form-group mx-sm-3 mt-mb-1">
-                    <asp:label for="txtsearch" runat="server"> <b style="color: #FFFFFF;margin-right:0.5rem;">Name:</b></asp:label>
-                    <asp:TextBox id="txtsearch" runat="server" Width="300px" CssClass="form-control" placeholder="Search" type="search" aria-label="Search"></asp:TextBox>
+
+    <!-- Content Header -->
+    <div class="content-header py-2">
+        <div class="container-fluid">
+            <div class="row align-items-center mb-1">
+                <div class="col-sm-6">
+                    <h4 class="m-0 text-dark font-weight-bold">
+                        <i class="fas fa-boxes text-primary mr-2"></i>Stock Master
+                    </h4>
                 </div>
-               <%-- <div class="form-group mx-sm-3 mt-mb-1">
-                    <asp:label for="chklink" runat="server"> <b style="color: #FFFFFF;margin-right:0.5rem;">By Link:</b></asp:label>
-                            <div class="form-check">
-                                <asp:CheckBox ID="chklink" runat="server" AutoPostBack="false" style="color: #FFFFFF;" class="form-check-input" type="checkbox"/>
-                              
-                                <label class="form-check-label" for="flexCheckChecked">
-                               <b style="color: #FFFFFF;margin-right:0.5rem;"> ALLDATA</b>
-                                </label>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right mb-0 py-0" style="background:transparent;">
+                        <li class="breadcrumb-item"><a href="inventoryHome.aspx">Home</a></li>
+                        <li class="breadcrumb-item active">Stock Master</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mb-4">
+        <!-- Filter / Toolbar Card -->
+        <div class="filter-card" id="formload" runat="server">
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <asp:Label for="txtsearch" runat="server" CssClass="text-white font-weight-bold mb-0">
+                        <i class="fas fa-search mr-1"></i>Search:
+                    </asp:Label>
+                </div>
+                <div class="col-md-3 col-sm-5 my-1">
+                    <asp:TextBox id="txtsearch" runat="server" CssClass="form-control form-control-sm" placeholder="Search stock..." type="search" aria-label="Search"></asp:TextBox>
+                </div>
+                <div class="col-auto my-1 d-flex flex-wrap align-items-center">
+                    <button runat="server" id="btnsrc" onserverclick="btnsearch" class="btn btn-sm btn-light text-primary font-weight-bold shadow-sm mr-1" title="Search">
+                        <i class="fas fa-search mr-1"></i>Search
+                    </button>
+                    <button type="button" runat="server" id="btnnew" onserverclick="btnNew_Click" class="btn btn-sm btn-primary font-weight-bold shadow-sm mr-1" title="New Stock">
+                        <i class="fas fa-plus mr-1"></i><asp:Label runat="server" Text="New"></asp:Label>
+                    </button>
+                    <button type="button" runat="server" id="btnExportExcel" onserverclick="btnExportExcel_Click" class="btn btn-sm btn-info font-weight-bold shadow-sm mr-1" title="Import Excel">
+                        <i class="fas fa-file-import mr-1"></i><asp:Label runat="server" Text="Import Excel"></asp:Label>
+                    </button>
+                    <div id="dtExcelBtnContainer" class="d-inline-block"></div>
+                </div>
+            </div>
+        </div>
+
+        <span class="failureNotification">
+            <asp:Literal ID="FailureText" runat="server"></asp:Literal>
+        </span>
+
+        <!-- Table Card -->
+        <div class="card card-outline card-primary shadow-sm">
+            <div class="card-body p-0">
+                <div class="form-horizontal w-100">
+                    <asp:ListView ID="lstViewDetails" OnItemCommand="lstView_ItemCommand" runat="server">
+                        <LayoutTemplate>
+                            <div class="table-responsive">
+                                <table id="tblEmpDetails" class="table table-bordered table-hover table-custom mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 15%;">Code</th>
+                                            <th>Name</th>
+                                            <th>Group Name</th>
+                                            <th style="width: 90px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <asp:PlaceHolder runat="server" ID="itemPlaceHolder"></asp:PlaceHolder>
+                                    </tbody>
+                                </table>
                             </div>
-                </div>--%>
-                <div class="form-group mx-sm-3 mt-mb-1">
-                         <div class="btn-group" role="group" style="margin:0.5rem" >
-                        <button runat="server" id="btnsrc" onserverclick="btnsearch" class="btn btn-mini" title="Search" style="background:#FFFFFF;color:#3a4f63;">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        </div>
-                    <div class="btn-group" role="group" style="margin:0.5rem">
-                        <button type="button" runat="server" id="btnnew" onserverclick="btnNew_Click" class="btn btn-primary" title="new" style="background:#FFFFFF;color:#3a4f63;">
-                           <asp:Label runat="server">New</asp:Label>
-                        </button>
-                        </div>
-                    <div class="btn-group" role="group" style="margin:0.5rem">
-                        <button type="button" runat="server" id="btnExportExcel" onserverclick="btnExportExcel_Click" class="btn btn-primary" title="Import Excel" style="background:#FFFFFF;color:#3a4f63;">
-                           <asp:Label runat="server">Import Excel</asp:Label>
-                        </button>
-                        </div>
-                    <div class="btn-group" role="group" style="margin:0.5rem" id="dtExcelBtnContainer">
-                    </div>
-                      </div>
-                 
-           
+                        </LayoutTemplate>
 
-                  
-
-
-                   
-                    
-                  
-
+                        <ItemTemplate>
+                            <tr class="clickable-row" onclick="if(!$(event.target).closest('a, button, input, img').length) { $(this).find('input[id*=\'imgBtnEdit\']').click(); }">
+                                <td>
+                                    <asp:Label ID="Label2" runat="server" Text='<%# Eval("Number")%>'></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:Label ID="Label3" runat="server" Text='<%# Eval("Name")%>'></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:Label ID="Label1" runat="server" Text='<%# Eval("grpname")%>'></asp:Label>
+                                </td>
+                                <td class="text-center" style="white-space: nowrap;">
+                                    <asp:ImageButton ID="imgBtnEdit" CommandName="Edt" ToolTip="Edit record"
+                                        CommandArgument='<%#Eval("ID").ToString %>' runat="server" ImageUrl="/images/edit.png" Style="vertical-align: middle; margin-right: 6px;" />
+                                    <asp:ImageButton ToolTip="Delete record" OnClientClick="Confirm()"
+                                        ID="imgBtnDelete" CommandName="Del" CommandArgument='<%#Eval("ID").ToString %>' runat="server"
+                                        ImageUrl="~/images/delete.png" Style="vertical-align: middle;"></asp:ImageButton>
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                    </asp:ListView>
                 </div>
-             
-     
-
-    </div>
-    <span class="failureNotification">
-                <asp:Literal ID="FailureText" runat="server"></asp:Literal>
-            </span>
-
-
-     <div class="row">
-         <div class="form-horizontal" style="margin:0 20px; width:100%;">
-          <asp:ListView ID="lstViewDetails" OnItemCommand="lstView_ItemCommand" runat="server">
-              <LayoutTemplate>
-    <div class="table-responsive">
-        <table id="tblEmpDetails" align="left" style="border-style: solid;" width="100%" class="menutab table table-bordered">
-            <thead>
-                <tr role="row">
-                    <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
-                        <b style="color: #414a4c">Code</b>
-                    </th>
-                    <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
-                        <b style="color: #414a4c">Name</b>
-                    </th>
-                    <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
-                        <b style="color: #414a4c">Group Name</b>
-                    </th>
-                   
-                   <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
-                        <b style="color: #414a4c">Action</b>
-                    </th>
-
-                </tr>
-            </thead>
-            <tbody>
-                    <asp:PlaceHolder runat="server" ID="itemPlaceHolder"></asp:PlaceHolder>
-                        </tbody>
-            </table>
+            </div>
         </div>
-                  </LayoutTemplate>
-              
-          
-                <ItemTemplate>
-                    <tr style="cursor:pointer;" class="clickable-row" onclick="if(!$(event.target).closest('a, button, input, img').length) { $(this).find('input[id*=\'imgBtnEdit\']').click(); }">
-                    <td>
-                        <asp:Label ID="Label2" runat="server" Text=' <%# Eval("Number")%>'></asp:Label>
-                    </td>
-                    <td>
-                        <asp:Label ID="Label3" runat="server" Text=' <%# Eval("Name")%>'></asp:Label>
-                    </td>
-                    
-                    <td>
-                        <asp:Label ID="Label1" runat="server" Text=' <%# Eval("grpname")%>'></asp:Label>
-                    </td>
-                    
-                    <td style="width: 8%; text-align: center">
-                        <%--//==== Here we have used CommandName property to distinguish which button is 
-                        clicked and we have passed our primary key to CommandArgument property. ====//--%>
-                        <asp:ImageButton ID="imgBtnEdit" CommandName="Edt" ToolTip="Edit a record."
-                            CommandArgument='<%#Eval("ID").ToString %>' runat="server" ImageUrl="/images/edit.png" />
-                        <asp:ImageButton ToolTip="Delete a record." OnClientClick="Confirm()"
-                            ID="imgBtnDelete" CommandName="Del" CommandArgument='<%#Eval("ID").ToString %>' runat="server"
-                            ImageUrl="~/images/delete.png"></asp:ImageButton>
-                    </td>
-
-
-
-
-                    </tr>
-                </ItemTemplate>
-            </asp:ListView>
-        <%--</table>--%>
-
-        <br />
     </div>
-    <%-- <div class="table-responsive" style="margin:0 20px; width:100%;">
-        <table class="table">
-            <tr>
-                <td>
-                    <asp:Label runat="server" Font-Bold="True">Page: </asp:Label>
-                    <asp:DataPager ID="lvDataPager1" runat="server" PagedControlID="lstViewDetails" PageSize="15">
-                        <Fields>
-                             <asp:NextPreviousPagerField ButtonType="Link"
-                                ShowFirstPageButton="true"
-                                ShowNextPageButton="false"
-                                ShowPreviousPageButton="false" />
-          <asp:NumericPagerField ButtonCount="7" />
-                            <asp:NextPreviousPagerField ButtonType="Link"
-                                ShowLastPageButton="true"
-                                ShowNextPageButton="false"
-                                ShowPreviousPageButton="false" />
-                        </Fields>
-                    </asp:DataPager>
-                </td>
-            </tr>
-        </table>
-    </div> --%>
-        
-         </div>
-       
-
-    
-      <script>
-       
-            if ($(window).width() >= 960) {
-                document.getElementById("<%= formload.ClientID %>").style.width = "100%";
-                } else {
-                document.getElementById("<%= formload.ClientID %>").style.width = "50%";
-                
-               }
-      
-       
-    </script>
 </asp:Content>

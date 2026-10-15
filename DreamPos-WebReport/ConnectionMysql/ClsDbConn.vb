@@ -142,8 +142,7 @@ Public Class clsDbConn
             clsQueryGuard.CommitQuery(_qToken) ' sukses
 
             If _sw.ElapsedMilliseconds >= clsQueryGuard.SlowQueryThresholdMs Then
-                clsQueryGuard.MarkTimeout(_qToken, myCmd.CommandText, "clsDbConn.executeScaler[SLOW " & _sw.ElapsedMilliseconds & "ms]",
-                    New Exception("Slow query: " & _sw.ElapsedMilliseconds & "ms"))
+                clsQueryGuard.LogSlowQuery(myCmd.CommandText, "clsDbConn.executeScaler", _sw.ElapsedMilliseconds)
             End If
 
         Catch ex As Exception

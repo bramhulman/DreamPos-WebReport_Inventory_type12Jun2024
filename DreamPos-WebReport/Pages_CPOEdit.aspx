@@ -1,34 +1,17 @@
-﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/SiteInventoryHome.Master"
+<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/SiteInventoryHome.Master"
     CodeBehind="Pages_CPOEdit.aspx.vb" Inherits="DreamPos_WebReport.Pages_CPOEdit" %>
     <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
         <%@ Register Assembly="EditableDropDownList" Namespace="EditableControls" TagPrefix="editable" %>
-            <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-            </asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+            <link rel="stylesheet" href="css/inventory-mobile.css" />
+</asp:Content>
             <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
             </asp:Content>
             <asp:Content ID="BodyContent" ContentPlaceHolderID="BodyContent" runat="server">
                 <asp:ScriptManager runat="server">
 
                 </asp:ScriptManager>
-                <style>
-                    .input-group>.form-control {
-                        width: 800px;
-                    }
-                </style>
                 <style type="text/css">
-                    /*.modal
-    {
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: black;
-        z-index: 99;
-        opacity: 0.8;
-        filter: alpha(opacity=80);
-        -moz-opacity: 0.8;
-        min-height: 100%;
-        width: 100%;
-    }*/
                     .loading {
                         font-family: Arial;
                         font-size: 10pt;
@@ -41,7 +24,7 @@
                         position: fixed;
                         background-color: rgba(0, 0, 0, 0.4);
                         text-align: center;
-                        /*z-index: 999;*/
+                        z-index: 9999;
                     }
 
                     .loading>div {
@@ -53,11 +36,7 @@
                         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
                     }
                 </style>
-                <script type="text/javascript"
-                    src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
                 <script type="text/javascript">
-                    var prm = Sys.WebForms.PageRequestManager.getInstance();
-
                     function ShowProgress() {
                         var loading = $(".loading");
                         if (loading.length === 0) return;
@@ -77,15 +56,17 @@
                     $(window).on('load', HideProgress);
 
                     // Untuk UpdatePanel biasa (AsyncPostBack)
-                    if (prm) {
-                        prm.add_endRequest(HideProgress);
-                    }
+                    $(document).ready(function () {
+                        if (typeof Sys !== 'undefined' && Sys.WebForms && Sys.WebForms.PageRequestManager) {
+                            var prm = Sys.WebForms.PageRequestManager.getInstance();
+                            if (prm) {
+                                prm.add_endRequest(HideProgress);
+                            }
+                        }
+                    });
 
-                    // Khusus untuk export: sembunyikan setelah 3 detik (safety, kalau download cepat)
-                    // Atau pakai event download selesai (sulit dideteksi), jadi pakai timeout
                     function startExport() {
                         ShowProgress();
-                        // Sembunyikan otomatis setelah 8 detik (cukup untuk download + safety)
                         setTimeout(function () {
                             HideProgress();
                         }, 8000);
@@ -391,7 +372,7 @@
                                 style="font-weight: 600; border-color:gray; width:200px; margin:5px;"
                                 OnClick="btnExportDetail_Click" OnClientClick="startExport(); return true;" />
                             <asp:GridView ID="DgvTransfer" runat="server" Width="100%" AutoGenerateColumns="false"
-                                HeaderStyle-BackColor="#4D4D4D" HeaderStyle-ForeColor="White" CellPadding="5">
+                                HeaderStyle-BackColor="#1e3a5f" HeaderStyle-ForeColor="White" CssClass="table table-bordered table-hover mb-0" CellPadding="5">
                                 <Columns>
 
 
@@ -698,10 +679,7 @@
                     }
                 </script>
 
-                <!-- jQuery and Bootstrap JS files -->
-                <script src="Content/js/jquery-3.3.1.min.js"></script>
-                <script src="Content/js/popper.min.js"></script>
-                <script src="Content/js/bootstrap.min.js"></script>
+                <!-- Datatables-->
 
 
 
