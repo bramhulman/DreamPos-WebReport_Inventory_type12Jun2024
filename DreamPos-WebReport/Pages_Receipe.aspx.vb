@@ -123,24 +123,13 @@ Public Class Pages_Receipe
         clsInv = Nothing
     End Sub
     Public Sub DeleteRcp(ByVal id As Integer, ByVal Custid As Integer, ByVal username As String)
-        'Dim pc As String = pic.ToString
-        Try
-
-            Dim str As String
-            Dim c_cmd As New Cls_command
-
-            str = "DELETE FROM cld_inv_Rcp  where id = " & id & ""
-
-            c_cmd.executeNonQuery(str)
-
-            'Revisi 10 Mei
-            insertLogModule(username, "InvRcp", "Delete", Custid)
-
-        Catch ex As Exception
-
-            errLog(Err.Description, "webservice:DeleteInvRcp")
-            Err.Clear()
-        End Try
+        Using db As New RecipeDb()
+            db.SetParameter("id", id)
+            db.SetParameter("custid", Custid)
+            db.Execute("DELETE FROM cld_inv_rcp WHERE id=@id AND custid=@custid")
+            db.Commit()
+        End Using
+        insertLogModule(username, "InvRcp", "Delete", Custid)
     End Sub
     Protected Sub lstView_ItemCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.ListViewCommandEventArgs) Handles lstViewDetails.ItemCommand
         '<%--autocomplete="off"--%>

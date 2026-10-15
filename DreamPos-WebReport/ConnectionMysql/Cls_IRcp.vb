@@ -206,47 +206,39 @@
         End Try
     End Function
     Public Function insertRcp(ByVal code As String, ByVal nama As String, ByVal remarks As String, ByVal custid As Integer, ByVal username As String)
-
-        Dim c_cmd As New clsDbo("")
-        Dim id As Integer = 0
-        Try
-
-            Dim ds As DataSet
-            'Dim id As Integer = 0
-
-            ds = SelectDataRcp_wName(nama, code)
-
-            If ds.Tables(0).Rows.Count > 0 Then
-                id = ds.Tables(0).Rows(0).Item("id")
-            End If
-
-
-            Dim str As String
-
-
-            If ds.Tables(0).Rows.Count = 0 Then
-                str = "insert into cld_inv_rcp values (" & c_cmd.ExecuteScalar("select max(ID) from cld_inv_rcp") & ", " & custid & ", '" & code & "',   '" & nama & "',0, '" & remarks & "')"
-
-                'Revisi 10 Mei
-                insertLogModule(username, "receipe", "Insert", custid)
-            Else
-                str = "Update cld_inv_rcp set  name = '" & nama & "', code = '" & code & "', remarks = '" & remarks & "' where custid = " & custid & " and id = " & id & ""
-
-
-                insertLogModule(username, "receipe", "Update", custid)
-            End If
-
-            c_cmd.executeNonQuery(str)
-
-        Catch ex As Exception
-
-            errLog(Err.Description, "webservice:insertRcp")
-            Err.Clear()
-        End Try
+        Dim activity As String = ""
+        Dim id As Integer = SaveRecipe(custid, code, nama, remarks, Nothing, activity)
+        insertLogModule(username, "receipe", activity, custid)
         Return id
-
-        c_cmd = Nothing
-
+    End Function
+    Public Shared Function SaveRecipe(ByVal custid As Integer, ByVal code As String, ByVal nama As String,
+                                      ByVal remarks As String, ByVal cost As Nullable(Of Decimal), ByRef activity As String) As Integer
+        Using db As New RecipeDb()
+            db.SetParameter("custid", custid)
+            db.SetParameter("code", code)
+            db.SetParameter("name", nama)
+            db.SetParameter("remarks", remarks)
+            db.SetParameter("cost", If(cost.HasValue, cost.Value, 0D))
+            Dim existing As Object = db.Scalar("SELECT id FROM cld_inv_rcp WHERE custid=@custid AND code=@code ORDER BY id LIMIT 1 FOR UPDATE")
+            Dim id As Integer
+            If existing Is Nothing OrElse IsDBNull(existing) Then
+                activity = "Insert"
+                ' Preserve explicit IDs shared with legacy apps. Conflicting inserts fail and roll back.
+                Dim lastId As Object = db.Scalar("SELECT id FROM cld_inv_rcp ORDER BY id DESC LIMIT 1 FOR UPDATE")
+                id = If(lastId Is Nothing OrElse IsDBNull(lastId), 1, Convert.ToInt32(lastId) + 1)
+                db.SetParameter("id", id)
+                db.Execute("INSERT INTO cld_inv_rcp (id,custid,code,name,cost,remarks) VALUES (@id,@custid,@code,@name,@cost,@remarks)")
+            Else
+                id = Convert.ToInt32(existing)
+                activity = "Update"
+                db.SetParameter("id", id)
+                Dim sql As String = "UPDATE cld_inv_rcp SET code=@code,name=@name,remarks=@remarks"
+                If cost.HasValue Then sql &= ",cost=@cost"
+                db.Execute(sql & " WHERE id=@id AND custid=@custid")
+            End If
+            db.Commit()
+            Return id
+        End Using
     End Function
     Public Function SelectDataRcp(ByVal id As Integer) As DataSet
         Dim ds As New DataSet

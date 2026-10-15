@@ -302,6 +302,7 @@
     <Content Include="index2.html" />
     <Content Include="index3.html" />
     <Content Include="css\inventory-mobile.css" />
+    <Content Include="css\inventory-light.css" />
     <Content Include="Inventoryhome.aspx" />
     <Content Include="kstock.aspx" />
     <Content Include="Logout.aspx" />
@@ -2007,6 +2008,7 @@
     <Compile Include="ConnectionMysql\Cls_IBatch.vb" />
     <Compile Include="ConnectionMysql\Cls_ICc.vb" />
     <Compile Include="ConnectionMysql\Cls_IRcp.vb" />
+    <Compile Include="ConnectionMysql\RecipeDb.vb" />
     <Compile Include="ConnectionMysql\Cls_IRcpDtl.vb" />
     <Compile Include="ConnectionMysql\Cls_IRcv.vb" />
     <Compile Include="ConnectionMysql\Cls_IReturn.vb" />

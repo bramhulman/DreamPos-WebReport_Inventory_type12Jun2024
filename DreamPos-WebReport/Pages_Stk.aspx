@@ -1,7 +1,6 @@
 <%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/SiteInventoryHome.Master" CodeBehind="Pages_Stk.aspx.vb" Inherits="DreamPos_WebReport.Pages_Stk" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" href="css/inventory-mobile.css" />
-    <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" />
     <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css" />
     <style type="text/css">
         .table-custom thead th {
@@ -22,6 +21,10 @@
         .table-custom tbody tr:hover {
             background-color: #f1f7fd;
             cursor: pointer;
+        }
+        .table-custom tbody tr.clickable-row:focus {
+            outline: 2px solid #007bff;
+            outline-offset: -2px;
         }
         .filter-card {
             background: linear-gradient(135deg, #1e3a5f 0%, #2c3e50 100%);
@@ -56,16 +59,10 @@
         }
         #spinner img { width: 64px; height: 64px; }
     </style>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('.btnstyle').click(function () {
-                $('#spinner').show();
-            });
-        });
         function Confirm() {
             var confirm_value = document.createElement("INPUT");
             confirm_value.type = "hidden";
@@ -77,32 +74,90 @@
             }
             document.forms[0].appendChild(confirm_value);
         }
-        $(function () {
-            var table = $("#tblEmpDetails").DataTable({
-                dom: 'rtip',
-                buttons: [
-                    {
-                        extend: 'excelHtml5',
-                        text: '<i class="fas fa-file-excel mr-1"></i>Export Excel',
-                        className: 'btn btn-success btn-sm',
-                        exportOptions: {
-                            columns: [ 0, 1, 2 ]
+        (function () {
+            function initializeStockTable() {
+                var notice = document.getElementById('stockTableError');
+                if (!document.getElementById('tblEmpDetails')) return;
+                if (!window.jQuery || !jQuery.fn.DataTable) {
+                    notice.textContent = 'Some table features are unavailable. You can still use Search or reload the page.';
+                    notice.hidden = false;
+                    return;
+                }
+                var $ = window.jQuery;
+                var search = $("[id$='txtsearch']");
+                var button = $("[id$='btnsrc']");
+                search.off('.stockSearch');
+                button.off('.stockSearch');
+                var table;
+                try {
+                    table = $.fn.dataTable.isDataTable('#tblEmpDetails')
+                        ? $('#tblEmpDetails').DataTable()
+                        : $('#tblEmpDetails').DataTable({
+                            dom: 'rtip',
+                            columnDefs: [{ targets: -1, orderable: false, searchable: false }]
+                        });
+                    table.search(search.val() || '').draw();
+                    search.on('keyup.stockSearch change.stockSearch', function () {
+                        table.search(this.value).draw();
+                    }).on('keydown.stockSearch', function (event) {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            table.search(this.value).draw();
                         }
+                    });
+                    button.on('click.stockSearch', function (event) {
+                        event.preventDefault();
+                        table.search(search.val()).draw();
+                    });
+                } catch (error) {
+                    search.off('.stockSearch');
+                    button.off('.stockSearch');
+                    notice.textContent = 'Some table features are unavailable. You can still use Search or reload the page.';
+                    notice.hidden = false;
+                    return;
+                }
+                try {
+                    if (!$.fn.dataTable.Buttons || !window.JSZip ||
+                        !$.fn.dataTable.ext.buttons.excelHtml5) throw new Error('Export unavailable');
+                    if (!document.querySelector('#dtExcelBtnContainer .dt-button')) {
+                        new $.fn.dataTable.Buttons(table, {
+                            buttons: [{
+                                extend: 'excelHtml5',
+                                text: '<i class="fas fa-file-excel mr-1"></i>Export Excel',
+                                className: 'btn btn-success btn-sm',
+                                exportOptions: { columns: [0, 1, 2] }
+                            }]
+                        });
+                        $('#dtExcelBtnContainer').append(table.buttons().container().find('button'));
                     }
-                ]
+                    notice.hidden = true;
+                } catch (error) {
+                    notice.textContent = 'Excel export is unavailable. You can still browse and search stock. Reload the page to try again.';
+                    notice.hidden = false;
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeStockTable);
+            } else {
+                initializeStockTable();
+            }
+        }());
+        if (window.jQuery) {
+            $(document).off('.stockRowEdit').on('click.stockRowEdit keydown.stockRowEdit', '#tblEmpDetails tbody tr.clickable-row', function (event) {
+                if ($(event.target).closest('a, button, input, select, textarea, label, [role="button"]').length) return;
+                if (event.type === 'keydown') {
+                    if (event.target !== this || (event.key !== 'Enter' && event.key !== ' ')) return;
+                    event.preventDefault();
+                } else if (window.getSelection && window.getSelection().toString()) {
+                    return;
+                }
+                var editButton = $(this).find('.stock-edit-trigger')[0];
+                if (editButton && !editButton.disabled) {
+                    $('#spinner').show();
+                    editButton.click();
+                }
             });
-            
-            $('#dtExcelBtnContainer').append(table.buttons().container().find('button'));
-
-            $("[id$='txtsearch']").on('keyup change', function () {
-                table.search(this.value).draw();
-            });
-            
-            $("[id$='btnsrc']").on('click', function(e){
-                e.preventDefault();
-                table.search($("[id$='txtsearch']").val()).draw();
-            });
-        });
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
@@ -166,12 +221,16 @@
         <span class="failureNotification">
             <asp:Literal ID="FailureText" runat="server"></asp:Literal>
         </span>
+        <div id="stockTableError" class="alert alert-warning" role="status" hidden></div>
 
         <!-- Table Card -->
         <div class="card card-outline card-primary shadow-sm">
             <div class="card-body p-0">
                 <div class="form-horizontal w-100">
                     <asp:ListView ID="lstViewDetails" OnItemCommand="lstView_ItemCommand" runat="server">
+                        <EmptyDataTemplate>
+                            <p class="text-muted p-3 mb-0" role="status">No stock items found.</p>
+                        </EmptyDataTemplate>
                         <LayoutTemplate>
                             <div class="table-responsive">
                                 <table id="tblEmpDetails" class="table table-bordered table-hover table-custom mb-0">
@@ -191,7 +250,7 @@
                         </LayoutTemplate>
 
                         <ItemTemplate>
-                            <tr class="clickable-row" onclick="if(!$(event.target).closest('a, button, input, img').length) { $(this).find('input[id*=\'imgBtnEdit\']').click(); }">
+                            <tr class="clickable-row" tabindex="0" title="Edit stock" aria-label="Edit stock">
                                 <td>
                                     <asp:Label ID="Label2" runat="server" Text='<%# Eval("Number")%>'></asp:Label>
                                 </td>
@@ -203,6 +262,7 @@
                                 </td>
                                 <td class="text-center" style="white-space: nowrap;">
                                     <asp:ImageButton ID="imgBtnEdit" CommandName="Edt" ToolTip="Edit record"
+                                        CssClass="stock-edit-trigger"
                                         CommandArgument='<%#Eval("ID").ToString %>' runat="server" ImageUrl="/images/edit.png" Style="vertical-align: middle; margin-right: 6px;" />
                                     <asp:ImageButton ToolTip="Delete record" OnClientClick="Confirm()"
                                         ID="imgBtnDelete" CommandName="Del" CommandArgument='<%#Eval("ID").ToString %>' runat="server"

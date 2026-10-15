@@ -261,37 +261,55 @@ getsid:
 
 
     Public Sub insertRcpDtl(ByVal id As Integer, ByVal custid As Integer, ByVal rcpid As Integer, ByVal tipe As Integer, ByVal kodeid As Integer, ByVal qty As Decimal, ByVal Lossf As Decimal, ByVal username As String)
-        Try
+        SaveDetail(id, custid, rcpid, tipe, kodeid, qty, Lossf, "edit")
+        insertLogModule(username, "Invrcpdtl", "Update", custid)
+    End Sub
 
-            Dim ds As DataSet
-            'Dim qtyrcp As Decimal = 0
-            ds = SelectDataRcpDtl(id)
-            qtyrcp = SelectQtyRcpDtl(rcpid, kodeid)
-
-            Dim str As String
-            Dim c_cmd As New Cls_command
-            If ds.Tables(0).Rows.Count = 0 Then
-                'If qtyrcp = 0 Then
-                str = "insert into cld_Inv_rcpdtl values (" & c_cmd.ExecuteScalar("select max(ID) from cld_inv_rcpdtl") & ", " & custid & ", " & rcpid & ",  " & tipe & ", " & kodeid & ", " & qty & ", " & Lossf & ")"
-
-
-                'Revisi 10 Mei
-                insertLogModule(username, "Invrcpdtl", "Insert", custid)
-            Else
-                str = "Update cld_inv_rcpdtl set  tipe = " & tipe & ", kodeid = " & kodeid & ",  qty = " & qty & ", lossf = " & Lossf & " where id = " & id & ""
-
-
-
-                insertLogModule(username, "Invrcpdtl", "Update", custid)
+    Public Shared Sub SaveDetail(ByVal id As Integer, ByVal custid As Integer, ByVal rcpid As Integer,
+                                 ByVal tipe As Integer, ByVal kodeid As Integer, ByVal qty As Decimal,
+                                 ByVal lossf As Decimal, ByVal mode As String)
+        If tipe <> 1 AndAlso tipe <> 2 Then Throw New ArgumentException("Invalid recipe detail type.")
+        Using db As New RecipeDb()
+            db.SetParameter("id", id)
+            db.SetParameter("custid", custid)
+            db.SetParameter("rcpid", rcpid)
+            db.SetParameter("tipe", tipe)
+            db.SetParameter("kodeid", kodeid)
+            db.SetParameter("qty", qty)
+            db.SetParameter("lossf", lossf)
+            If db.Scalar("SELECT id FROM cld_inv_rcp WHERE id=@rcpid AND custid=@custid FOR UPDATE") Is Nothing Then
+                Throw New InvalidOperationException("Recipe not found for this customer.")
             End If
-
-            c_cmd.executeNonQuery(str)
-
-        Catch ex As Exception
-
-            errLog(Err.Description, "webservice:insertInvrcpdtl")
-            Err.Clear()
-        End Try
+            Dim itemSql As String = If(tipe = 1,
+                "SELECT id FROM cld_inv_stk WHERE id=@kodeid AND custid=@custid",
+                "SELECT id FROM cld_inv_rcp WHERE id=@kodeid AND custid=@custid")
+            If db.Scalar(itemSql) Is Nothing Then
+                Throw New InvalidOperationException("Recipe item not found for this customer.")
+            End If
+            Dim existing As Object
+            If mode = "edit" Then
+                existing = db.Scalar("SELECT id FROM cld_inv_rcpdtl WHERE id=@id AND custid=@custid AND rcpid=@rcpid FOR UPDATE")
+            Else
+                existing = db.Scalar("SELECT id FROM cld_inv_rcpdtl WHERE custid=@custid AND rcpid=@rcpid AND kodeid=@kodeid AND tipe=@tipe ORDER BY id LIMIT 1 FOR UPDATE")
+            End If
+            If mode = "import" Then
+                db.Execute("DELETE FROM cld_inv_rcpdtl WHERE custid=@custid AND rcpid=@rcpid AND kodeid=@kodeid AND tipe=@tipe")
+                existing = Nothing
+            End If
+            If existing Is Nothing OrElse IsDBNull(existing) Then
+                Dim lastId As Object = db.Scalar("SELECT id FROM cld_inv_rcpdtl ORDER BY id DESC LIMIT 1 FOR UPDATE")
+                db.SetParameter("id", If(lastId Is Nothing OrElse IsDBNull(lastId), 1, Convert.ToInt32(lastId) + 1))
+                db.Execute("INSERT INTO cld_inv_rcpdtl (id,custid,rcpid,tipe,kodeid,qty,lossf) VALUES (@id,@custid,@rcpid,@tipe,@kodeid,@qty,@lossf)")
+            Else
+                db.SetParameter("id", Convert.ToInt32(existing))
+                If mode = "add" Then
+                    db.Execute("UPDATE cld_inv_rcpdtl SET qty=qty+@qty,lossf=@lossf WHERE id=@id AND custid=@custid AND rcpid=@rcpid")
+                Else
+                    db.Execute("UPDATE cld_inv_rcpdtl SET tipe=@tipe,kodeid=@kodeid,qty=@qty,lossf=@lossf WHERE id=@id AND custid=@custid AND rcpid=@rcpid")
+                End If
+            End If
+            db.Commit()
+        End Using
     End Sub
     Public Function SelectDataRcpcc(ByVal id As Integer, ByVal ccid As Integer, ByVal custid As Integer) As DataSet
         Dim ds As New DataSet
@@ -310,76 +328,27 @@ getsid:
 
     End Function
     Public Sub deleteRcpcc(ByVal id As Integer, ByVal custid As Integer)
-        Dim str As String
-        Dim c_cmd As New Cls_command
-
-
-        Try
-
-            If My.Settings.rcp_cc = 1 Then
-                str = "DELETE FROM cld_inv_rcp_cc WHERE rcpid = " & id & " AND custid = " & custid & ""
-
-                c_cmd.executeNonQuery(str)
-            End If
-
-
-
-        Catch ex As Exception
-
-        End Try
-
+        If My.Settings.rcp_cc <> 1 Then Return
+        Using db As New RecipeDb()
+            db.SetParameter("id", id)
+            db.SetParameter("custid", custid)
+            db.Execute("DELETE FROM cld_inv_rcp_cc WHERE rcpid=@id AND custid=@custid")
+            db.Commit()
+        End Using
     End Sub
     Public Sub importRcpDtl(ByVal custid As Integer, ByVal rcpid As Integer, ByVal tipe As Integer, ByVal kodeid As Integer, ByVal qty As Decimal, ByVal Lossf As Decimal, ByVal username As String)
-        Try
-
-
-            Dim str1, str As String
-            Dim c_cmd As New Cls_command
-            If c_cmd.ExecuteScalar("select * from cld_inv_rcpdtl where rcpid = " & rcpid & " and kodeid = " & kodeid & "", 0) > 0 Then
-                str1 = "delete from cld_inv_rcpdtl where rcpid = " & rcpid & " and kodeid = " & kodeid & ""
-                c_cmd.executeNonQuery(str1)
-                str = "insert into cld_Inv_rcpdtl values (" & c_cmd.ExecuteScalar("select max(ID) from cld_inv_rcpdtl") & ", " & custid & ", " & rcpid & ",  " & tipe & ", " & kodeid & ", " & qty & ", " & Lossf & ")"
-
-
-                'Revisi 10 Mei
-                insertLogModule(username, "Invrcpdtl", "Delete", custid)
-            Else
-                'str = "Update cld_inv_rcpdtl set  tipe = " & tipe & ", kodeid = " & kodeid & ",  qty = " & qty & ", lossf = " & Lossf & " where id = " & id & ""
-                str = "insert into cld_Inv_rcpdtl values (" & c_cmd.ExecuteScalar("select max(ID) from cld_inv_rcpdtl") & ", " & custid & ", " & rcpid & ",  " & tipe & ", " & kodeid & ", " & qty & ", " & Lossf & ")"
-
-
-
-                insertLogModule(username, "Invrcpdtl", "Update", custid)
-            End If
-
-            c_cmd.executeNonQuery(str)
-
-        Catch ex As Exception
-
-            errLog(Err.Description, "webservice:insertInvrcpdtl")
-            Err.Clear()
-        End Try
+        SaveDetail(0, custid, rcpid, tipe, kodeid, qty, Lossf, "import")
+        insertLogModule(username, "Invrcpdtl", "Update", custid)
     End Sub
 
 
     Public Sub deleteRcpStk(ByVal id As Integer, ByVal custid As Integer)
-        Dim str As String
-        Dim c_cmd As New Cls_command
-
-
-        Try
-
-            If My.Settings.rcp_cc = 1 Then
-                str = "DELETE FROM cld_inv_stkxrcp WHERE stkid = " & id & " AND custid = " & custid & ""
-
-                c_cmd.executeNonQuery(str)
-            End If
-
-
-
-        Catch ex As Exception
-
-        End Try
-
+        If My.Settings.rcp_cc <> 1 Then Return
+        Using db As New RecipeDb()
+            db.SetParameter("id", id)
+            db.SetParameter("custid", custid)
+            db.Execute("DELETE FROM cld_inv_stkxrcp WHERE stkid=@id AND custid=@custid")
+            db.Commit()
+        End Using
     End Sub
 End Class

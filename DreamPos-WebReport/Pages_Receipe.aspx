@@ -33,20 +33,8 @@
             outline-offset: -2px;
         }
         </style>
-    <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" />
-    <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css" />
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
 
             <script type="text/javascript">
-                $(document).ready(function () {
-                    $('.btnstyle').click(function () {
-                        $('#spinner').show();
-                    });
-                });
                 function Confirm() {
                     var confirm_value = document.createElement("INPUT");
                     confirm_value.type = "hidden";
@@ -58,20 +46,6 @@
                     }
                     document.forms[0].appendChild(confirm_value);
                 }
-        $(function () {
-            var table = $("#tblEmpDetails").DataTable({
-                dom: 'rtip'
-            });
-
-            $("[id$='txtsearch']").on('keyup change', function () {
-                table.search(this.value).draw();
-            });
-            
-            $("[id$='btnsrc']").on('click', function(e){
-                e.preventDefault();
-                table.search($("[id$='txtsearch']").val()).draw();
-            });
-        });
             </script>
 
             <!-- Content Header (Page header) -->
@@ -169,11 +143,17 @@
                 <span class="failureNotification">
                     <asp:Literal ID="FailureText" runat="server"></asp:Literal>
                 </span>
+                <div id="recipeTableError" class="alert alert-warning mx-3" role="status" hidden>
+                    Some table features are unavailable. You can still use Search or reload the page.
+                </div>
 
 
                 <div class="row">
                     <div class="form-horizontal" style="margin:0 20px; width:100%;">
                         <asp:ListView ID="lstViewDetails" OnItemCommand="lstView_ItemCommand" runat="server">
+                            <EmptyDataTemplate>
+                                <p class="text-muted py-3 mb-0" role="status">No recipes found.</p>
+                            </EmptyDataTemplate>
                             <LayoutTemplate>
                                 <div class="table-responsive">
                                     <table id="tblEmpDetails" align="left" style="border-style: solid;" width="100%"
@@ -273,7 +253,54 @@
 
 
                 <script>
-                    $(document).on('click.recipeRowEdit keydown.recipeRowEdit', '#tblEmpDetails tbody tr.recipe-row', function (event) {
+                    (function () {
+                        function initializeRecipeTable() {
+                            var notice = document.getElementById('recipeTableError');
+                            if (!document.getElementById('tblEmpDetails')) return;
+                            if (!window.jQuery || !jQuery.fn.DataTable) {
+                                notice.hidden = false;
+                                return;
+                            }
+                            var $ = window.jQuery;
+                            var search = $("[id$='txtsearch']");
+                            var button = $("[id$='btnsrc']");
+                            search.off('.recipeSearch');
+                            button.off('.recipeSearch');
+                            try {
+                                var table = $.fn.dataTable.isDataTable('#tblEmpDetails')
+                                    ? $('#tblEmpDetails').DataTable()
+                                    : $('#tblEmpDetails').DataTable({
+                                        dom: 'rtip',
+                                        columnDefs: [{ targets: -1, orderable: false, searchable: false }]
+                                    });
+                                table.search(search.val() || '').draw();
+                                search.on('keyup.recipeSearch change.recipeSearch', function () {
+                                    table.search(this.value).draw();
+                                }).on('keydown.recipeSearch', function (event) {
+                                    if (event.key === 'Enter') {
+                                        event.preventDefault();
+                                        table.search(this.value).draw();
+                                    }
+                                });
+                                button.on('click.recipeSearch', function (event) {
+                                    event.preventDefault();
+                                    table.search(search.val()).draw();
+                                });
+                                notice.hidden = true;
+                            } catch (error) {
+                                search.off('.recipeSearch');
+                                button.off('.recipeSearch');
+                                notice.hidden = false;
+                            }
+                        }
+                        if (document.readyState === 'loading') {
+                            document.addEventListener('DOMContentLoaded', initializeRecipeTable);
+                        } else {
+                            initializeRecipeTable();
+                        }
+                    }());
+                    if (window.jQuery) {
+                    $(document).off('.recipeRowEdit').on('click.recipeRowEdit keydown.recipeRowEdit', '#tblEmpDetails tbody tr.recipe-row', function (event) {
                         if ($(event.target).closest('a, button, input, select, textarea, label, [role="button"]').length) return;
                         if (event.type === 'keydown') {
                             if (event.target !== this || (event.key !== 'Enter' && event.key !== ' ')) return;
@@ -287,11 +314,6 @@
                             editButton.click();
                         }
                     });
-                    if ($(window).width() >= 960) {
-                        document.getElementById('<%= Div1.ClientID %>').style.width = "100%";
-                    } else {
-                        document.getElementById('<%= Div1.ClientID %>').style.width = "50%";
-
                     }
 
 

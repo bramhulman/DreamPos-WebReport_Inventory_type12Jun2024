@@ -295,38 +295,8 @@ Public Class Pages_ReceipeDetailAdd
         End Try
     End Sub
     Public Sub insertRcpDtl(ByVal id As Integer, ByVal custid As Integer, ByVal rcpid As Integer, ByVal tipe As Integer, ByVal kodeid As Integer, ByVal qty As Decimal, ByVal Lossf As Decimal, ByVal username As String)
-        Try
-
-            'Dim ds As DataSet
-            'ds = Crcpdtl.SelectDataRcpDtl(id)
-            Dim qtyrcp As Decimal = 0
-
-            qtyrcp = Crcpdtl.SelectQtyRcpDtl(rcpid, kodeid)
-
-            Dim str As String
-            Dim c_cmd As New Cls_command
-            'If ds.Tables(0).Rows.Count = 0 Then
-            If qtyrcp = 0 Then
-                str = "insert into cld_Inv_rcpdtl values (" & c_cmd.ExecuteScalar("select max(ID) from cld_inv_rcpdtl") & ", " & custid & ", " & rcpid & ",  " & tipe & ", " & kodeid & ", " & qty & ", " & Lossf & ")"
-
-
-                'Revisi 10 Mei
-                insertLogModule(username, "Invrcpdtl", "Insert", custid)
-            Else
-                str = "Update cld_inv_rcpdtl set  tipe = " & tipe & ", kodeid = " & kodeid & ",  qty = " & qty + qtyrcp & ", lossf = " & Lossf & " where rcpid = " & rcpid & " and kodeid = " & kodeid & ""
-
-
-
-                insertLogModule(username, "Invrcpdtl", "Update", custid)
-            End If
-
-            c_cmd.executeNonQuery(str)
-
-        Catch ex As Exception
-
-            errLog(Err.Description, "Pages_ReceipeDetailAdd:insertInvrcpdtl")
-            Err.Clear()
-        End Try
+        Cls_IRcpDtl.SaveDetail(id, custid, rcpid, tipe, kodeid, qty, Lossf, "add")
+        insertLogModule(username, "Invrcpdtl", "Update", custid)
     End Sub
     Protected Sub lstView_ItemCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.ListViewCommandEventArgs) Handles lstViewDetails.ItemCommand
 
@@ -362,24 +332,13 @@ Public Class Pages_ReceipeDetailAdd
         End Select
     End Sub
     Public Sub DeleteRcpDtl(ByVal id As Integer, ByVal Custid As Integer, ByVal username As String)
-        'Dim pc As String = pic.ToString
-        Try
-
-            Dim str As String
-            Dim c_cmd As New Cls_command
-
-            str = "DELETE FROM cld_inv_rcpdtl  where id = " & id & ""
-
-            c_cmd.executeNonQuery(str)
-
-            'Revisi 10 Mei
-            insertLogModule(username, "InvRcpdtl", "Delete", Custid)
-
-        Catch ex As Exception
-
-            errLog(Err.Description, "Pages_ReceipeDetailAdd:DeleteInvrcpdtl")
-            Err.Clear()
-        End Try
+        Using db As New RecipeDb()
+            db.SetParameter("id", id)
+            db.SetParameter("custid", Custid)
+            db.Execute("DELETE FROM cld_inv_rcpdtl WHERE id=@id AND custid=@custid")
+            db.Commit()
+        End Using
+        insertLogModule(username, "InvRcpdtl", "Delete", Custid)
     End Sub
     Sub delete(ByVal id As Integer)
 
@@ -411,25 +370,13 @@ Public Class Pages_ReceipeDetailAdd
     End Sub
 
     Public Sub insertextremark(ByVal id As Integer, ByVal custid As Integer, ByVal rcpid As Integer)
-        Try
-
-
-            Dim str As String
-            Dim c_cmd As New Cls_command
-
-            str = "Update cld_inv_rcp set  remarks = concat(remarks,';'" & ",'" & rcpid & "')" & " where id = " & id & " and custid = " & custid & ""
-
-
-
-
-
-            c_cmd.executeNonQuery(str)
-
-        Catch ex As Exception
-
-            errLog(Err.Description, "Pages_ReceipeDetailAdd:insertextremark")
-            Err.Clear()
-        End Try
+        Using db As New RecipeDb()
+            db.SetParameter("id", id)
+            db.SetParameter("custid", custid)
+            db.SetParameter("rcpid", rcpid)
+            db.Execute("UPDATE cld_inv_rcp SET remarks=CONCAT(remarks,';',@rcpid) WHERE id=@id AND custid=@custid")
+            db.Commit()
+        End Using
     End Sub
 
     Protected Sub ddlTipe_TextChanged(sender As Object, e As EventArgs) Handles ddlTipe.TextChanged

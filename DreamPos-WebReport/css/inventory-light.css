@@ -1,0 +1,89 @@
+/* Shared Inventory surfaces. Keep brand and status colors on small accents/actions. */
+body.inventory-light {
+    --inventory-ink: #334155;
+    --inventory-line: #dce3e9;
+    --inventory-accent: #007bff;
+    --inventory-header: #f3f6f8;
+}
+body.inventory-light .content-wrapper {
+    background-color: #f5f7fa;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar) {
+    background: #ffffff !important;
+    color: var(--inventory-ink) !important;
+    border: 1px solid var(--inventory-line);
+    border-left: 3px solid var(--inventory-accent);
+    border-radius: 4px;
+    box-shadow: none !important;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar)
+:is(label, label b, label span, span[for], span[for] b, .col-auto > span.text-white,
+.form-group > span, .form-group > span b, .form-group > b, .inv-who-filter b, .inv-trf-filter b) {
+    color: var(--inventory-ink) !important;
+    letter-spacing: 0;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar)
+:is(label i, label .fas, label .fa, span[for] i) {
+    color: #0070d9 !important;
+}
+body.inventory-light .content-wrapper .filter-card .form-inline {
+    border: 0;
+    box-shadow: none;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar) .form-control {
+    border-color: #cbd5df;
+    background-color: #ffffff;
+    color: #334155;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar) .form-control:disabled,
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar) .form-control[readonly] {
+    background-color: #eef1f4;
+}
+body.inventory-light .content-wrapper :is(.filter-card, .form-inline, .inv-who-toolbar, .inv-trf-toolbar) :is(.btn-light, .btn-mini) {
+    border: 1px solid #cbd5df !important;
+}
+body.inventory-light .content-wrapper :is(table.table, table.menutab, table.table-custom, table.table-opname) th,
+body.inventory-light .content-wrapper .grid-header-prd th,
+body.inventory-light .content-wrapper .table-header-blue {
+    background: var(--inventory-header) !important;
+    color: var(--inventory-ink) !important;
+    border-color: var(--inventory-line) !important;
+    border-bottom: 2px solid #b9d8f5 !important;
+    font-weight: 600 !important;
+    text-transform: none;
+    letter-spacing: 0 !important;
+}
+body.inventory-light .content-wrapper :is(table.table, table.menutab, table.table-custom, table.table-opname) th :is(b, span, a),
+body.inventory-light .content-wrapper .table-header-blue :is(th, b, span, a) {
+    color: var(--inventory-ink) !important;
+    background-color: transparent !important;
+}
+body.inventory-light .content-wrapper :is(.card-custom .card-header, .card-form .card-header,
+.edit-card-header, .header-gradient,
+.card-header[style*="#2c3e50"], .card-header[style*="#1e3a5f"],
+.modal-header[style*="#2c3e50"], .modal-header[style*="#1e3a5f"]) {
+    background: #f8fafc !important;
+    color: var(--inventory-ink) !important;
+    border-bottom: 1px solid var(--inventory-line);
+    border-top: 2px solid #b9d8f5;
+    box-shadow: none;
+}
+body.inventory-light .content-wrapper :is(.card-custom .card-header, .card-form .card-header,
+.edit-card-header, .header-gradient,
+.card-header[style*="#2c3e50"], .modal-header[style*="#2c3e50"])
+:is(h2, h3, h4, h5, h6, .card-title, .modal-title, .text-white, .close) {
+    color: var(--inventory-ink) !important;
+}
+body.inventory-light .content-wrapper :is(.card-custom .card-header, .card-form .card-header,
+.edit-card-header, .header-gradient) > i {
+    color: #0070d9;
+}
+body.inventory-light .content-wrapper .card.card-outline.card-primary {
+    border-top-width: 2px;
+    border-top-color: #b9d8f5;
+}
+body.inventory-light .content-wrapper .pagination-container span {
+    background: #eaf3fe;
+    color: #145b9b;
+    border: 1px solid #bdd7f2;
+}

@@ -277,34 +277,9 @@ Public Class Pages_ReceipeEdit
         End Try
     End Sub
     Public Sub insertRcp(ByVal id As Integer, ByVal custid As Integer, ByVal code As String, ByVal nama As String, ByVal cost As Integer, ByVal remarks As String, ByVal username As String)
-        Try
-
-            Dim ds As DataSet
-            ds = CRcp.SelectDataRcp(code)
-
-            Dim str As String
-            Dim c_cmd As New Cls_command
-
-            If ds.Tables(0).Rows.Count = 0 Then
-                str = "insert into cld_Inv_Rcp values (" & c_cmd.ExecuteScalar("select max(ID) from cld_inv_Rcp") & ", " & custid & ",'" & code & "', '" & nama & "', " & cost & ", '" & remarks & "')"
-
-
-                'Revisi 10 Mei
-                insertLogModule(username, "InvRcp", "Insert", custid)
-            Else
-                str = "Update cld_inv_rcp set code = '" & code & "', name = '" & nama & "', cost = " & cost & ", remarks = '" & remarks & "' where code = '" & code & "'"
-
-                insertLogModule(username, "InvRcp", "Update", custid)
-            End If
-
-
-            c_cmd.executeNonQuery(str)
-
-        Catch ex As Exception
-
-            errLog(Err.Description, "webservice:insertInvRcp")
-            Err.Clear()
-        End Try
+        Dim activity As String = ""
+        MTid = Cls_IRcp.SaveRecipe(custid, code, nama, remarks, CDec(cost), activity)
+        insertLogModule(username, "InvRcp", activity, custid)
     End Sub
     Sub delete(ByVal id As Integer)
         Try
@@ -330,46 +305,24 @@ Public Class Pages_ReceipeEdit
 
     End Sub
     Public Sub DeleteRcpDtl(ByVal id As Integer, ByVal Custid As Integer, ByVal username As String)
-        'Dim pc As String = pic.ToString
-        Try
-
-            Dim str As String
-            Dim c_cmd As New Cls_command
-
-            str = "DELETE FROM cld_inv_rcpdtl  where id = " & id & ""
-
-            c_cmd.executeNonQuery(str)
-
-            'Revisi 10 Mei
-            insertLogModule(username, "InvRcpdtl", "Delete", Custid)
-
-        Catch ex As Exception
-
-            errLog(Err.Description, "Pages_ReceipeEdit:DeleteInvrcpdtl")
-            Err.Clear()
-        End Try
+        Using db As New RecipeDb()
+            db.SetParameter("id", id)
+            db.SetParameter("custid", Custid)
+            db.Execute("DELETE FROM cld_inv_rcpdtl WHERE id=@id AND custid=@custid")
+            db.Commit()
+        End Using
+        insertLogModule(username, "InvRcpdtl", "Delete", Custid)
     End Sub
     Public Sub Deletecostcc(ByVal id As Integer, ByVal rcpid As Integer, ByVal Custid As Integer)
-        'Dim pc As String = pic.ToString
-        Try
-
-            Dim str As String
-            Dim c_cmd As New Cls_command
-            If My.Settings.rcp_cc = 1 Then
-                str = "DELETE FROM cld_inv_rcp_cc WHERE rcpid = " & rcpid & " AND ccid = " & id & " AND custid = " & Custid & ""
-
-                c_cmd.executeNonQuery(str)
-            End If
-
-
-            'Revisi 10 Mei
-            insertLogModule(username, "InvRcpdtl", "Delete", Custid)
-
-        Catch ex As Exception
-
-            errLog(Err.Description, "Pages_ReceipeEdit:Deletecostcc")
-            Err.Clear()
-        End Try
+        If My.Settings.rcp_cc <> 1 Then Return
+        Using db As New RecipeDb()
+            db.SetParameter("id", id)
+            db.SetParameter("rcpid", rcpid)
+            db.SetParameter("custid", Custid)
+            db.Execute("DELETE FROM cld_inv_rcp_cc WHERE rcpid=@rcpid AND ccid=@id AND custid=@custid")
+            db.Commit()
+        End Using
+        insertLogModule(username, "InvRcpdtl", "Delete", Custid)
     End Sub
     Sub binding(ByVal rcpid As Integer)
 
@@ -860,39 +813,38 @@ Public Class Pages_ReceipeEdit
     End Sub
 
     Sub insertcc()
-        Dim dtcc As New DataTable
-        dtcc = ViewState("costcc")
-        If dtcc.Rows.Count > 0 Then
-            Crcpdtl.deleteRcpcc(MTid, custid)
-            For Each dr As DataRow In dtcc.Rows
-                Dim ccid As Integer = dr.Item("ccid")
-                Dim cost2 As Double = dr.Item("cost2")
-                insertrcpxcostcc(MTid, ccid, cost2, custid)
-
+        Dim dtcc As DataTable = TryCast(ViewState("costcc"), DataTable)
+        If My.Settings.rcp_cc <> 1 OrElse dtcc Is Nothing OrElse dtcc.Rows.Count = 0 Then Return
+        Using db As New RecipeDb()
+            db.SetParameter("id", MTid)
+            db.SetParameter("custid", custid)
+            If db.Scalar("SELECT id FROM cld_inv_rcp WHERE id=@id AND custid=@custid FOR UPDATE") Is Nothing Then
+                Throw New InvalidOperationException("Recipe not found for this customer.")
+            End If
+            db.Execute("DELETE FROM cld_inv_rcp_cc WHERE rcpid=@id AND custid=@custid")
+            For Each row As DataRow In dtcc.Rows
+                db.SetParameter("ccid", Convert.ToInt32(row("ccid")))
+                db.SetParameter("cost", Convert.ToDecimal(row("cost2")))
+                If db.Scalar("SELECT id FROM cld_inv_cc WHERE id=@ccid AND custid=@custid") Is Nothing Then
+                    Throw New InvalidOperationException("Cost centre not found for this customer.")
+                End If
+                db.Execute("INSERT INTO cld_inv_rcp_cc (rcpid,custid,cost,ccid) VALUES (@id,@custid,@cost,@ccid)")
             Next
-        End If
-
-
+            db.Commit()
+        End Using
+        insertLogModule(username, "Invrcpdtl", "Update", custid)
     End Sub
     Public Sub insertrcpxcostcc(ByVal id As Integer, ByVal ccid As Integer, ByVal cost As Double, ByVal custid As Integer)
-        Try
-            Dim c_cmd As New Cls_command
-
-            Dim str As String
-            If My.Settings.rcp_cc = 1 Then
-                str = "insert into cld_inv_rcp_cc values (" & id & ", " & custid & ", " & cost & ",  " & ccid & ")"
-                insertLogModule(username, "Invrcpdtl", "Update", custid)
-
-
-                c_cmd.executeNonQuery(str)
-            End If
-
-
-        Catch ex As Exception
-
-            errLog(Err.Description, "webservice:insertInvrcpdtl")
-            Err.Clear()
-        End Try
+        If My.Settings.rcp_cc <> 1 Then Return
+        Using db As New RecipeDb()
+            db.SetParameter("id", id)
+            db.SetParameter("ccid", ccid)
+            db.SetParameter("cost", cost)
+            db.SetParameter("custid", custid)
+            db.Execute("INSERT INTO cld_inv_rcp_cc (rcpid,custid,cost,ccid) VALUES (@id,@custid,@cost,@ccid)")
+            db.Commit()
+        End Using
+        insertLogModule(username, "Invrcpdtl", "Update", custid)
     End Sub
 
     Protected Sub txtNo_TextChanged(sender As Object, e As EventArgs) Handles txtNo.TextChanged

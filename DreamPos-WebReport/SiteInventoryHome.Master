@@ -336,6 +336,7 @@
                     }
                 </style>
         <asp:ContentPlaceHolder ID="head" runat="server" />
+        <link rel="stylesheet" href="~/css/inventory-light.css?v=20261015" runat="server" />
         <!-- MATIKAN VECTOR MAP SELAMANYA (INI PENYEBAB UTAMA!) -->
     <%--<script>
         $(function () {
@@ -353,7 +354,7 @@
 
 
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed inventory-light">
    
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>

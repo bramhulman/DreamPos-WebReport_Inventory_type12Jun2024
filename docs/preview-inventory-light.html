@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inventory light theme preview</title>
+<link rel="stylesheet" href="../DreamPos-WebReport/dist/css/adminlte.min.css">
+<link rel="stylesheet" href="../DreamPos-WebReport/plugins/fontawesome-free/css/all.min.css">
+<style>
+                .style1 {
+                            color: #FFFFFF;
+                            background: #3a4f63;
+                        }
+                .table-header-blue {
+                    background-color: #007bff !important;
+                    color: white !important;
+                }
+                .table-header-blue th, .table-header-blue b {
+                    color: white !important;
+                    font-weight: bold !important;
+                }
+                .text-white { color: white !important; }
+                .text-end { text-align: right !important; }
+                .dropbtn {
+
+                    background-color: #3a4f63;
+                    color: white;
+                    width:180px;
+                    padding: 10px 20px;
+                    border: none;
+                    text-align :left  ;
+                    vertical-align:middle;
+                }
+
+                .dropdown {
+                    width:200px;
+                    position: relative;
+                    display: inline-block;
+                }
+
+                .dropdown-content {
+                    display: none;
+                    position: absolute;
+                    background-color: #f1f1f1;
+                    min-width: 180px;
+                    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                    z-index: 1;
+                }
+
+                .dropdown-content a {
+                    color: black;
+                    padding:8px 16px;
+                    text-align :right ;
+                    text-decoration: none;
+                    display: block;
+                }
+
+                .dropdown-content a:hover {background-color: #ddd;}
+
+                .dropdown:hover .dropdown-content {display: block;}
+
+                .dropdown:hover .dropbtn {background-color: #f1f1f1;color: black;}
+                  .style22
+                        {
+                            color: #FFFFFF;
+                            width: 73%;
+                            background: #007bff;
+                            padding:5px;
+                        }
+                   .style25
+                        {
+                            color: #FFFFFF;
+                            width: 17%;
+                            background: #007bff;
+                            padding:5px;
+                        }
+                     .style17
+                        {
+                            color: #FFFFFF;
+                            width: 10%;
+                            background: #007bff;
+                            padding:5px;
+                        }
+                    .menutab {
+                        padding: 10px;
+                        font: normal 120%;
+                        color: #1D1D1D;
+                        border-radius: 15px;
+                        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+                    }
+
+                    /* --- GLOBAL MODERN UI OVERRIDES --- */
+                    
+                    /* 1. General Typography & Layout */
+                    body {
+                        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                        background-color: #f4f6f9;
+                    }
+                    
+                    /* 2. Modern Cards */
+                    .card {
+                        border: none;
+                        border-radius: 8px; /* Softer corners */
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.08); /* Soft shadow */
+                        margin-bottom: 20px;
+                        background-color: #fff;
+                        transition: transform 0.2s ease-in-out;
+                    }
+                    /*.card:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+                    }*/
+                    .card-header {
+                        background-color: #fff;
+                        border-bottom: 1px solid #f0f0f0;
+                        padding: 15px 20px;
+                        font-weight: 600;
+                        font-size: 1.1rem;
+                        color: #333;
+                    }
+                    .card-body {
+                        padding: 20px;
+                    }
+
+                    /* 3. Modern Inputs */
+                    .form-control {
+                        border-radius: 6px;
+                        border: 1px solid #ced4da;
+                        padding: 10px 12px; /* Taller inputs */
+                        height: auto; /* Let padding define height */
+                        font-size: 14px;
+                        box-shadow: none;
+                        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+                    }
+                    .form-control:focus {
+                        border-color: #80bdff;
+                        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+                    }
+                    .input-group-text {
+                        border-radius: 6px;
+                        background-color: #f8f9fa;
+                        border-color: #ced4da;
+                    }
+                    
+                    /* 4. Modern Buttons */
+                    .btn {
+                        border-radius: 6px;
+                        padding: 8px 16px;
+                        font-weight: 500;
+                        letter-spacing: 0.3px;
+                        transition: all 0.2s;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }
+                    .btn-primary {
+                        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+                        border: none;
+                    }
+                    .btn-primary:hover {
+                        background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                    }
+                    .btn-success {
+                        background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+                        border: none;
+                    }
+                    .btn-danger {
+                        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+                        border: none;
+                    }
+                    .btn-info {
+                        background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%);
+                        border: none;
+                        color: white;
+                    }
+                    
+                    /* 5. Modern Tables in GridView */
+                    .table {
+                        border-collapse: separate !important;
+                        border-spacing: 0;
+                        width: 100%;
+                        margin-bottom: 1rem;
+                        background-color: #fff; /* Ensure bright white background */
+                        color: #212529;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        border: 1px solid #d1d3e2; /* Clearer border */
+                    }
+                    .table th, .table td {
+                        padding: 12px 15px;
+                        vertical-align: middle;
+                        border-top: 1px solid #e3e6f0; /* Clearer separator */
+                    }
+                    .table thead th {
+                        vertical-align: bottom;
+                        border-bottom: 2px solid #b6d4fe; /* Distinct header underline */
+                        background-color: #cfe2ff !important; /* Crisper Light Blue Header */
+                        color: #000; /* Black text for max clarity */
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        font-size: 0.85rem;
+                        letter-spacing: 0.5px;
+                        border: none;
+                    }
+                    .table-striped tbody tr:nth-of-type(odd) {
+                        background-color: rgba(0, 0, 0, 0.02); /* Keep subtle stripe */
+                    }
+                    .table-hover tbody tr:hover {
+                        background-color: rgba(0, 123, 255, 0.05); /* Blue-ish hover interaction */
+                    }
+                    
+                    /* Header overrides for specific GridView headers if needed */
+                    .table-header-blue {
+                         background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+                    }
+
+                    /* 6. Modal Polish */
+                    .modal-content {
+                        border-radius: 10px;
+                        border: none;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    }
+                    .modal-header {
+                        border-bottom: 1px solid #eee;
+                        background-color: #f8f9fa;
+                        border-radius: 10px 10px 0 0;
+                        padding: 15px 20px;
+                    }
+                    .modal-footer {
+                        border-top: 1px solid #eee;
+                        background-color: #f8f9fa;
+                        border-radius: 0 0 10px 10px;
+                    }
+
+                    /* 7. Utility */
+                    .form-group label {
+                        font-weight: 600;
+                        color: #495057;
+                    }
+                    .breadcrumb {
+                        background: transparent;
+                        padding: 0;
+                        margin-bottom: 0;
+                    }
+                    /* Fix DataTables page size select dropdown overlap issue */
+                    .dataTables_length select,
+                    .dataTables_wrapper .dataTables_length select {
+                        display: inline-block !important;
+                        width: auto !important;
+                        min-width: 65px !important; /* give it plenty of space so the text doesn't overlap the arrow */
+                        padding: .375rem 1.75rem .375rem .75rem !important; /* standard padding for custom arrow */
+                        margin: 0 8px !important; /* give it nice breathing room from the words Show and records */
+                        height: calc(1.5em + .75rem + 2px) !important;
+                        vertical-align: middle !important;
+                    }
+                </style>
+<style>
+                                               .btn-logout-custom {
+                                                   color: white !important;
+                                                   border: 1px solid rgba(255,255,255,0.7);
+                                                   border-radius: 20px;
+                                                   transition: all 0.3s;
+                                               }
+                                               .btn-logout-custom:hover {
+                                                   background-color: white !important;
+                                                   color: #d63031 !important; /* Soft Red Text */
+                                                   border-color: #f1c40f !important; /* Gold Border */
+                                                   box-shadow: 0 0 10px rgba(241, 196, 15, 0.5); /* Gold Glow */
+                                               }
+                                               /* Active sidebar item: Soft Red with Gold Accent */
+                                               .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+                                                   background-color: #ff6b6b !important; /* Soft Red */
+                                                   color: white !important;
+                                                   border-left: 4px solid #f1c40f; /* Gold Bar */
+                                                   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                                               }
+                                           </style>
+<style type="text/css">
+        .table-custom thead th {
+            background-color: #1e3a5f !important;
+            color: #ffffff !important;
+            font-weight: 700;
+            text-align: center;
+            vertical-align: middle;
+            border-color: #142841 !important;
+            padding: 9px 8px;
+            font-size: 0.88rem;
+        }
+        .table-custom tbody td {
+            vertical-align: middle;
+            font-size: 0.86rem;
+            padding: 7px 10px;
+        }
+        .table-custom tbody tr:hover {
+            background-color: #f1f7fd;
+        }
+        .filter-card {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c3e50 100%);
+            border-radius: 6px;
+            padding: 10px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .pagination-container {
+            padding: 10px 15px;
+            background-color: #fafbfc;
+            border-top: 1px solid #e9ecef;
+        }
+        .pagination-container a, .pagination-container span {
+            padding: 4px 10px;
+            margin: 0 2px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        .pagination-container span {
+            background-color: #1e3a5f;
+            color: #fff;
+            font-weight: bold;
+        }
+        .pagination-container a {
+            background-color: #fff;
+            color: #1e3a5f;
+            border: 1px solid #dee2e6;
+            text-decoration: none;
+        }
+        .pagination-container a:hover {
+            background-color: #e2e6ea;
+        }
+        #spinner.modal {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(255,255,255,0.75);
+            z-index: 9999; text-align: center;
+        }
+        #spinner .center {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+        }
+        #spinner img { width: 64px; height: 64px; }
+    </style>
+<link rel="stylesheet" href="../DreamPos-WebReport/css/inventory-mobile.css">
+<link rel="stylesheet" href="../DreamPos-WebReport/css/inventory-light.css">
+<style>
+body { margin:0; } .content-wrapper { margin:0!important; min-height:100vh; }
+.preview-brand { background:#fff; padding:14px 20px; border-bottom:2px solid #00bde5; display:flex; gap:10px; align-items:center; color:#007bff; font-weight:600; }
+.preview-brand img { width:30px; height:30px; object-fit:contain; }
+.preview-section { padding:0 16px 24px; } .content-header { padding:16px; }
+.preview-scroll { overflow-x:auto; } .preview-scroll table { min-width:540px; }
+</style></head><body class="inventory-light">
+<div class="content-wrapper">
+<div class="preview-brand"><img src="../DreamPos-WebReport/images/logo.jpg" alt="">Inventory Cloud</div>
+<div class="content-header"><h4 class="m-0"><i class="fas fa-layer-group text-primary mr-2"></i>Stock Group</h4></div>
+<div class="preview-section">
+<div class="filter-card"><div class="form-row align-items-center">
+<div class="col-auto"><span for="search" class="text-white font-weight-bold"><i class="fas fa-search mr-1"></i>Search Name:</span></div>
+<div class="col-md-4 col-sm-6 my-1"><input id="search" class="form-control" placeholder="Search stock group..."></div>
+<div class="col-auto my-1"><button class="btn btn-light text-primary"><i class="fas fa-search mr-1"></i>Search</button> <button class="btn btn-success"><i class="fas fa-plus mr-1"></i>New</button></div>
+</div></div>
+<div class="card card-outline card-primary"><div class="preview-scroll">
+<table class="table table-custom table-bordered mb-0"><thead><tr><th>Code</th><th>Name</th><th>Cust Name</th><th>Action</th></tr></thead>
+<tbody><tr><td>01</td><td>MEAT</td><td>Sample outlet</td><td><i class="fas fa-pencil-alt text-warning mr-3"></i><i class="fas fa-times text-danger"></i></td></tr>
+<tr><td>02</td><td>BEVERAGES</td><td>Sample outlet</td><td><i class="fas fa-pencil-alt text-warning mr-3"></i><i class="fas fa-times text-danger"></i></td></tr></tbody></table>
+</div></div>
+</div>
+<div class="content-header"><h4 class="m-0"><i class="fas fa-clipboard-check text-primary mr-2"></i>Opname</h4></div>
+<div class="preview-section">
+<div class="form-inline p-3"><div class="form-group mr-3"><span><b style="color:#fff">Cost Centre:</b></span><select class="form-control ml-2"><option>All outlets</option></select></div><button class="btn btn-primary">Search</button></div>
+<div class="preview-scroll mt-3"><table class="table table-opname table-bordered"><thead><tr style="background:#1e3a5f;color:white"><th>Item</th><th>Total Qty</th><th>Opname Qty</th><th>Variance</th></tr></thead><tbody><tr><td>Sample item</td><td>20</td><td>20</td><td class="text-success">0</td></tr></tbody></table></div>
+</div></div></body></html>

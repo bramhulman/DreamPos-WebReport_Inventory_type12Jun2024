@@ -54,15 +54,17 @@ Public Class clsInventory_Receipe
                             " 0 AS cost_per_unit3, 0 AS total_cost FROM cld_inv_rcpdtl " &
                             " LEFT JOIN cld_inv_stk ON cld_inv_stk.ID = cld_inv_rcpdtl.kodeId " &
                             " LEFT JOIN cld_inv_rcp ON cld_inv_rcp.ID = cld_inv_rcpdtl.kodeId " &
-                            " WHERE cld_inv_rcpdtl.custid = " & custid & "  AND cld_inv_rcpdtl.rcpid = " & rcpid & " AND " &
-                            " CASE WHEN tipe = 1 THEN cld_inv_stk.Name ELSE cld_inv_rcp.Name END Like '%" & name & "%' ")
+                            " WHERE cld_inv_rcpdtl.custid = @custid AND cld_inv_rcpdtl.rcpid = @rcpid AND " &
+                            " CASE WHEN tipe = 1 THEN cld_inv_stk.Name ELSE cld_inv_rcp.Name END LIKE @search ")
 
-        ds = a.selectDataset
-
-        a.dispose()
-        a = Nothing
-
-        Return ds
+        Try
+            a.addParam(custid, "@custid", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            a.addParam(rcpid, "@rcpid", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            a.addParam("%" & name & "%", "@search", MySql.Data.MySqlClient.MySqlDbType.VarChar)
+            Return a.selectDataset(True)
+        Finally
+            a.dispose()
+        End Try
 
     End Function
 
@@ -78,94 +80,57 @@ Public Class clsInventory_Receipe
                             " FROM cld_inv_rcpdtl " &
                             " LEFT JOIN cld_inv_stk ON cld_inv_stk.ID = cld_inv_rcpdtl.kodeId " &
                             " LEFT JOIN cld_inv_rcp ON cld_inv_rcp.ID = cld_inv_rcpdtl.kodeId " &
-                            " WHERE cld_inv_rcpdtl.custid = " & custid & "  AND cld_inv_rcpdtl.rcpid = " & rcpid & " AND " &
-                            " CASE WHEN tipe = 1 THEN cld_inv_stk.Name ELSE cld_inv_rcp.Name END Like '%" & name & "%' ")
+                            " WHERE cld_inv_rcpdtl.custid = @custid AND cld_inv_rcpdtl.rcpid = @rcpid AND " &
+                            " CASE WHEN tipe = 1 THEN cld_inv_stk.Name ELSE cld_inv_rcp.Name END LIKE @search ")
 
-        ds = a.selectDataset
-
-        a.dispose()
-        a = Nothing
-
-        Return ds
+        Try
+            a.addParam(custid, "@custid", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            a.addParam(rcpid, "@rcpid", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            a.addParam("%" & name & "%", "@search", MySql.Data.MySqlClient.MySqlDbType.VarChar)
+            Return a.selectDataset(True)
+        Finally
+            a.dispose()
+        End Try
 
     End Function
     Public Sub Process_UpdateCostReceipe(ByVal custid As Integer, ByVal dInvDate As Date, Optional ByVal rcp_code As String = "")
-        'perubahan 13 juni 22 jadi nanti akan kalkulasi receipe cost
-
-        Dim ds As New DataSet
-        Dim dsCostCentre As New DataSet
-
-        Dim totalcost As Decimal = 0
-
-        Try
-            Dim c_Cmd As New clsDbo("")
-            If rcp_code = "" Then
-                ds = c_Cmd.ReturnDataset("Select * from cld_inv_rcp where custid = " & custid)
-                dsCostCentre = c_Cmd.ReturnDataset("Select * from cld_inv_cc where custid = " & custid)
-            Else
-                ds = c_Cmd.ReturnDataset("Select * from cld_inv_rcp where code='" & rcp_code & "' and custid = " & custid)
-                dsCostCentre = c_Cmd.ReturnDataset("Select ccid id from cld_inv_rcp_cc where custid = " & custid & " and rcpid = " & ds.Tables(0).Rows(0).Item("id") & "")
-            End If
-
-
-            'dsCostCentre = c_Cmd.ReturnDataset("Select * from cld_inv_cc where custid = " & custid)
-
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each row As DataRow In ds.Tables(0).Rows
-
-
-                    If dsCostCentre.Tables(0).Rows.Count > 0 Then
-                        For Each rowCostCentre As DataRow In dsCostCentre.Tables(0).Rows
-                            totalcost = 0
-
-                            '  c_Cmd.resetCmd("")
-                            '    If c_Cmd.ExecuteScalar() > 0 Then
-                            c_Cmd.resetCmd("")
-                            'totalcost = c_Cmd.ExecuteScalar(" SELECT ROUND(SUM(((cld_inv_rcpdtl.qty +(( cld_inv_rcpdtl.qty * cld_inv_rcpdtl.lossf)/100))/ cld_inv_stk.Factor2) * (SELECT Cost FROM `cld_inv_transstockcls` WHERE cld_inv_rcpdtl.`kodeId` = stkid AND cld_inv_transstockcls.`ccid` = " & rowCostCentre.Item("ID") & " ORDER BY invdate DESC LIMIT 1)), 2)AS Totalcost" &
-                            '                                    " FROM cld_inv_rcpdtl INNER JOIN cld_inv_stk" &
-                            '                                    " ON cld_inv_rcpdtl.`kodeId` = cld_inv_stk.id" &
-                            '                                    " WHERE rcpid = " & row.Item("ID") & " AND tipe = 1", 11)
-
-
-                            totalcost = c_Cmd.ExecuteScalar(" SELECT ROUND(SUM(((cld_inv_rcpdtl.qty +(( cld_inv_rcpdtl.qty * cld_inv_rcpdtl.lossf)/100))/ cld_inv_stk.Factor2) * (SELECT Cost FROM `cld_inv_transstockcls` WHERE cld_inv_transstockcls.`stkid`=cld_inv_rcpdtl.`kodeId` AND cld_inv_transstockcls.`ccid` = " & rowCostCentre.Item("ID") & " and InvDate = '" & dInvDate.ToString("yyyy-MM-dd HH:mm:ss") & "')), 2)As Totalcost" &
-                                                                " FROM cld_inv_rcpdtl INNER JOIN cld_inv_stk" &
-                                                                " On cld_inv_rcpdtl.`kodeId` = cld_inv_stk.id" &
-                                                                " WHERE rcpid = " & row.Item("ID") & " And tipe = 1", 11)
-
-
-                            '    End If
-
-                            c_Cmd.dispose()
-
-
-                            Set_ReceipeCost(row.Item("ID"), totalcost, rowCostCentre.Item("ID"), custid)
-
-
+        Dim recipes As DataTable
+        Using db As New RecipeDb()
+            db.SetParameter("custid", custid)
+            db.SetParameter("code", rcp_code)
+            Dim sql As String = "SELECT id FROM cld_inv_rcp WHERE custid=@custid"
+            If rcp_code <> "" Then sql &= " AND code=@code"
+            recipes = db.ReadTable(sql & " ORDER BY id")
+            db.Commit()
+        End Using
+        Using recipes
+            For Each recipe As DataRow In recipes.Rows
+                ' Each recipe's cost centres commit together; large batches do not hold one long transaction.
+                Using db As New RecipeDb()
+                    db.SetParameter("custid", custid)
+                    db.SetParameter("rcpid", recipe("id"))
+                    db.SetParameter("invdate", dInvDate)
+                    If db.Scalar("SELECT id FROM cld_inv_rcp WHERE id=@rcpid AND custid=@custid FOR UPDATE") Is Nothing Then Continue For
+                    Dim ccSql As String = If(rcp_code = "",
+                        "SELECT id FROM cld_inv_cc WHERE custid=@custid ORDER BY id",
+                        "SELECT ccid AS id FROM cld_inv_rcp_cc WHERE custid=@custid AND rcpid=@rcpid ORDER BY ccid")
+                    Using centres As DataTable = db.ReadTable(ccSql)
+                        For Each centre As DataRow In centres.Rows
+                            db.SetParameter("ccid", centre("id"))
+                            Dim result As Object = db.Scalar(
+                                "SELECT ROUND(SUM(((d.qty+((d.qty*d.lossf)/100))/s.Factor2) * " &
+                                "(SELECT Cost FROM cld_inv_transstockcls ts WHERE ts.stkid=d.kodeId AND ts.ccid=@ccid AND ts.InvDate=@invdate)),2) " &
+                                "FROM cld_inv_rcpdtl d INNER JOIN cld_inv_stk s ON d.kodeId=s.id " &
+                                "WHERE d.rcpid=@rcpid AND d.custid=@custid AND d.tipe=1")
+                            ' Preserve the existing integer conversion in Set_ReceipeCost.
+                            db.SetParameter("cost", If(result Is Nothing OrElse IsDBNull(result), 0, CInt(Convert.ToDecimal(result))))
+                            db.Execute("UPDATE cld_inv_rcp_cc SET cost=@cost WHERE rcpid=@rcpid AND ccid=@ccid AND custid=@custid")
                         Next
-
-                    End If
-
-
-                Next
-            End If
-
-
-            c_Cmd.dispose()
-            c_Cmd = Nothing
-
-        Catch ex As Exception
-            errLog(Err.Description, "clsInventory_stkCost:Process_UpdateCostReceipe")
-            Err.Clear()
-        End Try
-
-        ds.Dispose()
-        ds = Nothing
-
-        dsCostCentre.Dispose()
-        dsCostCentre = Nothing
-
-
-
+                    End Using
+                    db.Commit()
+                End Using
+            Next
+        End Using
     End Sub
 
 
@@ -232,35 +197,14 @@ Public Class clsInventory_Receipe
 
     'End Sub
     Public Sub Set_ReceipeCost(ByVal RcpID As Integer, ByVal dTotalCost As Integer, ByVal iCC As Integer, ByVal icust As Integer)
-
-        Dim str As String
-        Dim c_cmd As New clsDbo("")
-        Dim ihasil As Integer
-        Try
-
-            'str = "update cld_inv_rcp set Cost = " & TotalCost & " where ID = " & RcpID & " and Custid = " & icust
-            'c_cmd.executeNonQuery(str)
-
-            ihasil = c_cmd.ExecuteScalar("SELECT ccid FROM cld_inv_rcp_cc WHERE rcpid = " & RcpID & " AND ccid = " & iCC, 11)
-
-            If ihasil <> 0 Then
-                str = "update cld_inv_rcp_cc set Cost = " & dTotalCost & " WHERE rcpid = " & RcpID & " AND ccid = " & iCC
-            Else
-                str = ""
-                '"Insert Into cld_inv_rcp_cc values(" & RcpID & "," & icust & "," & dTotalCost & "," & iCC & ")"
-            End If
-
-            c_cmd.executeNonQuery(str)
-
-        Catch ex As Exception
-            errLog(Err.Description, "clsInventory_stkCost:Set_ReceipeCost")
-            Err.Clear()
-        End Try
-
-
-        c_cmd.dispose()
-        c_cmd = Nothing
-
+        Using db As New RecipeDb()
+            db.SetParameter("rcpid", RcpID)
+            db.SetParameter("cost", dTotalCost)
+            db.SetParameter("ccid", iCC)
+            db.SetParameter("custid", icust)
+            db.Execute("UPDATE cld_inv_rcp_cc SET cost=@cost WHERE rcpid=@rcpid AND ccid=@ccid AND custid=@custid")
+            db.Commit()
+        End Using
     End Sub
 
     'Public Function SelectDataset_rcpdtlExport(ByVal custid As Integer) As DataSet

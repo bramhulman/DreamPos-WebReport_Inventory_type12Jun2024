@@ -309,9 +309,15 @@ Public Class Pages_ImprtRcp
                                 Dim rcpid As Integer = 0
                                 Dim kodeid As Integer = 0
                                 Dim clsrcp As New Cls_IRcp
-                                clsrcp.insertRcp(rcpcode, rcpName, rcpremarks, custid(), username)
-                                rcpid = c_cmd.ExecuteScalar("select id from cld_inv_rcp where code = '" & rcpcode & "' ", 0)
-                                kodeid = c_cmd.ExecuteScalar("select id from cld_inv_stk where number = '" & kodebarang & "'  ", 0)
+                                rcpid = clsrcp.insertRcp(rcpcode, rcpName, rcpremarks, custid(), username)
+                                Using db As New RecipeDb()
+                                    db.SetParameter("number", kodebarang)
+                                    db.SetParameter("custid", custid())
+                                    Dim stockId As Object = db.Scalar("SELECT id FROM cld_inv_stk WHERE number=@number AND custid=@custid")
+                                    If stockId Is Nothing OrElse IsDBNull(stockId) Then Throw New InvalidOperationException("Stock item not found.")
+                                    kodeid = Convert.ToInt32(stockId)
+                                    db.Commit()
+                                End Using
                                 Dim clsrcpdtl As New Cls_IRcpDtl
                                 clsrcpdtl.importRcpDtl(custid, rcpid, 1, kodeid, qty, loss, username)
                                 clsrcp = Nothing
