@@ -19,15 +19,40 @@
             margin-right: 10px; 
         }
         #dtExcelBtnContainer .dt-button {
-            background: #FFFFFF !important;
-            color: #3a4f63 !important;
-            border: 1px solid transparent !important;
+            background: #246b45 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #1b5737 !important;
             background-image: none !important;
             vertical-align: top !important;
         }
         #dtExcelBtnContainer .dt-button:hover {
-            background: #e2e6ea !important;
+            background: #1b5737 !important;
             color: #3a4f63 !important;
+        }
+        /* Page-local overrides: retain the shared inventory theme elsewhere. */
+        body.inventory-light .content-wrapper { background: #e4edf7 !important; }
+        body.inventory-light .content-wrapper #<%= formload.ClientID %> {
+            background: transparent !important;
+            border: 0 !important;
+        }
+        body.inventory-light .content-wrapper #tblEmpDetails thead th {
+            background: #c5deeb !important;
+            border-color: #9dbdce !important;
+        }
+        body.inventory-light .content-wrapper #tblEmpDetails tbody tr,
+        body.inventory-light .content-wrapper #tblEmpDetails tbody tr > td {
+            background: #fff !important;
+            box-shadow: none !important;
+        }
+        body.inventory-light .content-wrapper #dtExcelBtnContainer .dt-button {
+            background: #246b45 !important;
+            color: #fff !important;
+            border-color: #1b5737 !important;
+        }
+        body.inventory-light .content-wrapper #dtExcelBtnContainer .dt-button:hover { background: #1b5737 !important; }
+        body.inventory-light .content-wrapper #dtExcelBtnContainer .dt-button:focus-visible {
+            outline: 3px solid #17492f;
+            outline-offset: 3px;
         }
     </style>
     <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" />

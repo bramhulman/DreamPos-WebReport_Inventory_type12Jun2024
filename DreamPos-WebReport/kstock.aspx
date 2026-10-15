@@ -36,7 +36,35 @@
           createDataTable();
         });
 
+        var stockTableInitTimer = null;
+        function setStockTableStatus(state) {
+          var $status = $('#stockTableLoadingStatus');
+          $status.stop(true, true).show().removeClass('badge-warning badge-success badge-danger badge-secondary');
+          $('#<%= dg1.ClientID %>').attr('aria-busy', state === 'loading' ? 'true' : 'false');
+          if (state === 'ready') {
+            $status.addClass('badge-success').html('<i class="fas fa-check mr-1" aria-hidden="true"></i>Ready').delay(1500).fadeOut(500);
+          } else if (state === 'empty') {
+            $status.addClass('badge-secondary').text('No data to display.');
+          } else if (state === 'error') {
+            $status.addClass('badge-danger').html('<i class="fas fa-exclamation-triangle mr-1" aria-hidden="true"></i>Unable to prepare table. Reload the page.');
+          } else {
+            $status.addClass('badge-warning').html('<i class="fas fa-spinner fa-spin mr-1" aria-hidden="true"></i>Preparing table...');
+          }
+        }
         function createDataTable() {
+          clearTimeout(stockTableInitTimer);
+          setStockTableStatus('loading');
+          // Allow the status to paint before synchronous DataTables initialization.
+          stockTableInitTimer = setTimeout(function () {
+          if (!$('#<%= dg1.ClientID %>').length) {
+            setStockTableStatus('empty');
+            return;
+          }
+          if (!$.fn.DataTable) {
+            setStockTableStatus('error');
+            return;
+          }
+          try {
           if ($.fn.DataTable.isDataTable('#<%= dg1.ClientID %>')) {
             $('#<%= dg1.ClientID %>').DataTable().destroy();
           }
@@ -117,8 +145,14 @@
             "initComplete": function () {
               var btns = $('.dt-button');
               btns.removeClass('btn-secondary');
+              setStockTableStatus('ready');
             }
           });
+          } catch (error) {
+            setStockTableStatus('error');
+            console.error('Stock DataTables initialization failed:', error);
+          }
+          }, 100);
         }
         function OnKeyPress(e) {
           if (e.keyCode == "27") {
@@ -429,6 +463,7 @@
             </div>
         </div>
         <div class="card-body" style="overflow:scroll;">
+          <div class="mb-2"><span id="stockTableLoadingStatus" class="badge badge-warning" role="status" aria-live="polite"><i class="fas fa-spinner fa-spin mr-1" aria-hidden="true"></i>Preparing table...</span></div>
           <asp:GridView runat="server" ID="dg1" HeaderStyle-backcolor="#4b6c9e" HeaderStyle-ForeColor="White"
             HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="White" HeaderStyle-HorizontalAlign="Center"
             AllowSorting="true" AlternatingItemStyle-BackColor="#ccffff" ItemStyle-HorizontalAlign="Center"
