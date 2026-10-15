@@ -4,9 +4,7 @@
     <%@ Register Assembly="EditableDropDownList" Namespace="EditableControls" TagPrefix="editable" %>
       <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
         <style>
-          .input-group>.form-control {
-            width: 800px;
-          }
+
 
           .modal {
             position: fixed;
@@ -56,7 +54,7 @@
                 loading.show();
               }, 200);
             }
-            
+
             $(document).ready(function () {
               $('#<%= btnInsert.ClientID %>, #<%= btnUpdate.ClientID %>').click(function () {
                 if (typeof(Page_ClientValidate) == 'function') {
@@ -125,72 +123,72 @@
           <%-- <h2>User Access</h2>--%>
 
             <div class="row">
-              <div class="form-horizontal" id="formload">
+              <div class="form-horizontal inventory-entry-form" id="formload">
                 <div class="card-body">
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="lblname" Text="Name: ">
+                  <div class="form-group row">
+                    <asp:label AssociatedControlID="txtName" runat="server" CssClass="col-sm-3 col-form-label" ID="lblname" Text="Name: ">
                     </asp:label>
-                    <div class="input-group col-md-3">
+                    <div class="col-sm-9">
 
                       <asp:TextBox runat="server" ID="txtName" Class="form-control" MaxLength="35" />
                       <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server"
-                        ControlToValidate="txtname" ErrorMessage="Name Must Be Fill." ForeColor="Red">
+                        ControlToValidate="txtname" ErrorMessage="Name Must Be Fill." ForeColor="Red" Display="Dynamic" CssClass="field-validation">
                       </asp:RequiredFieldValidator>
                     </div>
 
 
                   </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label2" Text="Email: ">
+                  <div class="form-group row">
+                    <asp:label AssociatedControlID="txtEmail" runat="server" CssClass="col-sm-3 col-form-label" ID="Label2" Text="Email: ">
                     </asp:label>
-                    <div class="input-group col-md-3">
+                    <div class="col-sm-9">
 
                       <asp:TextBox runat="server" ID="txtEmail" Class="form-control" MaxLength="30" />
                       <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server"
-                        ControlToValidate="txtEmail" ErrorMessage="Email Must Be Fill." ForeColor="Red">
+                        ControlToValidate="txtEmail" ErrorMessage="Email Must Be Fill." ForeColor="Red" Display="Dynamic" CssClass="field-validation">
                       </asp:RequiredFieldValidator>
 
                     </div>
 
 
                   </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label3"
+                  <div class="form-group row">
+                    <asp:label AssociatedControlID="txtAddress" runat="server" CssClass="col-sm-3 col-form-label" ID="Label3"
                       Text="Address: "></asp:label>
-                    <div class="input-group col-md-3">
+                    <div class="col-sm-9">
 
                       <asp:TextBox runat="server" ID="txtAddress" Class="form-control" MaxLength="100"
                         TextMode="MultiLine" />
                       <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
-                        ControlToValidate="txtAddress" ErrorMessage="Address Must Be Fill." ForeColor="Red">
+                        ControlToValidate="txtAddress" ErrorMessage="Address Must Be Fill." ForeColor="Red" Display="Dynamic" CssClass="field-validation">
                       </asp:RequiredFieldValidator>
 
                     </div>
 
 
                   </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label4" Text="Phone: ">
+                  <div class="form-group row">
+                    <asp:label AssociatedControlID="txtPhone" runat="server" CssClass="col-sm-3 col-form-label" ID="Label4" Text="Phone: ">
                     </asp:label>
-                    <div class="input-group col-md-3">
+                    <div class="col-sm-9">
 
                       <asp:TextBox runat="server" ID="txtPhone" Class="form-control" MaxLength="15" />
                       <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server"
-                        ControlToValidate="txtPhone" ErrorMessage="Phone Must Be Fill." ForeColor="Red">
+                        ControlToValidate="txtPhone" ErrorMessage="Phone Must Be Fill." ForeColor="Red" Display="Dynamic" CssClass="field-validation">
                       </asp:RequiredFieldValidator>
 
                     </div>
 
 
                   </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label9" Text="City: ">
+                  <div class="form-group row">
+                    <asp:label AssociatedControlID="txtCity" runat="server" CssClass="col-sm-3 col-form-label" ID="Label9" Text="City: ">
                     </asp:label>
-                    <div class="input-group col-md-3">
+                    <div class="col-sm-9">
 
                       <asp:TextBox runat="server" ID="txtCity" Class="form-control" MaxLength="25" />
                       <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server"
-                        ControlToValidate="txtCity" ErrorMessage="City Must Be Fill." ForeColor="Red">
+                        ControlToValidate="txtCity" ErrorMessage="City Must Be Fill." ForeColor="Red" Display="Dynamic" CssClass="field-validation">
                       </asp:RequiredFieldValidator>
 
 
@@ -198,10 +196,10 @@
 
 
                   </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label10"
+                  <div class="form-group row">
+                    <asp:label AssociatedControlID="txtState" runat="server" CssClass="col-sm-3 col-form-label" ID="Label10"
                       Text="State: "></asp:label>
-                    <div class="input-group col-md-3">
+                    <div class="col-sm-9">
 
                       <asp:TextBox runat="server" ID="txtState" Class="form-control" MaxLength="25" />
 
@@ -210,10 +208,10 @@
 
 
                   </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label11"
+                  <div class="form-group row">
+                    <asp:label AssociatedControlID="txtCpos" runat="server" CssClass="col-sm-3 col-form-label" ID="Label11"
                       Text="Postal Code: "></asp:label>
-                    <div class="input-group col-md-3">
+                    <div class="col-sm-9">
 
 
                       <asp:TextBox runat="server" ID="txtCpos" Class="form-control" MaxLength="15" />
@@ -222,10 +220,10 @@
 
 
                   </div>
-                  <div class="form-group row col-md-12">
-                    <asp:label runat="server" CssClass="col-sm-1 col-form-label text-nowrap" ID="Label12"
+                  <div class="form-group row">
+                    <asp:label AssociatedControlID="txtNotes" runat="server" CssClass="col-sm-3 col-form-label" ID="Label12"
                       Text="Notes: "></asp:label>
-                    <div class="input-group col-md-3">
+                    <div class="col-sm-9">
 
                       <asp:TextBox runat="server" ID="txtNotes" Class="form-control" TextMode="MultiLine"
                         MaxLength="48" />
@@ -244,26 +242,22 @@
 
                   <div class="form-group row">
                     <div class="col-md-offset-2 col-md-10">
-                      <table>
-                        <tr>
-                          <td>
+                      <div class="entry-actions">
 
                             <asp:Button runat="server" ID="btnInsert" OnClick="btnInsert_Click" Text="Add"
-                              CssClass="btn btn-primary" Style="font-weight: 600; border-color:gray; width:108px;" />
-                          </td>
-                          <td>
+                              CssClass="btn btn-primary" Style="font-weight: 600;" />
+
+
 
                             <asp:Button runat="server" ID="btnUpdate" OnClick="btnUpdate_Click" Text="Update"
-                              CssClass="btn btn-primary" Style="font-weight: 600; border-color:gray; width:108px;"
+                              CssClass="btn btn-primary" Style="font-weight: 600;"
                               Visible="false" />
-                          </td>
-                          <td>
+
+
                             <asp:Button runat="server" ID="btnCancel" OnClick="btnCancel_Click" Text="Cancel"
-                              CssClass="btn btn-primary" Style="font-weight: 600; border-color:gray; width:108px;"
+                              CssClass="btn btn-outline-secondary" Style="font-weight: 600;"
                               CausesValidation="false" />
-                          </td>
-                        </tr>
-                      </table>
+                          </div>
 
                     </div>
                   </div>
@@ -278,15 +272,5 @@
         </div>
 
 
-        <script>
 
-          if ($(window).width() >= 960) {
-            document.getElementById("formload").style.width = "100%";
-          } else {
-            document.getElementById("formload").style.width = "80%";
-
-          }
-
-
-        </script>
       </asp:Content>

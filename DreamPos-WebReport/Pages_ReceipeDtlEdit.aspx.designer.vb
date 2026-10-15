@@ -12,6 +12,8 @@ Option Explicit On
 
 
 Partial Public Class Pages_ReceipeDtlEdit
+
+    Protected WithEvents recipeDetailError As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     
     '''<summary>
     '''Label1 control.

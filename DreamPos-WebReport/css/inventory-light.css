@@ -1,3 +1,69 @@
+/* Opt-in layout for simple master-data edit forms. */
+body.inventory-light .inventory-entry-form {
+    width: 100%;
+    max-width: 860px;
+    padding: 8px 0 20px;
+}
+body.inventory-light .inventory-entry-form .form-group {
+    margin: 0 0 20px;
+    padding: 0;
+}
+body.inventory-light .inventory-entry-form .col-form-label {
+    color: #334155;
+    font-weight: 600;
+    white-space: normal !important;
+}
+body.inventory-light .inventory-entry-form .form-control {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    border: 1px solid #b8c6d4;
+    border-radius: 4px;
+    background: #fff;
+}
+body.inventory-light .inventory-entry-form textarea.form-control {
+    min-height: 90px;
+    resize: vertical;
+}
+body.inventory-light .inventory-entry-form .input-group > .form-control {
+    width: 1%;
+    flex: 1 1 auto;
+}
+body.inventory-light .inventory-entry-form .entry-checkbox {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+}
+body.inventory-light .inventory-entry-form .entry-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #007bff;
+}
+body.inventory-light .inventory-entry-form .field-validation {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    color: #b42332 !important;
+}
+body.inventory-light .inventory-entry-form .entry-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid #dce3e9;
+}
+body.inventory-light .inventory-entry-form .entry-actions .btn {
+    min-height: 44px;
+    min-width: 108px;
+}
+body.inventory-light .inventory-entry-form :is(.btn, .form-control):focus-visible {
+    outline: 3px solid #2374b9;
+    outline-offset: 3px;
+}
+@media (max-width: 575.98px) {
+    body.inventory-light .inventory-entry-form .card-body { padding: 16px 8px; }
+    body.inventory-light .inventory-entry-form .col-form-label { padding-top: 0; }
+}
 /* Shared Inventory surfaces. Keep brand and status colors on small accents/actions. */
 body.inventory-light {
     --inventory-ink: #334155;

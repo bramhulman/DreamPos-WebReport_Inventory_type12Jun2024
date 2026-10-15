@@ -7,8 +7,8 @@
     <script src="js/jquery.ui.widget.js" type="text/javascript"></script>
     <script src="js/jquery.ui.button.js" type="text/javascript"></script>
     <script src="js/jquery.ui.position.js" type="text/javascript"></script>
-    <script src="js/jquery.ui.autocomplete.js" type="text/javascript"></script> 
-    <script src="js/jquery.ui.combobox.js" type="text/javascript"></script> 
+    <script src="js/jquery.ui.autocomplete.js" type="text/javascript"></script>
+    <script src="js/jquery.ui.combobox.js" type="text/javascript"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
       <script type="text/javascript">
           function ShowProgress() {
@@ -33,17 +33,17 @@
                   }
               });
           });
-       
+
     </script>
-    
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="BodyContent" runat="server">
      <asp:ScriptManager runat="server">
-                
+
      </asp:ScriptManager>
-   <style>.input-group>.form-control{ width: 800px }</style>
+
       <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -61,133 +61,115 @@
       </div><!-- /.container-fluid -->
     </div>
     <div class="col-md-12"  style="background-color:white;">
-       
+
     <!-- /.content-header -->
    <%-- <h2>User Access</h2>--%>
 
     <div class="row">
-        <div class="form-horizontal" id="formload">
+        <div class="form-horizontal inventory-entry-form" id="formload">
                    <div class="card-body">
-                        <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-2 col-form-label text-nowrap" ID="lblitemno" Text="Name: "></asp:label>
-           <div class="input-group col-md-6">
-                     
+                        <div class="form-group row">
+                   <asp:label runat="server" CssClass="col-sm-3 col-form-label" ID="lblitemno" Text="Name: " AssociatedControlID="txtName"></asp:label>
+           <div class="col-sm-9">
+
                       <asp:TextBox style="padding: 0.375rem 0.75rem;" runat="server" ID="txtName" Class="form-control" MaxLength="15"/>
                                           <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtName"
-                    ErrorMessage="Cost Centre Name Must Be Fill." ForeColor="Red"></asp:RequiredFieldValidator>             
-                  </div>  
-            
-            
+                    ErrorMessage="Cost Centre Name Must Be Fill." ForeColor="Red" Display="Dynamic" CssClass="field-validation"></asp:RequiredFieldValidator>
+                  </div>
+
+
         </div>
-                    <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-2 col-form-label text-nowrap" ID="Label2" Text="Warehouse/Store: "></asp:label>
-           <div class="input-group col-md-6" style="align-items:center;">
-               &nbsp;&nbsp;
+                    <div class="form-group row">
+                   <asp:label runat="server" CssClass="col-sm-3 col-form-label" ID="Label2" Text="Warehouse/Store: " AssociatedControlID="chkbatch"></asp:label>
+           <div class="col-sm-9 entry-checkbox">
               <asp:CheckBox ID="chkbatch" runat="server" AutoPostBack="True" OnCheckedChanged="chkbatch_CheckedChanged" Height = 20 Width  = 25 />
-                                                       
-                  </div>  
-            
-            
-        </div>    
-                       <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-2 col-form-label text-nowrap" ID="Label3" Text="Outlet: "></asp:label>
-           <div class="input-group col-md-6">
-                   
+
+                  </div>
+
+
+        </div>
+                       <div class="form-group row">
+                   <asp:label runat="server" CssClass="col-sm-3 col-form-label" ID="Label3" Text="Outlet: " AssociatedControlID="DdlOutlet"></asp:label>
+           <div class="col-sm-9">
+
    <asp:DropDownList ID="DdlOutlet" runat="server" CssClass="form-control" AutoPostBack="True" EnableViewState="True" ViewStateMode="Enabled"></asp:DropDownList>
-                
+
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="DdlOutlet"
-                    ErrorMessage="Outlet Must Be Choice" ForeColor="Red"></asp:RequiredFieldValidator>                                     
-                  </div>  
-            
-            
-        </div>  
-                        <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-2 col-form-label text-nowrap" ID="Label4" Text="Remarks: "></asp:label>
-           <div class="input-group col-md-6">
+                    ErrorMessage="Outlet Must Be Choice" ForeColor="Red" Display="Dynamic" CssClass="field-validation"></asp:RequiredFieldValidator>
+                  </div>
+
+
+        </div>
+                        <div class="form-group row">
+                   <asp:label runat="server" CssClass="col-sm-3 col-form-label" ID="Label4" Text="Remarks: " AssociatedControlID="txtRemarks"></asp:label>
+           <div class="col-sm-9">
                 <asp:TextBox style="padding: 0.375rem 0.75rem;" ID="txtRemarks" runat="server" TextMode="MultiLine"  MaxLength="30" Class="form-control" ></asp:TextBox>
-                                                       
-                  </div>  
-            
-            
-        </div>  
-                       <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-2 col-form-label text-nowrap" ID="Label9" Text="Email: "></asp:label>
-           <div class="input-group col-md-6">
-               <asp:TextBox style="width:800px;" ID="txtEmail" runat="server" MaxLength="30" Class="form-control"></asp:TextBox>
-                                                       
-                  </div>  
-            
-            
-        </div>  
-                        <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-2 col-form-label text-nowrap" ID="Label10" Text="Address: "></asp:label>
-           <div class="input-group col-md-6">
-                     
-               <asp:TextBox style="width:800px;" ID="txtAddress" runat="server" TextMode="MultiLine" MaxLength="50" Class="form-control"></asp:TextBox>
-                                                       
-                  </div>  
-            
-            
-        </div>  
-                       <div class="form-group row col-md-12">
-                   <asp:label runat="server" CssClass="col-sm-2 col-form-label text-nowrap" ID="Label11" Text="PIC: "></asp:label>
-           <div class="input-group col-md-6">
-                     
-               <asp:TextBox style="width:800px;" ID="txtPIC" runat="server" MaxLength="20" Class="form-control"></asp:TextBox>
-                                                       
-                  </div>  
-            
-            
-        </div>  
-                       
-                       
-                      
-                        
-                     
-             
-        
+
+                  </div>
+
+
+        </div>
+                       <div class="form-group row">
+                   <asp:label runat="server" CssClass="col-sm-3 col-form-label" ID="Label9" Text="Email: " AssociatedControlID="txtEmail"></asp:label>
+           <div class="col-sm-9">
+               <asp:TextBox  ID="txtEmail" runat="server" MaxLength="30" Class="form-control"></asp:TextBox>
+
+                  </div>
+
+
+        </div>
+                        <div class="form-group row">
+                   <asp:label runat="server" CssClass="col-sm-3 col-form-label" ID="Label10" Text="Address: " AssociatedControlID="txtAddress"></asp:label>
+           <div class="col-sm-9">
+
+               <asp:TextBox  ID="txtAddress" runat="server" TextMode="MultiLine" MaxLength="50" Class="form-control"></asp:TextBox>
+
+                  </div>
+
+
+        </div>
+                       <div class="form-group row">
+                   <asp:label runat="server" CssClass="col-sm-3 col-form-label" ID="Label11" Text="PIC: " AssociatedControlID="txtPIC"></asp:label>
+           <div class="col-sm-9">
+
+               <asp:TextBox  ID="txtPIC" runat="server" MaxLength="20" Class="form-control"></asp:TextBox>
+
+                  </div>
+
+
+        </div>
+
+
+
+
+
+
+
 
                <div class="form-group row">
-                   <div Class="col-md-2"></div>
-                    <div class="col-md-offset-2 col-md-10">
-                            <table>
-                                <tr>
-                                    <td>
-                                        
-                                         <asp:Button runat="server" ID="btnInsert" OnClick="btnInsert_Click" Text="Add" CssClass="btn btn-primary" Style="font-weight: 600; border-color:gray; width:108px;" />
-                                    </td>
-                                    <td>
-                                        
-                                         <asp:Button runat="server" ID="btnUpdate" OnClick="btnUpdate_Click" Text="Update" CssClass="btn btn-primary" Style="font-weight: 600; border-color:gray; width:108px;" Visible="false" />
-                                    </td>
-                                    <td>
-                                         <asp:Button runat="server" ID="btnCancel" OnClick="btnCancel_Click" Text="Cancel" CssClass="btn btn-primary" Style="font-weight: 600; border-color:gray; width:108px;" CausesValidation="false" />
-                                    </td>
-                                </tr>
-                            </table>
-                           
+
+                    <div class="col-sm-9 offset-sm-3">
+                            <div class="entry-actions"><asp:Button runat="server" ID="btnInsert" OnClick="btnInsert_Click" Text="Add" CssClass="btn btn-primary" Style="font-weight: 600;" />
+
+
+
+                                         <asp:Button runat="server" ID="btnUpdate" OnClick="btnUpdate_Click" Text="Update" CssClass="btn btn-primary" Style="font-weight: 600;" Visible="false" />
+
+
+                                         <asp:Button runat="server" ID="btnCancel" OnClick="btnCancel_Click" Text="Cancel" CssClass="btn btn-outline-secondary" Style="font-weight: 600;" CausesValidation="false" /></div>
+
                         </div>
-                   </div>       
-             
-     
+                   </div>
+
+
 
     </div>
 
    </div>
         </div>
-     
+
     </div>
-     
-    
-          <script>
-       
-            if ($(window).width() >= 960) {
-                document.getElementById("formload").style.width = "100%";
-                } else {
-                document.getElementById("formload").style.width = "80%";
-                
-               }
-      
-       
-    </script>
+
+
+
 </asp:Content>

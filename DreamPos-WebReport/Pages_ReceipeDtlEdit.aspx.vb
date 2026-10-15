@@ -138,7 +138,8 @@ Public Class Pages_ReceipeDtlEdit
         ddlItem.DataValueField = "Id"
         ddlItem.DataTextField = "Name"
         ddlItem.DataBind()
-        ddlItem.SelectedValue = MTid
+        'The selected item comes from editlist, not the parent recipe ID.
+        ddlItem.SelectedValue = "0"
 
     End Sub
     Sub editlist(ByVal id As Integer)
@@ -158,11 +159,11 @@ Public Class Pages_ReceipeDtlEdit
         btnUpdate.Visible = True
         btnInsert.Visible = False
     End Sub
-    Protected Sub btnInsert_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnInsert.ServerClick
+    Protected Sub btnInsert_Click(ByVal sender As Object, ByVal e As EventArgs)
         insert()
     End Sub
 
-    Protected Sub btnUpdate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUpdate.ServerClick
+    Protected Sub btnUpdate_Click(ByVal sender As Object, ByVal e As EventArgs)
         insert()
     End Sub
     Sub hapus()
@@ -177,7 +178,7 @@ Public Class Pages_ReceipeDtlEdit
         btnUpdate.Visible = False
         btnInsert.Visible = True
     End Sub
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.ServerClick
+    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs)
 
         Try
             hapus()
@@ -196,62 +197,47 @@ Public Class Pages_ReceipeDtlEdit
 
 
     Sub insert()
+        recipeDetailError.Visible = False
+        Page.Validate()
+        If Not Page.IsValid Then
+            notsuccesfull("Please select a type and an item before saving.")
+            Return
+        End If
+
+        Dim qty As Decimal
+        Dim lossFactor As Decimal
+        Dim numberStyle As Global.System.Globalization.NumberStyles =
+            Global.System.Globalization.NumberStyles.AllowLeadingSign Or
+            Global.System.Globalization.NumberStyles.AllowDecimalPoint
+        Dim culture = Global.System.Globalization.CultureInfo.CurrentCulture
+
+        'Do not accept thousands separators: a mistyped decimal must not become a larger quantity.
+        If Not Decimal.TryParse(txtQty.Text.Trim(), numberStyle, culture, qty) OrElse qty = 0D Then
+            notsuccesfull("Enter a non-zero Qty, for example " & 1.5D.ToString(culture) & ". Do not use thousands separators.")
+            txtQty.Focus()
+            Return
+        End If
+        If Not Decimal.TryParse(txtLosF.Text.Trim(), numberStyle, culture, lossFactor) Then
+            notsuccesfull("Enter a numeric Loss Factor, for example " & 0.5D.ToString(culture) & ". Do not use thousands separators.")
+            txtLosF.Focus()
+            Return
+        End If
 
         Try
-            Dim msg As String = ""
-            Dim newLine As String = "\n"
-
-            'RequiredFieldValidator1.Text = ""
-            'RequiredFieldValidator5.Text = ""
-
-            If IsNumeric(txtQty.Text) = False Or txtQty.Text = 0 Then
-                txtQty.Text = 0
-                msg = "Qty Must Be fill" & newLine
-                'RequiredFieldValidator1.Text = "Qty Must Be numeric"
-
-                'Exit Sub
-            End If
-
-            If IsNumeric(txtLosF.Text) = False Then
-                txtLosF.Text = 0
-                msg = msg + "Loss Factor Must Be numeric" & newLine
-                'RequiredFieldValidator5.Text = "LossFactor Must be numeric"
-                'Exit Sub
-            End If
-            If msg = "" Then
-                Crcpdtl.insertRcpDtl(dtlid, custid, MTid, ddlTipe.SelectedValue, ddlItem.SelectedValue,
-                                             txtQty.Text, txtLosF.Text, username)
-            Else
-                notsuccesfull(msg)
-                Exit Sub
-            End If
-
-
-
-
-            'MsgBox("Data Berhasil Di input Mysql")
+            Crcpdtl.insertRcpDtl(dtlid, custid, MTid, ddlTipe.SelectedValue, ddlItem.SelectedValue,
+                               qty, lossFactor, username)
             mfunction.CreateCookie("rcpID", MTid)
-            Response.Redirect("~/Pages_ReceipeEdit.aspx")
-
+            Response.Redirect("~/Pages_ReceipeEdit.aspx", False)
+            Context.ApplicationInstance.CompleteRequest()
         Catch ex As Exception
-            'MsgBox(ex.Message)
+            errLog(ex.ToString(), "Pages_ReceipeDtlEdit:insert")
+            notsuccesfull("The recipe detail could not be saved. Please try again.")
         End Try
-
     End Sub
 
-
-
     Sub notsuccesfull(ByVal msg As String)
-        Dim message As String = msg
-        Dim sb As New System.Text.StringBuilder()
-        ' Dim url As String = "~/Pages_InvTransfer.aspx"
-        sb.Append("<script type = 'text/javascript'>")
-        sb.Append("window.onload=function(){")
-        sb.Append("alert('")
-        sb.Append(message)
-        sb.Append("')};")
-        sb.Append("</script>")
-        ClientScript.RegisterClientScriptBlock(Me.GetType(), "Alert", sb.ToString())
+        recipeDetailError.InnerText = msg
+        recipeDetailError.Visible = True
     End Sub
 
 End Class
