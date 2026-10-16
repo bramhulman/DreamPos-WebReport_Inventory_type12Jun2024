@@ -11,12 +11,63 @@
 
             </asp:ScriptManager>
             <style>
-                .input-group>.form-control {
-                    width: 400px
+                .item-master-form { width: 100%; }
+                .item-master-form .card-body { padding: 20px 16px; }
+                .item-master-form .form-row {
+                    display: grid;
+                    grid-template-columns: 140px minmax(0, 1fr);
+                    gap: 0 16px;
+                    margin: 0 0 18px;
+                    align-items: start;
                 }
-
-                .form-row {
-                    margin-bottom: 1rem;
+                .item-master-form .form-row > * {
+                    width: 100%; max-width: 100%;
+                    padding-left: 0; padding-right: 0;
+                }
+                .item-master-form .col-form-label {
+                    white-space: normal !important;
+                    padding-top: 10px;
+                }
+                .item-master-form .input-group { display: block; }
+                .item-master-form .form-control {
+                    width: 100% !important; min-width: 0;
+                    height: 44px; border-radius: 4px;
+                }
+                .item-master-form .form-check {
+                    display: flex; align-items: center; min-height: 44px;
+                }
+                .item-master-form .select2-container { width: 100% !important; }
+                .item-master-form .select2-selection--single {
+                    height: 44px; border: 1px solid #b8c6d4; border-radius: 4px;
+                }
+                .item-master-form .select2-selection--single .select2-selection__rendered {
+                    line-height: 42px; padding-left: 12px; padding-right: 32px;
+                }
+                .item-master-form .select2-selection--single .select2-selection__arrow {
+                    height: 42px; right: 7px;
+                }
+                .item-master-form .select2-container--focus .select2-selection,
+                .item-master-form .select2-container--open .select2-selection {
+                    border-color: #2374b9;
+                    box-shadow: 0 0 0 3px rgba(35,116,185,.18);
+                }
+                .item-master-form .field-validation { font-size: 13px; }
+                .item-master-actions {
+                    display: flex; flex-wrap: wrap; gap: 10px;
+                    margin-left: 156px; padding-top: 16px;
+                    border-top: 1px solid #dce3e9;
+                }
+                .item-master-actions .btn {
+                    min-height: 44px; min-width: 104px; border-radius: 4px;
+                }
+                @media (max-width: 575.98px) {
+                    .item-master-form .card-body { padding: 16px 0; }
+                    .item-master-form .form-row {
+                        grid-template-columns: minmax(0, 1fr);
+                        gap: 6px; margin-bottom: 16px;
+                    }
+                    .item-master-form .col-form-label { padding-top: 0; padding-bottom: 0; }
+                    .item-master-actions { margin-left: 0; }
                 }
             </style>
             <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -33,7 +84,7 @@
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script type="text/javascript">
                     $(document).ready(function () {
-                        $("#<%= ddlItem.ClientID %>").select2();
+                        $("#<%= ddlItem.ClientID %>").select2({ width: "100%" });
                     });
                 </script>
                 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet"
@@ -100,8 +151,8 @@
                     <%-- <h2>User Access</h2>--%>
 
                         <div class="row">
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-horizontal" id="formload">
+                            <div class="col-xl-6 col-12">
+                                <div class="form-horizontal item-master-form" id="formload">
                                     <div class="card-body">
                                         <div class="form-row">
                                             <asp:label runat="server" CssClass="col-sm-2 col-form-label text-nowrap"
@@ -124,7 +175,7 @@
                                                     MaxLength="25" />
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server"
                                                     ControlToValidate="txtName" ErrorMessage="Item Name Must Be Fill."
-                                                    ForeColor="Red"></asp:RequiredFieldValidator>
+                                                    ForeColor="Red" Display="Dynamic" CssClass="field-validation"></asp:RequiredFieldValidator>
 
                                             </div>
 
@@ -257,7 +308,7 @@
 
                                         <asp:RequiredFieldValidator ID="RequiredFieldValidatorddlItem" runat="server"
                                             ControlToValidate="ddlItem" ErrorMessage="Stock/Rcp Must Be Choice."
-                                            ForeColor="Red"></asp:RequiredFieldValidator>
+                                            ForeColor="Red" Display="Dynamic" CssClass="field-validation"></asp:RequiredFieldValidator>
 
                                     </div>
 
@@ -272,7 +323,7 @@
                                             Class="form-control" text="0" />
                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server"
                                             ControlToValidate="txtFactor" ErrorMessage="Factor Must Be Fill."
-                                            ForeColor="Red"></asp:RequiredFieldValidator>
+                                            ForeColor="Red" Display="Dynamic" CssClass="field-validation"></asp:RequiredFieldValidator>
 
                                     </div>
 
@@ -294,39 +345,32 @@
                                 </div>
 
 
-                                <div class="form-group row">
-                                    <div Class="col-md-2"></div>
-                                    <div class="col-md-offset-2 col-md-10">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <button type="button" runat="server" class="btn btn-primary"
+<div class="form-group">
+<div>
+<div class="item-master-actions"><button type="button" runat="server" class="btn btn-outline-primary"
                                                         data-toggle="modal" id="btnaddcc" data-target="#ModalItem"
-                                                        style="font-weight: 600; border-color:gray; width:108px;">
+                                                        style="font-weight: 600;">
                                                         Add CC
                                                     </button>
-                                                </td>
-                                                <td>
+
+
 
                                                     <asp:Button runat="server" ID="btnInsert" OnClick="btnInsert_Click"
                                                         Text="Add" CssClass="btn btn-primary"
-                                                        Style="font-weight: 600; border-color:gray; width:108px;" />
-                                                </td>
-                                                <td>
+                                                        style="font-weight: 600;" />
+
+
 
                                                     <asp:Button runat="server" ID="btnUpdate" OnClick="btnUpdate_Click"
                                                         Text="Update" CssClass="btn btn-primary"
-                                                        Style="font-weight: 600; border-color:gray; width:108px;"
+                                                        style="font-weight: 600;"
                                                         Visible="false" />
-                                                </td>
-                                                <td>
+
+
                                                     <asp:Button runat="server" ID="btnCancel" OnClick="btnCancel_Click"
-                                                        Text="Cancel" CssClass="btn btn-primary"
-                                                        Style="font-weight: 600; border-color:gray; width:108px;"
-                                                        CausesValidation="false" />
-                                                </td>
-                                            </tr>
-                                        </table>
+                                                        Text="Cancel" CssClass="btn btn-outline-secondary"
+                                                        style="font-weight: 600;"
+                                                        CausesValidation="false" /></div>
 
                                     </div>
                                 </div>
@@ -340,7 +384,7 @@
 
                 <div class="col-lg-6 col-md-6">
                     <div class="form-horizontal" style="margin:0 20px; width:100%;overflow:scroll;">
-                        <asp:ListView ID="lstViewCost" runat="server" OnItemCommand="lstViewCost_ItemCommand"
+<asp:ListView ID="lstViewCost" runat="server" OnItemCommand="lstViewCost_ItemCommand"
                             OnPagePropertiesChanging="OnPagecostChanging">
                             <LayoutTemplate>
                                 <div class="table-responsive">
@@ -601,12 +645,6 @@
                         function openModalcc() {
                             $('#ModalItem').modal({ show: true });
                             //document.getElementById("txtsearch").focus();
-                        }
-                        if ($(window).width() >= 960) {
-                            document.getElementById("formload").style.width = "100%";
-                        } else {
-                            document.getElementById("formload").style.width = "80%";
-
                         }
 
 

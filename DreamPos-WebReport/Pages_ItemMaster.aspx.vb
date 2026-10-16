@@ -75,13 +75,13 @@ Public Class Pages_ItemMaster
                     chklink.Checked = True
                     Me.binding()
 
-                    ' Hide New button and Action column for regular users
+                    ' Items are synchronized from the source system, never created from this list.
+                    btnnew.Visible = False
+                    ' Keep the existing Action column permissions.
                     If modulepriv() = usrModulepriv.moduleuser Then
                         btnnew.Visible = False
                         Dim thAction As Control = lstViewDetails.FindControl("thAction")
                         If thAction IsNot Nothing Then thAction.Visible = False
-                    Else
-                        btnnew.Visible = True
                     End If
                 End If
             Else
