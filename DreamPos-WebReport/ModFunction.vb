@@ -1,4 +1,4 @@
-Imports System.IO
+﻿Imports System.IO
 Imports System.Net
 Imports System.Net.Mail
 Imports System.Drawing
@@ -58,8 +58,15 @@ Public Class ModFunction
         mHelper.errLog(strErrDesc, occurIn)
         ' A web request must never open a desktop message box on the server.
         If showErrMsg Then mHelper.TraceErrorLog(strErrDesc & " (Occurred IN :" & occurIn & ")")
-
     End Sub
+
+    Public Shared Function LogRequestFailure(ByVal stage As String, ByVal ex As Exception) As String
+        Return mHelper.LogRequestFailure(stage, ex)
+    End Function
+
+    Public Shared Function ResolveSafeErrorLogPath() As String
+        Return mHelper.GetErrorLogFilePath()
+    End Function
 
     Public Function SaveLastSentJson(ByVal rawJson As String, Optional ByVal actionName As String = "api", Optional ByVal referenceNo As String = "") As String
         Return mHelper.SaveLastSentJson(rawJson, actionName, referenceNo)

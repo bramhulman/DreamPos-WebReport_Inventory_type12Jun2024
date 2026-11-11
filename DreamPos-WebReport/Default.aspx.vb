@@ -1,4 +1,4 @@
-Imports System.IO
+﻿Imports System.IO
 Imports System.Data
 Imports System.Configuration
 Imports System.Net
@@ -116,6 +116,15 @@ Public Class _Default
         End If
     End Sub
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Response.Cache.SetNoStore()
+        If Not IsPostBack Then
+            If clsSchemaMigrator.EnsureWebConfigUpdated() Then
+                Response.Redirect("~/Default.aspx", False)
+                Context.ApplicationInstance.CompleteRequest()
+                Return
+            End If
+        End If
+
         Dim sReturnUrl As String = Request.QueryString("ReturnUrl")
         Dim sLogout As String = Request.QueryString("logout")
         Dim cookie As HttpCookie = Request.Cookies("UserLogin_inv")
@@ -259,6 +268,12 @@ Public Class _Default
     End Sub
 
     Protected Sub LogIn(ByVal sender As Object, ByVal e As EventArgs) '(sender As Object, e As EventArgs)
+        If clsSchemaMigrator.EnsureWebConfigUpdated() Then
+            Response.Redirect("~/Default.aspx?config_updated=1", False)
+            Context.ApplicationInstance.CompleteRequest()
+            Return
+        End If
+
         Dim ds As DataSet
         Dim userName As String = txtUser.Text
         Dim clsLoginData As New ClsLogin

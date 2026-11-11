@@ -1,0 +1,13 @@
+-- =========================================================================
+-- DreamPos WebReport - Database Migrations Directory
+-- =========================================================================
+-- Taruh file migration SQL di folder ini dengan konvensi penamaan:
+-- YYYYMMDD_urutan_deskripsi.sql
+-- Contoh:
+-- 20261111_01_init_inventory_sync.sql
+-- 20261115_02_add_stock_threshold.sql
+--
+-- File yang ditaruh di sini akan otomatis dieksekusi secara berurutan
+-- oleh script 'apply_server_update.ps1' pada saat deployment ke server.
+-- Eksekusi dicatat pada tabel `__migration_history` agar tidak dieksekusi ulang.
+-- =========================================================================

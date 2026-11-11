@@ -45,12 +45,39 @@ Module mHelper
 
     Private ReadOnly ErrorLogSync As New Object()
 
+    ''' <summary>
+    ''' Membersihkan / merotasi file log jika ukurannya melebihi 5 MB atau arsip lebih dari 14 hari
+    ''' </summary>
+    Public Sub CheckAndRotateLog(ByVal logPath As String)
+        Try
+            If File.Exists(logPath) Then
+                Dim fi As New FileInfo(logPath)
+                Dim maxBytes As Long = 5 * 1024 * 1024 ' 5 MB
+                If fi.Length > maxBytes Then
+                    Dim archivePath As String = Path.Combine(fi.DirectoryName, Path.GetFileNameWithoutExtension(fi.Name) & "_" & DateTime.Now.ToString("yyyyMMdd_HHmmss") & ".bak")
+                    File.Copy(logPath, archivePath, True)
+                    File.WriteAllText(logPath, DateTime.Now.ToString("dd/MM/yy HH:mm:ss") & " ==> [INFO] Log dirotasi otomatis karena melebihi batas 5MB." & Environment.NewLine)
+                End If
+
+                If fi.Directory.Exists Then
+                    For Each oldFile In fi.Directory.GetFiles(Path.GetFileNameWithoutExtension(fi.Name) & "_*.bak")
+                        If (DateTime.Now - oldFile.LastWriteTime).TotalDays > 14 Then
+                            oldFile.Delete()
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+        End Try
+    End Sub
+
     Public Sub errLog(ByVal strErrDesc As String, ByVal strAccurIn As String)
         Dim entry As String = DateTime.Now.ToString("dd/MM/yy hh:mm:ss tt") &
             " ==>ERROR:" & strErrDesc & " (Occurred IN :" & strAccurIn & ")"
         Dim primaryFailure As String
         Try
-            AppendErrorLog(My.Settings.errLog, entry)
+            Dim safeLog As String = GetErrorLogFilePath()
+            AppendErrorLog(safeLog, entry)
             Return
         Catch ex As Exception
             primaryFailure = ex.GetType().Name
@@ -73,9 +100,17 @@ Module mHelper
         If Not Path.IsPathRooted(logPath) Then
             logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logPath)
         End If
+
+        ' Lindungi dari penulisan ke folder bin\ yang me-restart ASP.NET AppDomain
+        Dim parts = logPath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+        If parts.Any(Function(part) String.Equals(part, "bin", StringComparison.OrdinalIgnoreCase)) Then
+            logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ErrLog.txt")
+        End If
+
         ' Serialize writers in this application; file contention from other processes uses fallback.
         SyncLock ErrorLogSync
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(logPath)))
+            CheckAndRotateLog(logPath)
             Using writer As New StreamWriter(logPath, True)
                 writer.WriteLine(entry)
             End Using
@@ -109,8 +144,20 @@ Module mHelper
         Try
             Dim configuredPath As String = My.Settings.errLog
             If Not String.IsNullOrWhiteSpace(configuredPath) Then
+                If Not Path.IsPathRooted(configuredPath) Then
+                    configuredPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configuredPath)
+                Else
+                    configuredPath = Path.GetFullPath(configuredPath)
+                End If
+
+                ' Cegah penulisan di dalam folder bin\
+                Dim parts = configuredPath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                If parts.Any(Function(part) String.Equals(part, "bin", StringComparison.OrdinalIgnoreCase)) Then
+                    configuredPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ErrLog.txt")
+                End If
+
                 Dim configuredDirectory As String = Path.GetDirectoryName(configuredPath)
-                If Not String.IsNullOrWhiteSpace(configuredDirectory) Then
+                If Not String.IsNullOrWhiteSpace(configuredDirectory) AndAlso Not Directory.Exists(configuredDirectory) Then
                     Directory.CreateDirectory(configuredDirectory)
                 End If
                 Return configuredPath
@@ -119,6 +166,51 @@ Module mHelper
         End Try
 
         Return Path.Combine(GetDiagnosticsLogDirectory(), "webreport_error.log")
+    End Function
+
+    Public Function LogRequestFailure(stage As String, ex As Exception) As String
+        Dim ctx = HttpContext.Current
+        Dim incident = If(ctx Is Nothing, Nothing, TryCast(ctx.Items("ErrorIncident"), String))
+        If incident Is Nothing Then incident = Guid.NewGuid().ToString("N")
+        Try
+            If ctx IsNot Nothing Then
+                ctx.Items("ErrorIncident") = incident
+                Try
+                    ctx.Response.Headers("X-Error-ID") = incident
+                Catch
+                End Try
+            End If
+            Dim detail As New StringBuilder()
+            detail.AppendLine("Incident=" & incident & " Stage=" & stage)
+            If ctx IsNot Nothing Then
+                detail.AppendLine("Method=" & ctx.Request.HttpMethod & " Path=" & ctx.Request.Path)
+                detail.AppendLine("ElapsedMs=" & Math.Max(0, (DateTime.Now - ctx.Timestamp).TotalMilliseconds).ToString("F0"))
+                detail.AppendLine("Authenticated=" & ctx.Request.IsAuthenticated.ToString())
+                Dim cookie = ctx.Request.Cookies("UserLogin_inv")
+                If cookie IsNot Nothing Then
+                    detail.AppendLine("UserCookie=" & If(cookie("userName"), cookie("username")))
+                End If
+            End If
+            Dim depth = 0
+            While ex IsNot Nothing AndAlso depth < 5
+                Dim hr As Integer = 0
+                Try
+                    hr = System.Runtime.InteropServices.Marshal.GetHRForException(ex)
+                Catch
+                End Try
+                detail.AppendLine("Exception=" & ex.GetType().FullName & " HResult=" & hr.ToString())
+                If TypeOf ex Is MySql.Data.MySqlClient.MySqlException Then
+                    detail.AppendLine("MySqlErrorNumber=" & DirectCast(ex, MySql.Data.MySqlClient.MySqlException).Number.ToString())
+                End If
+                detail.AppendLine("Message=" & ex.Message)
+                detail.AppendLine("Stack=" & ex.StackTrace)
+                ex = ex.InnerException
+                depth += 1
+            End While
+            errLog(detail.ToString(), "RequestFailure")
+        Catch
+        End Try
+        Return incident
     End Function
 
     Public Function SaveLastSentJson(ByVal rawJson As String, Optional ByVal actionName As String = "api", Optional ByVal referenceNo As String = "") As String

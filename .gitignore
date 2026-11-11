@@ -242,3 +242,11 @@ ModelManifest.xml
 .fake/
 *.rar 
 *.zip 
+
+# Deployment & Release Packages
+Release_Packages/
+_backups/
+*.flag
+*.bak*
+UpdateLog_*.txt
+

@@ -1999,6 +1999,7 @@
     <Compile Include="ConnectionMysql\clsInventory_Usage.vb" />
     <Compile Include="ConnectionMysql\clsInventory_Warehouse.vb" />
     <Compile Include="ConnectionMysql\clsLogin.vb" />
+    <Compile Include="ConnectionMysql\clsSchemaMigrator.vb" />
     <Compile Include="ConnectionMysql\clsOutlet.vb" />
     <Compile Include="ConnectionMysql\ClsParamRpt.vb" />
     <Compile Include="ConnectionMysql\ClsReports.vb" />
@@ -2891,4 +2892,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>powershell -ExecutionPolicy Bypass -File "$(ProjectDir)update_version.ps1" -projectDir "$(ProjectDir)\"</PreBuildEvent>
+  </PropertyGroup>
 </Project>
