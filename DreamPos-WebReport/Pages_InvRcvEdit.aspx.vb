@@ -361,6 +361,14 @@ Public Class Pages_InvRcvEdit
             Err.Clear()
         End Try
     End Sub
+    ' Parse using the same culture as the N2-formatted grid controls.
+    ' Val stops at a thousands separator (for example 18,000.00 becomes 18).
+    Private Shared Function GridNumber(ByVal value As String) As Decimal
+        Dim number As Decimal
+        Decimal.TryParse(value, Globalization.NumberStyles.Number, Globalization.CultureInfo.CurrentCulture, number)
+        Return number
+    End Function
+
     Protected Sub BindData()
 
         Try
@@ -732,6 +740,12 @@ ef:
         Dim ptax As Double = 0
         Dim ntax As Double = 0
         Try
+            If xcancel Then
+                ' Cancel reads locked DB posting identities, not edited dates/quantities in ViewState.
+                cInv.CancelInvReceive(txtLinkid.Text, username, custid)
+                Response.Redirect("~/Pages_InvRcv.aspx", False)
+                Return
+            End If
             Dim msg As String = ""
             Dim dt As DataTable = DirectCast(ViewState("InvRcv"), DataTable)
             Dim newLine As String = "\n"
@@ -806,8 +820,13 @@ ef:
 
 
             Response.Redirect("~/Pages_InvRcv.aspx", False)
+        Catch ex As ReceivePostingException
+            Dim safeMessage As String = System.Web.HttpUtility.JavaScriptStringEncode(ex.Message)
+            ScriptManager.RegisterStartupScript(Me, Me.GetType(), "receive-failure", "if(window.ReceivePostingUI){ReceivePostingUI.reset();} alert('" & safeMessage & "');", True)
         Catch ex As Exception
-            errLog(Err.Description, "Pages_InvRcvEdit:Insert")
+            Dim reference As String = Guid.NewGuid().ToString("N")
+            errLog("[RECEIVE_UI_FAILED] ref=" & reference & "; doc=" & txtLinkid.Text & "; custid=" & custid.ToString() & "; cancel=" & xcancel.ToString() & "; " & ex.ToString(), "Pages_InvRcvEdit:Insert")
+            ScriptManager.RegisterStartupScript(Me, Me.GetType(), "receive-failure", "if(window.ReceivePostingUI){ReceivePostingUI.reset();} alert('Proses gagal. Ref: " & reference & "');", True)
             Err.Clear()
             'MsgBox(Err.Description, MsgBoxStyle.Information)
             Err.Clear()
@@ -912,7 +931,7 @@ ef:
             '    Exit Sub
             'End If
 
-            Dim total As Decimal = (Val(txtUnit1.Text) * Val(lblLosF1.Text)) + Val(txtUnit2.Text)
+            Dim total As Decimal = (GridNumber(txtUnit1.Text) * GridNumber(lblLosF1.Text)) + GridNumber(txtUnit2.Text)
 
             'tambahan erik 21 sept 2020, buat jagain nilai tidak tll besar
             If txtEditU1Cost.Text = 0 Then
@@ -922,12 +941,12 @@ ef:
                 Exit Sub
             End If
 
-            If Val(txtUnit1.Text) >= 999999999 Then
+            If GridNumber(txtUnit1.Text) >= 999999999 Then
                 notsuccesfull("Unit 1 must less than 999999999")
                 Exit Sub
             End If
 
-            If Val(txtUnit2.Text) >= 999999999 Then
+            If GridNumber(txtUnit2.Text) >= 999999999 Then
                 notsuccesfull("Unit 2 must less than 999999999")
                 Exit Sub
             End If
@@ -937,7 +956,7 @@ ef:
                 Exit Sub
             End If
 
-            If Val(txtEditU1Cost.Text) >= 999999999 Then
+            If GridNumber(txtEditU1Cost.Text) >= 999999999 Then
                 notsuccesfull("Cost Must less than 999999999")
                 Exit Sub
             End If
@@ -965,23 +984,23 @@ ef:
 
             If lblLosF1.Text = 0 Then
                 lblLosF1.Text = 1
-                total = (Val(txtUnit1.Text) * Val(lblLosF1.Text)) + Val(txtUnit2.Text)
+                total = (GridNumber(txtUnit1.Text) * GridNumber(lblLosF1.Text)) + GridNumber(txtUnit2.Text)
             End If
 
             dt.Rows(e.RowIndex)("Factor1") = clsI_stk.get_stkFactor1(dt.Rows(e.RowIndex)("stk_id"), custid) 'lblLosF1.Text
 
-            dt.Rows(e.RowIndex)("U1") = txtUnit1.Text
+            dt.Rows(e.RowIndex)("U1") = GridNumber(txtUnit1.Text)
 
-            dt.Rows(e.RowIndex)("U2") = txtUnit2.Text
+            dt.Rows(e.RowIndex)("U2") = GridNumber(txtUnit2.Text)
 
             dt.Rows(e.RowIndex)("ttlStock") = total
 
-            dt.Rows(e.RowIndex)("CostU1") = txtEditU1Cost.Text
+            dt.Rows(e.RowIndex)("CostU1") = GridNumber(txtEditU1Cost.Text)
 
 
 
 
-            Dim cost As Decimal = txtEditU1Cost.Text / lblLosF1.Text
+            Dim cost As Decimal = GridNumber(txtEditU1Cost.Text) / GridNumber(lblLosF1.Text)
 
             dt.Rows(e.RowIndex)("Cost") = cost
 
@@ -1062,7 +1081,7 @@ ef:
                         Dim txtEditU1Cost As TextBox = TryCast(row.FindControl("txtEditU1Cost"), TextBox)
                         Dim lblLosF1 As Label = TryCast(row.FindControl("lblfactor"), Label)
                         
-                        Dim total As Decimal = (Val(txtEditUnit1.Text) * Val(lblLosF1.Text)) + Val(txtEditUnit2.Text)
+                        Dim total As Decimal = (GridNumber(txtEditUnit1.Text) * GridNumber(lblLosF1.Text)) + GridNumber(txtEditUnit2.Text)
                         
                         If Not IsNumeric(txtEditUnit1.Text) AndAlso Not IsNumeric(txtEditUnit2.Text) Then
                             msg &= " row " & row.RowIndex.ToString & " Unit 1 must be number" & newLine
@@ -1073,13 +1092,13 @@ ef:
                         If Not IsNumeric(txtEditU1Cost.Text) Then
                             msg &= " row " & row.RowIndex.ToString & " cost must be number" & newLine
                         End If
-                        If Val(txtEditU1Cost.Text) = 0 Then
+                        If GridNumber(txtEditU1Cost.Text) = 0 Then
                             msg &= " row " & row.RowIndex.ToString & " Please Input Cost" & newLine
                         End If
-                        If Val(txtEditUnit1.Text) >= 999999999 Then
+                        If GridNumber(txtEditUnit1.Text) >= 999999999 Then
                             msg &= " row " & row.RowIndex.ToString & " Unit 1 must less than 999999" & newLine
                         End If
-                        If Val(txtEditU1Cost.Text) >= 999999999 Then
+                        If GridNumber(txtEditU1Cost.Text) >= 999999999 Then
                             msg &= " row " & row.RowIndex.ToString & " Cost must less than 999999" & newLine
                         End If
                         If Val(total) >= 999999999 Then
@@ -1120,18 +1139,18 @@ ef:
                         Label1.Text = txtEditUnit2.Text
                         lblU1Cost.Text = txtEditU1Cost.Text
 
-                        If Val(lblLosF1.Text) = 0 Then lblLosF1.Text = "1"
-                        Dim total As Decimal = (Val(txtEditUnit1.Text) * Val(lblLosF1.Text)) + Val(txtEditUnit2.Text)
+                        If GridNumber(lblLosF1.Text) = 0 Then lblLosF1.Text = "1"
+                        Dim total As Decimal = (GridNumber(txtEditUnit1.Text) * GridNumber(lblLosF1.Text)) + GridNumber(txtEditUnit2.Text)
 
                         Dim realIndex As Integer = row.DataItemIndex
 
                         dt.Rows(realIndex)("Factor1") = clsI_stk.get_stkFactor1(lbl_stkid.Text, custid)
-                        dt.Rows(realIndex)("U1") = txtEditUnit1.Text
-                        dt.Rows(realIndex)("U2") = txtEditUnit2.Text
+                        dt.Rows(realIndex)("U1") = GridNumber(txtEditUnit1.Text)
+                        dt.Rows(realIndex)("U2") = GridNumber(txtEditUnit2.Text)
                         dt.Rows(realIndex)("ttlStock") = total
-                        dt.Rows(realIndex)("CostU1") = txtEditU1Cost.Text
+                        dt.Rows(realIndex)("CostU1") = GridNumber(txtEditU1Cost.Text)
 
-                        Dim cost As Decimal = Val(txtEditU1Cost.Text) / Val(lblLosF1.Text)
+                        Dim cost As Decimal = GridNumber(txtEditU1Cost.Text) / GridNumber(lblLosF1.Text)
                         dt.Rows(realIndex)("Cost") = cost
                         Dim ttlcost As Decimal = total * cost
                         dt.Rows(realIndex)("ttlCost") = ttlcost
@@ -1188,7 +1207,7 @@ ef:
                         txtEditU1Cost.Visible = False
                         lblUnit1.Text = txtEditUnit1.Text
                         Dim lblLosF1 As Label = (TryCast(row.FindControl("lblfactor"), Label))
-                        Dim total As Decimal = (Val(txtEditUnit1.Text) * Val(lblLosF1.Text)) + Val(txtEditUnit2.Text)
+                        Dim total As Decimal = (GridNumber(txtEditUnit1.Text) * GridNumber(lblLosF1.Text)) + GridNumber(txtEditUnit2.Text)
                         If IsNumeric(txtEditUnit1.Text) = False Then
                             msg = msg + " row " + row.RowIndex.ToString + " Unit 1 must be number" & newLine
 
@@ -1212,12 +1231,12 @@ ef:
 
                         End If
 
-                        If Val(txtEditUnit1.Text) >= 999999999 Then
+                        If GridNumber(txtEditUnit1.Text) >= 999999999 Then
 
                             msg = msg + " row " + row.RowIndex.ToString + " Unit 1 must less than 999999" & newLine
                         End If
 
-                        If Val(txtEditU1Cost.Text) >= 999999999 Then
+                        If GridNumber(txtEditU1Cost.Text) >= 999999999 Then
                             msg = msg + " row " + row.RowIndex.ToString + " Cost must less than 999999" & newLine
                         End If
 
@@ -1235,7 +1254,7 @@ ef:
 
                         If lblLosF1.Text = 0 Then
                             lblLosF1.Text = 1
-                            total = (Val(txtEditU1Cost.Text) * Val(lblLosF1.Text)) + Val(txtEditU1Cost.Text)
+                            total = (GridNumber(txtEditUnit1.Text) * GridNumber(lblLosF1.Text)) + GridNumber(txtEditUnit2.Text)
                         End If
 
                         If msg <> "" Then
@@ -1248,16 +1267,16 @@ ef:
 
                         dt.Rows(row.RowIndex)("Factor1") = clsI_stk.get_stkFactor1(lbl_stkid.Text, custid) 'lblLosF1.Text
 
-                        dt.Rows(row.RowIndex)("U1") = txtEditUnit1.Text
+                        dt.Rows(row.RowIndex)("U1") = GridNumber(txtEditUnit1.Text)
 
-                        dt.Rows(row.RowIndex)("U2") = txtEditUnit2.Text
+                        dt.Rows(row.RowIndex)("U2") = GridNumber(txtEditUnit2.Text)
 
                         dt.Rows(row.RowIndex)("ttlStock") = total
 
-                        dt.Rows(row.RowIndex)("CostU1") = txtEditU1Cost.Text
+                        dt.Rows(row.RowIndex)("CostU1") = GridNumber(txtEditU1Cost.Text)
 
 
-                        Dim cost As Decimal = txtEditU1Cost.Text / lblLosF1.Text
+                        Dim cost As Decimal = GridNumber(txtEditU1Cost.Text) / GridNumber(lblLosF1.Text)
 
                         dt.Rows(row.RowIndex)("Cost") = cost
 
@@ -1591,7 +1610,7 @@ ef:
             If ViewState("InvRcv") IsNot Nothing Then
                 Dim dt As DataTable = CType(ViewState("InvRcv"), DataTable)
                 Dim dtstk As DataTable = DirectCast(ViewState("InvStk"), DataTable)
-                Dim xdoctot As Double
+                Dim xdoctot As Decimal
                 Dim lblstknm As Label = DirectCast(DgvTransfer.Rows(rowIndex).FindControl("Label5"), Label)
                 Dim lblstkid As Label = DirectCast(DgvTransfer.Rows(rowIndex).FindControl("lblStkID"), Label)
 
@@ -1640,7 +1659,15 @@ ef:
                     xdoctot = 0
                 End If
 
-                strmaster = "update cld_invlk_rcv set  doctot = " & xdoctot & " where id = '" & lid & "' and custid = " & custid() & ""
+                Dim taxAmount As Decimal = 0
+                If My.Settings.supp_tax = "1" Then
+                    taxAmount = GridNumber(txtTaxAmount.Text)
+                End If
+                Dim taxUpdate As String = ""
+                If My.Settings.supp_tax = "1" Then
+                    taxUpdate = ", n_tax = " & taxAmount.ToString(Globalization.CultureInfo.InvariantCulture)
+                End If
+                strmaster = "update cld_invlk_rcv set doctot = " & (CDec(xdoctot) + taxAmount).ToString(Globalization.CultureInfo.InvariantCulture) & taxUpdate & " where id = '" & lid & "' and custid = " & custid() & ""
                 ''" & dt.Rows(rowID).Item("linkid") & "'
                 c_cmd.executeNonQuery(strmaster)
             End If
@@ -1679,7 +1706,7 @@ ef:
                 Dim txtEditU1Cost As TextBox = TryCast(row.FindControl("txtEditU1Cost"), TextBox)
                 Dim lblLosF1 As Label = TryCast(row.FindControl("lblfactor"), Label)
                 
-                Dim total As Decimal = (Val(txtEditUnit1.Text) * Val(lblLosF1.Text)) + Val(txtEditUnit2.Text)
+                Dim total As Decimal = (GridNumber(txtEditUnit1.Text) * GridNumber(lblLosF1.Text)) + GridNumber(txtEditUnit2.Text)
                 
                 If Not IsNumeric(txtEditUnit1.Text) AndAlso Not IsNumeric(txtEditUnit2.Text) Then
                     msg &= " row " & row.RowIndex.ToString & " Unit 1 must be number" & newLine
@@ -1690,13 +1717,13 @@ ef:
                 If Not IsNumeric(txtEditU1Cost.Text) Then
                     msg &= " row " & row.RowIndex.ToString & " cost must be number" & newLine
                 End If
-                If Val(txtEditU1Cost.Text) = 0 Then
+                If GridNumber(txtEditU1Cost.Text) = 0 Then
                     msg &= " row " & row.RowIndex.ToString & " Please Input Cost" & newLine
                 End If
-                If Val(txtEditUnit1.Text) >= 999999999 Then
+                If GridNumber(txtEditUnit1.Text) >= 999999999 Then
                     msg &= " row " & row.RowIndex.ToString & " Unit 1 must less than 999999" & newLine
                 End If
-                If Val(txtEditU1Cost.Text) >= 999999999 Then
+                If GridNumber(txtEditU1Cost.Text) >= 999999999 Then
                     msg &= " row " & row.RowIndex.ToString & " Cost must less than 999999" & newLine
                 End If
                 If Val(total) >= 999999999 Then
@@ -1736,18 +1763,18 @@ ef:
                 Label1.Text = txtEditUnit2.Text
                 lblU1Cost.Text = txtEditU1Cost.Text
 
-                If Val(lblLosF1.Text) = 0 Then lblLosF1.Text = "1"
-                Dim total As Decimal = (Val(txtEditUnit1.Text) * Val(lblLosF1.Text)) + Val(txtEditUnit2.Text)
+                If GridNumber(lblLosF1.Text) = 0 Then lblLosF1.Text = "1"
+                Dim total As Decimal = (GridNumber(txtEditUnit1.Text) * GridNumber(lblLosF1.Text)) + GridNumber(txtEditUnit2.Text)
 
                 Dim realIndex As Integer = row.DataItemIndex
 
                 dt.Rows(realIndex)("Factor1") = clsI_stk.get_stkFactor1(lbl_stkid.Text, custid)
-                dt.Rows(realIndex)("U1") = txtEditUnit1.Text
-                dt.Rows(realIndex)("U2") = txtEditUnit2.Text
+                dt.Rows(realIndex)("U1") = GridNumber(txtEditUnit1.Text)
+                dt.Rows(realIndex)("U2") = GridNumber(txtEditUnit2.Text)
                 dt.Rows(realIndex)("ttlStock") = total
-                dt.Rows(realIndex)("CostU1") = txtEditU1Cost.Text
+                dt.Rows(realIndex)("CostU1") = GridNumber(txtEditU1Cost.Text)
 
-                Dim cost As Decimal = Val(txtEditU1Cost.Text) / Val(lblLosF1.Text)
+                Dim cost As Decimal = GridNumber(txtEditU1Cost.Text) / GridNumber(lblLosF1.Text)
                 dt.Rows(realIndex)("Cost") = cost
                 Dim ttlcost As Decimal = total * cost
                 dt.Rows(realIndex)("ttlCost") = ttlcost

@@ -344,12 +344,10 @@
                                                 <i class="fas fa-plus mr-1"></i> Add Item
                                             </button>
                                             <button type="submit" runat="server" class="btn btn-primary" id="btnSave"
-                                                onserverclick="btnSave_Click"
                                                 style="font-weight: 500; min-width: 100px;">
                                                 <i class="fas fa-paper-plane mr-1"></i> Order
                                             </button>
                                             <button type="submit" runat="server" class="btn btn-primary" id="btnFinish"
-                                                onserverclick="btnFinish_Click"
                                                 style="font-weight: 500; min-width: 100px;" visible="false">
                                                 <i class="fas fa-check mr-1"></i> Receive
                                             </button>
@@ -359,7 +357,7 @@
                                                 <i class="fas fa-arrow-left mr-1"></i> Back
                                             </button>
                                             <button type="submit" runat="server" class="btn btn-primary" id="btncancel"
-                                                onserverclick="btncancel_ServerClick"
+                                                onclick="if (!ReceivePostingUI.begin(this)) { return false; }"
                                                 style="font-weight: 600; border-color:gray; width:108px;"
                                                 visible="False">
                                                 Cancel rec
@@ -1120,4 +1118,5 @@
 
                     </script>
 
+                    <script src="Content/js/receive-posting.js"></script>
             </asp:Content>

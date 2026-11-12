@@ -1,0 +1,38 @@
+'use strict';
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const path = require('node:path');
+const callbacks = [];
+let endRequest;
+let captureClick;
+function control(disabled, html) {
+    return { disabled, innerHTML: html, attrs: {}, setAttribute(k, v) { this.attrs[k] = v; }, removeAttribute(k) { delete this.attrs[k]; } };
+}
+const cancel = control(false, 'Cancel rec');
+const save = control(false, 'Order');
+const alreadyDisabled = control(true, 'Disabled');
+const form = { querySelectorAll: () => [cancel, save, alreadyDisabled] };
+cancel.form = form;
+const document = { addEventListener(name, fn, capture) { assert.equal(name, 'click'); assert.equal(capture, true); captureClick = fn; } };
+const window = { setTimeout(fn) { callbacks.push(fn); }, Sys: { WebForms: { PageRequestManager: { getInstance: () => ({ add_endRequest(fn) { endRequest = fn; } }) } } } };
+vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../../DreamPos-WebReport/Content/js/receive-posting.js'), 'utf8'), { window, document });
+assert.equal(window.ReceivePostingUI.begin(cancel), true);
+assert.equal(cancel.disabled, false, 'clicked submit must remain enabled until WebForms captures it');
+assert.equal(window.ReceivePostingUI.begin(cancel), false, 'second click cannot submit');
+let prevented = false;
+let stopped = false;
+captureClick({ target: { tagName: 'SPAN', parentNode: { tagName: 'BUTTON' } }, preventDefault() { prevented = true; }, stopImmediatePropagation() { stopped = true; } });
+assert.equal(prevented && stopped, true, 'other actions must not replace the active AJAX request');
+callbacks.shift()();
+assert.equal(cancel.disabled && save.disabled, true);
+endRequest();
+assert.equal(cancel.disabled, false);
+assert.equal(save.disabled, false);
+assert.equal(alreadyDisabled.disabled, true, 'restore original state, not enable every control');
+assert.equal(cancel.innerHTML, 'Cancel rec');
+assert.equal(window.ReceivePostingUI.begin(cancel), true, 'allow retry after server rejection/failure');
+window.ReceivePostingUI.reset();
+callbacks.shift()();
+assert.equal(save.disabled, false, 'late timer must not re-lock a completed request');
+console.log('PASS: double click, submit ordering, other action guard, AJAX failure reset and original disabled states.');

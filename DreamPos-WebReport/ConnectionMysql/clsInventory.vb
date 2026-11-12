@@ -159,6 +159,7 @@ StopCalculate:
     'perubahan 24 sept 2020
     'mematikan process calculate cost dan stock
     Public Function insertInvRcv(ByVal lid As String, ByVal ccfrom As Integer, ByVal ccname As String, ByVal dt As DataTable, ByVal DOS As String, ByVal Supid As Integer, ByVal stat As Integer, ByVal username As String, ByVal custid As Integer, ByVal usedDate As Date, ByVal ExDelDate As Date, ByVal notes As String, Optional ByVal xcancel As Boolean = False, Optional ByVal xACC As Boolean = False, Optional ByVal ptax As Decimal = 0, Optional ByVal ntax As Decimal = 0) As String
+        If xcancel Then Return CancelInvReceive(lid, username, custid)
         Dim idtrans As String = lid
         Dim flagtrans As Integer = If(stat = 1, 0, 1)
         Dim iacc As Integer = If(xACC Or My.Settings.tosupplier_byacc = 0, 1, 0)
@@ -171,40 +172,198 @@ StopCalculate:
         ' =========================================================
 
         Using conn As New MySqlConnection(My.Settings.ServerStr)
-            conn.Open()
-            Dim trans As MySqlTransaction = conn.BeginTransaction()
+            Using operation As New clsReceivePosting(conn, custid, lid, username, If(stat = 2, "receive", "save-order"), Sub(message, source) errLog(message, source), My.Settings.stock_cost <> "0")
+                Dim trans As MySqlTransaction = Nothing
+                Try
+                    trans = operation.Begin()
+                    If stat <> 1 AndAlso stat <> 2 Then Throw New InvalidOperationException("Status penerimaan tidak valid.")
+                    Dim inputStocks As New HashSet(Of Integer)()
+                    For Each item As DataRow In dt.Rows
+                        If Not inputStocks.Add(Convert.ToInt32(item("stk_id"))) Then Throw New InvalidOperationException("Stock yang sama muncul lebih dari satu kali pada dokumen.")
+                        If clsReceivePosting.Number(item, "ttlStock") < 0D OrElse (flagtrans = 1 AndAlso clsReceivePosting.Number(item, "ttlStock") = 0D) Then Throw New InvalidOperationException("Quantity Receive harus lebih dari 0.")
+                    Next
 
-            Try
+                    ' 1. Logic for NEW Transaction
+                    If String.IsNullOrEmpty(lid) Then
+                        idtrans = CItrans.idRcv(custid)
+                        Dim try2 As Integer = 0
 
-                ' 1. Logic for NEW Transaction
-                If String.IsNullOrEmpty(lid) Then
-                    idtrans = CItrans.idRcv(custid)
-                    Dim try2 As Integer = 0
+                        ' Check for ID collision (Collision Logic preserved from original)
+                        Using cmdCheck As New MySqlCommand("SELECT COUNT(id) FROM cld_inv_Trans WHERE Linkid=@Linkid AND custid=@custid AND cc=@cc", conn, trans)
+                            cmdCheck.Parameters.Add("@Linkid", MySqlDbType.VarChar)
+                            cmdCheck.Parameters.AddWithValue("@custid", custid)
+                            cmdCheck.Parameters.AddWithValue("@cc", ccfrom)
 
-                    ' Check for ID collision (Collision Logic preserved from original)
-                    Using cmdCheck As New MySqlCommand("SELECT COUNT(id) FROM cld_inv_Trans WHERE Linkid=@Linkid AND custid=@custid AND cc=@cc", conn, trans)
-                        cmdCheck.Parameters.Add("@Linkid", MySqlDbType.VarChar)
-                        cmdCheck.Parameters.AddWithValue("@custid", custid)
-                        cmdCheck.Parameters.AddWithValue("@cc", ccfrom)
+                            While True
+                                cmdCheck.Parameters("@Linkid").Value = idtrans
+                                Dim count As Integer = Convert.ToInt32(cmdCheck.ExecuteScalar())
+                                If count = 0 Then Exit While
+                                try2 += 1
+                                idtrans = CItrans.idRcv(custid, try2)
+                            End While
+                        End Using
 
-                        While True
-                            cmdCheck.Parameters("@Linkid").Value = idtrans
-                            Dim count As Integer = Convert.ToInt32(cmdCheck.ExecuteScalar())
-                            If count = 0 Then Exit While
-                            try2 += 1
-                            idtrans = CItrans.idRcv(custid, try2)
-                        End While
-                    End Using
+                        operation.SetDocument(idtrans)
+                        If flagtrans = 1 Then
+                            For Each item As DataRow In dt.Rows
+                                If Convert.ToInt32(item("cc")) <> ccfrom Then Throw New InvalidOperationException("CC detail tidak sesuai dokumen.")
+                                operation.Affect(item, usedDate)
+                            Next
+                            operation.LockBalances()
+                        End If
 
-                    ' Prepare Insert Command
-                    Dim strInsert As String = "INSERT INTO cld_inv_Trans (id, custid, InvDate, `type`, cc, Stk_Id, Stk_Name, U1, U2, Factor1, ttlStock, CostU1, Cost, Linkid, flagtrans, U1_nm, U2_nm, Createdby, createddate, stk_no, Cc_name) " &
-                                              "VALUES (@id, @custid, @InvDate, 3, @cc, @Stk_Id, @Stk_Name, @U1, @U2, @Factor1, @ttlStock, @CostU1, @Cost, @Linkid, @flagtrans, @U1_nm, @U2_nm, @Createdby, @createddate, @stk_no, @Cc_name)"
+                        ' Prepare Insert Command
+                        Dim strInsert As String = "INSERT INTO cld_inv_Trans (id, custid, InvDate, `type`, cc, Stk_Id, Stk_Name, U1, U2, Factor1, ttlStock, CostU1, Cost, Linkid, flagtrans, U1_nm, U2_nm, Createdby, createddate, stk_no, Cc_name) " &
+                                                  "VALUES (@id, @custid, @InvDate, 3, @cc, @Stk_Id, @Stk_Name, @U1, @U2, @Factor1, @ttlStock, @CostU1, @Cost, @Linkid, @flagtrans, @U1_nm, @U2_nm, @Createdby, @createddate, @stk_no, @Cc_name)"
 
-                    Using cmdInsert As New MySqlCommand(strInsert, conn, trans)
-                        ' Add Parameters (Define types for performance)
+                        Using cmdInsert As New MySqlCommand(strInsert, conn, trans)
+                            ' Add Parameters (Define types for performance)
+                            cmdInsert.Parameters.Add("@id", MySqlDbType.Int32)
+                            cmdInsert.Parameters.AddWithValue("@custid", custid)
+                            cmdInsert.Parameters.AddWithValue("@InvDate", usedDate.Date)
+                            cmdInsert.Parameters.AddWithValue("@cc", ccfrom)
+                            cmdInsert.Parameters.Add("@Stk_Id", MySqlDbType.Int32)
+                            cmdInsert.Parameters.Add("@Stk_Name", MySqlDbType.VarChar)
+                            cmdInsert.Parameters.Add("@U1", MySqlDbType.Decimal)
+                            cmdInsert.Parameters.Add("@U2", MySqlDbType.Decimal)
+                            cmdInsert.Parameters.Add("@Factor1", MySqlDbType.Decimal)
+                            cmdInsert.Parameters.Add("@ttlStock", MySqlDbType.Decimal)
+                            cmdInsert.Parameters.Add("@CostU1", MySqlDbType.Decimal)
+                            cmdInsert.Parameters.Add("@Cost", MySqlDbType.Decimal)
+                            cmdInsert.Parameters.AddWithValue("@Linkid", idtrans)
+                            cmdInsert.Parameters.AddWithValue("@flagtrans", flagtrans)
+                            cmdInsert.Parameters.Add("@U1_nm", MySqlDbType.VarChar)
+                            cmdInsert.Parameters.Add("@U2_nm", MySqlDbType.VarChar)
+                            cmdInsert.Parameters.Add("@Createdby", MySqlDbType.VarChar)
+                            cmdInsert.Parameters.AddWithValue("@createddate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                            cmdInsert.Parameters.Add("@stk_no", MySqlDbType.VarChar)
+                            cmdInsert.Parameters.AddWithValue("@Cc_name", ccname)
+
+                            ' Helper for Max ID
+                            Dim cmdMaxId As New MySqlCommand("SELECT MAX(ID) FROM cld_inv_Trans", conn, trans)
+
+                            For Each row As DataRow In dt.Rows
+                                Dim newId As Integer
+                                Dim maxIdObj = cmdMaxId.ExecuteScalar()
+                                If IsDBNull(maxIdObj) Then
+                                    newId = 1
+                                Else
+                                    newId = Convert.ToInt32(maxIdObj) + 1
+                                End If
+
+                                cmdInsert.Parameters("@id").Value = newId
+                                cmdInsert.Parameters("@Stk_Id").Value = row.Item("stk_id")
+                                cmdInsert.Parameters("@Stk_Name").Value = row.Item("Stk_Name")
+                                cmdInsert.Parameters("@U1").Value = row.Item("U1")
+                                cmdInsert.Parameters("@U2").Value = row.Item("U2")
+                                cmdInsert.Parameters("@Factor1").Value = row.Item("Factor1")
+                                cmdInsert.Parameters("@ttlStock").Value = row.Item("ttlStock")
+                                cmdInsert.Parameters("@CostU1").Value = row.Item("CostU1")
+                                cmdInsert.Parameters("@Cost").Value = row.Item("Cost")
+                                cmdInsert.Parameters("@U1_nm").Value = row.Item("U1_nm")
+                                cmdInsert.Parameters("@U2_nm").Value = row.Item("U2_nm")
+                                cmdInsert.Parameters("@Createdby").Value = row.Item("Createdby")
+                                cmdInsert.Parameters("@stk_no").Value = row.Item("stk_no")
+
+                                operation.Track(cmdInsert, "cmdInsert")
+
+                                cmdInsert.ExecuteNonQuery()
+                                doctot += Convert.ToDecimal(row.Item("ttlCost"))
+
+                            Next
+                        End Using
+
+                        ' Insert Header
+                        Dim strHeader As String = "INSERT INTO cld_invlk_rcv (id, custid, `Do`, supid, flag, doctot, Tipe, cc, createdby, createddate, invdate, exDelDate, notes, acc"
+                        Dim strHeaderVal As String = "VALUES (@id, @custid, @Do, @supid, @flag, @doctot, 1, @cc, @createdby, @createddate, @invdate, @exDelDate, @notes, 0"
+
+                        If My.Settings.supp_tax = "1" Then
+                            strHeader &= ",p_tax,n_tax) "
+                            strHeaderVal &= ",@p_tax,@n_tax)"
+                        Else
+                            strHeader &= ") "
+                            strHeaderVal &= ")"
+                        End If
+                        strHeader = strHeader & strHeaderVal
+                        Using cmdHeader As New MySqlCommand(strHeader, conn, trans)
+                            cmdHeader.Parameters.AddWithValue("@id", idtrans)
+                            cmdHeader.Parameters.AddWithValue("@custid", custid)
+                            cmdHeader.Parameters.AddWithValue("@Do", DOS)
+                            cmdHeader.Parameters.AddWithValue("@supid", Supid)
+                            cmdHeader.Parameters.AddWithValue("@flag", stat)
+                            cmdHeader.Parameters.AddWithValue("@doctot", doctot + ntax)
+                            cmdHeader.Parameters.AddWithValue("@cc", ccfrom)
+                            cmdHeader.Parameters.AddWithValue("@createdby", username)
+                            cmdHeader.Parameters.AddWithValue("@createddate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                            cmdHeader.Parameters.AddWithValue("@invdate", usedDate.Date)
+                            cmdHeader.Parameters.AddWithValue("@exDelDate", ExDelDate.ToString("yyyy-MM-dd"))
+                            cmdHeader.Parameters.AddWithValue("@notes", notes)
+                            If My.Settings.supp_tax = "1" Then
+                                cmdHeader.Parameters.AddWithValue("@p_tax", ptax)
+                                cmdHeader.Parameters.AddWithValue("@n_tax", ntax)
+                            End If
+
+                            operation.Track(cmdHeader, "cmdHeader")
+
+                            cmdHeader.ExecuteNonQuery()
+                        End Using
+
+                        shasil = idtrans
+
+                        ' 2. Logic for UPDATE / FINISH Transaction (lid is present)
+                    Else
+                        Dim header As DataRow = operation.LockHeader()
+                        If Convert.ToInt32(header("cc")) <> ccfrom Then Throw New InvalidOperationException("CC dokumen berubah sejak halaman dibuka. Muat ulang sebelum melanjutkan.")
+                        If Convert.ToInt32(header("flag")) <> 1 Then Throw New InvalidOperationException("Dokumen sudah Receive atau berubah sejak halaman dibuka. Muat ulang; batalkan penerimaan sebelum mengubahnya.")
+                        Dim dtExisting As DataTable = operation.LockDetails()
+                        For Each oldRow As DataRow In dtExisting.Rows
+                            If Convert.ToInt32(oldRow("flagtrans")) <> 0 Then Throw New InvalidOperationException("Status header dan detail tidak konsisten. Perlu inspeksi dokumen.")
+                            If flagtrans = 1 Then operation.Affect(oldRow, Convert.ToDateTime(oldRow("InvDate")))
+                        Next
+                        If flagtrans = 1 Then
+                            For Each item As DataRow In dt.Rows
+                                If Convert.ToInt32(item("cc")) <> ccfrom Then Throw New InvalidOperationException("CC detail tidak sesuai dokumen.")
+                                operation.Affect(item, usedDate)
+                            Next
+                            operation.LockBalances()
+                        End If
+
+                        ' Map Stk_Id -> ID for quick lookup
+                        Dim existingItems As New Dictionary(Of Integer, Integer)
+                        For Each r As DataRow In dtExisting.Rows
+                            If existingItems.ContainsKey(Convert.ToInt32(r("stk_id"))) Then Throw New InvalidOperationException("Detail penerimaan ganda ditemukan untuk stock yang sama.")
+                            existingItems(Convert.ToInt32(r("stk_id"))) = Convert.ToInt32(r("id"))
+                        Next
+
+                        ' Commands for Loop
+                        Dim sqlUpdate As String = "UPDATE cld_inv_Trans SET U1=@U1, U2=@U2, factor1=@factor1, ttlstock=@ttlstock, CostU1=@CostU1, Cost=@Cost, ModifBy=@ModifBy, flagtrans=@flagtrans, Invdate=@Invdate, Modifdate=@Modifdate WHERE id=@id AND custid=@custid AND LinkID=@linkid AND type=3 AND Stk_Id=@updateStock"
+                        Dim sqlInsert As String = "INSERT INTO cld_inv_Trans (id, custid, InvDate, `type`, cc, Stk_Id, Stk_Name, U1, U2, Factor1, ttlStock, CostU1, Cost, Linkid, flagtrans, U1_nm, U2_nm, Createdby, createddate, stk_no, Cc_name) " &
+                                                  "VALUES (@id, @custid, @InvDate, 3, @cc, @Stk_Id, @Stk_Name, @U1, @U2, @Factor1, @ttlStock, @CostU1, @Cost, @Linkid, @flagtrans, @U1_nm, @U2_nm, @Createdby, @createddate, @stk_no, @Cc_name)"
+
+                        Dim cmdUpdate As New MySqlCommand(sqlUpdate, conn, trans)
+                        Dim cmdInsert As New MySqlCommand(sqlInsert, conn, trans)
+                        Dim cmdMaxId As New MySqlCommand("SELECT MAX(ID) FROM cld_inv_Trans", conn, trans)
+
+                        ' Add params for Update
+                        cmdUpdate.Parameters.Add("@U1", MySqlDbType.Decimal)
+                        cmdUpdate.Parameters.Add("@U2", MySqlDbType.Decimal)
+                        cmdUpdate.Parameters.Add("@factor1", MySqlDbType.Decimal)
+                        cmdUpdate.Parameters.Add("@ttlstock", MySqlDbType.Decimal)
+                        cmdUpdate.Parameters.Add("@CostU1", MySqlDbType.Decimal)
+                        cmdUpdate.Parameters.Add("@Cost", MySqlDbType.Decimal)
+                        cmdUpdate.Parameters.AddWithValue("@ModifBy", username)
+                        cmdUpdate.Parameters.AddWithValue("@flagtrans", flagtrans)
+                        cmdUpdate.Parameters.AddWithValue("@InvDate", usedDate.Date)
+                        cmdUpdate.Parameters.AddWithValue("@Modifdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                        cmdUpdate.Parameters.Add("@id", MySqlDbType.Int32)
+                        cmdUpdate.Parameters.AddWithValue("@custid", custid)
+                        cmdUpdate.Parameters.AddWithValue("@linkid", lid)
+                        cmdUpdate.Parameters.Add("@updateStock", MySqlDbType.Int32)
+
+                        ' Add params for Insert
                         cmdInsert.Parameters.Add("@id", MySqlDbType.Int32)
                         cmdInsert.Parameters.AddWithValue("@custid", custid)
-                        cmdInsert.Parameters.AddWithValue("@InvDate", Date.Now.ToString("yyyy-MM-dd 00:00:00"))
+                        cmdInsert.Parameters.AddWithValue("@InvDate", usedDate.Date)
                         cmdInsert.Parameters.AddWithValue("@cc", ccfrom)
                         cmdInsert.Parameters.Add("@Stk_Id", MySqlDbType.Int32)
                         cmdInsert.Parameters.Add("@Stk_Name", MySqlDbType.VarChar)
@@ -214,7 +373,7 @@ StopCalculate:
                         cmdInsert.Parameters.Add("@ttlStock", MySqlDbType.Decimal)
                         cmdInsert.Parameters.Add("@CostU1", MySqlDbType.Decimal)
                         cmdInsert.Parameters.Add("@Cost", MySqlDbType.Decimal)
-                        cmdInsert.Parameters.AddWithValue("@Linkid", idtrans)
+                        cmdInsert.Parameters.AddWithValue("@Linkid", lid)
                         cmdInsert.Parameters.AddWithValue("@flagtrans", flagtrans)
                         cmdInsert.Parameters.Add("@U1_nm", MySqlDbType.VarChar)
                         cmdInsert.Parameters.Add("@U2_nm", MySqlDbType.VarChar)
@@ -223,357 +382,121 @@ StopCalculate:
                         cmdInsert.Parameters.Add("@stk_no", MySqlDbType.VarChar)
                         cmdInsert.Parameters.AddWithValue("@Cc_name", ccname)
 
-                        ' Helper for Max ID
-                        Dim cmdMaxId As New MySqlCommand("SELECT MAX(ID) FROM cld_inv_Trans", conn, trans)
-
                         For Each row As DataRow In dt.Rows
-                            Dim newId As Integer
-                            Dim maxIdObj = cmdMaxId.ExecuteScalar()
-                            If IsDBNull(maxIdObj) Then
-                                newId = 1
+                            Dim stkId As Integer = Convert.ToInt32(row.Item("stk_id"))
+
+                            ' Update Logic
+                            If existingItems.ContainsKey(stkId) Then
+                                Dim dbId As Integer = existingItems(stkId)
+                                cmdUpdate.Parameters("@U1").Value = row.Item("U1")
+                                cmdUpdate.Parameters("@U2").Value = row.Item("U2")
+                                cmdUpdate.Parameters("@factor1").Value = row.Item("Factor1")
+                                cmdUpdate.Parameters("@ttlstock").Value = row.Item("ttlStock")
+                                cmdUpdate.Parameters("@CostU1").Value = row.Item("CostU1")
+                                cmdUpdate.Parameters("@Cost").Value = row.Item("Cost")
+                                cmdUpdate.Parameters("@id").Value = dbId
+                                cmdUpdate.Parameters("@updateStock").Value = stkId
+
+                                operation.Track(cmdUpdate, "cmdUpdate")
+
+                                cmdUpdate.ExecuteNonQuery()
+                                doctot += Convert.ToDecimal(row.Item("ttlCost"))
+
+                                ' Insert Logic (Item added during edit)
                             Else
-                                newId = Convert.ToInt32(maxIdObj) + 1
+                                Dim newId As Integer
+                                Dim maxIdObj = cmdMaxId.ExecuteScalar()
+                                newId = If(IsDBNull(maxIdObj), 1, Convert.ToInt32(maxIdObj) + 1)
+
+                                cmdInsert.Parameters("@id").Value = newId
+                                cmdInsert.Parameters("@Stk_Id").Value = row.Item("stk_id")
+                                cmdInsert.Parameters("@Stk_Name").Value = row.Item("Stk_Name")
+                                cmdInsert.Parameters("@U1").Value = row.Item("U1")
+                                cmdInsert.Parameters("@U2").Value = row.Item("U2")
+                                cmdInsert.Parameters("@Factor1").Value = row.Item("Factor1")
+                                cmdInsert.Parameters("@ttlStock").Value = row.Item("ttlStock")
+                                cmdInsert.Parameters("@CostU1").Value = row.Item("CostU1")
+                                cmdInsert.Parameters("@Cost").Value = row.Item("Cost")
+                                cmdInsert.Parameters("@U1_nm").Value = row.Item("U1_nm")
+                                cmdInsert.Parameters("@U2_nm").Value = row.Item("U2_nm")
+                                cmdInsert.Parameters("@Createdby").Value = row.Item("Createdby")
+                                cmdInsert.Parameters("@stk_no").Value = row.Item("stk_no")
+
+                                operation.Track(cmdInsert, "cmdInsert")
+
+                                cmdInsert.ExecuteNonQuery()
+                                doctot += Convert.ToDecimal(row.Item("ttlCost"))
                             End If
 
-                            cmdInsert.Parameters("@id").Value = newId
-                            cmdInsert.Parameters("@Stk_Id").Value = row.Item("stk_id")
-                            cmdInsert.Parameters("@Stk_Name").Value = row.Item("Stk_Name")
-                            cmdInsert.Parameters("@U1").Value = row.Item("U1")
-                            cmdInsert.Parameters("@U2").Value = row.Item("U2")
-                            cmdInsert.Parameters("@Factor1").Value = row.Item("Factor1")
-                            cmdInsert.Parameters("@ttlStock").Value = row.Item("ttlStock")
-                            cmdInsert.Parameters("@CostU1").Value = row.Item("CostU1")
-                            cmdInsert.Parameters("@Cost").Value = row.Item("Cost")
-                            cmdInsert.Parameters("@U1_nm").Value = row.Item("U1_nm")
-                            cmdInsert.Parameters("@U2_nm").Value = row.Item("U2_nm")
-                            cmdInsert.Parameters("@Createdby").Value = row.Item("Createdby")
-                            cmdInsert.Parameters("@stk_no").Value = row.Item("stk_no")
-
-                            cmdInsert.ExecuteNonQuery()
-                            doctot += Convert.ToDecimal(row.Item("ttlCost"))
-
-                            ' Stock Processing (Still non-transactional relative to invoice, but preserved)
-                            If flagtrans = 1 Then
-                                Dim clsprocess As New clsInventoryProcess
-                                clsprocess.InvstkId = row.Item("stk_id").ToString
-                                clsprocess.InvCc = row.Item("cc").ToString
-                                clsprocess.InvCcName = row.Item("cc_name").ToString
-                                clsprocess.InvCustId = custid
-                                clsprocess.InvstkName = row.Item("Stk_Name").ToString
-                                clsprocess.Invrcvqty = row.Item("ttlStock")
-                                clsprocess.InvStkNo = row.Item("stk_no")
-                                clsprocess.InvCost = row.Item("cost")
-                                clsprocess.InvDate = Date.Now.ToString("yyyy-MM-dd 00:00:00")
-                                clsprocess.BCost = True
-                                clsprocess.executeNonQuery_Inv_ProcessCls()
-                            End If
                         Next
-                    End Using
 
-                    ' Insert Header
-                    Dim strHeader As String = "INSERT INTO cld_invlk_rcv (id, custid, `Do`, supid, flag, doctot, Tipe, cc, createdby, createddate, invdate, exDelDate, notes, acc"
-                    Dim strHeaderVal As String = "VALUES (@id, @custid, @Do, @supid, @flag, @doctot, 1, @cc, @createdby, @createddate, @invdate, @exDelDate, @notes, 0"
-                    
-                    If My.Settings.supp_tax = "1" Then
-                        strHeader &= ",p_tax,n_tax) "
-                        strHeaderVal &= ",@p_tax,@n_tax)"
-                    Else
-                        strHeader &= ") "
-                        strHeaderVal &= ")"
-                    End If
-                    strHeader = strHeader & strHeaderVal
-                    Using cmdHeader As New MySqlCommand(strHeader, conn, trans)
-                        cmdHeader.Parameters.AddWithValue("@id", idtrans)
-                        cmdHeader.Parameters.AddWithValue("@custid", custid)
-                        cmdHeader.Parameters.AddWithValue("@Do", DOS)
-                        cmdHeader.Parameters.AddWithValue("@supid", Supid)
-                        cmdHeader.Parameters.AddWithValue("@flag", stat)
-                        cmdHeader.Parameters.AddWithValue("@doctot", doctot + ntax)
-                        cmdHeader.Parameters.AddWithValue("@cc", ccfrom)
-                        cmdHeader.Parameters.AddWithValue("@createdby", username)
-                        cmdHeader.Parameters.AddWithValue("@createddate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                        cmdHeader.Parameters.AddWithValue("@invdate", Date.Now.ToString("yyyy-MM-dd"))
-                        cmdHeader.Parameters.AddWithValue("@exDelDate", ExDelDate.ToString("yyyy-MM-dd"))
-                        cmdHeader.Parameters.AddWithValue("@notes", notes)
+                        ' Update Header
+                        Dim sqlHeaderUpdate As String = "UPDATE cld_invlk_rcv SET doctot=@doctot, flag=@flag, modifby=@modifby, notes=@notes, Do=@Do, Modifdate=@Modifdate, exDelDate=@exDelDate, acc=@acc, InvDate=@InvDate"
                         If My.Settings.supp_tax = "1" Then
-                            cmdHeader.Parameters.AddWithValue("@p_tax", ptax)
-                            cmdHeader.Parameters.AddWithValue("@n_tax", ntax)
+                            sqlHeaderUpdate &= ", p_tax=@p_tax, n_tax=@n_tax"
                         End If
-
-                        cmdHeader.ExecuteNonQuery()
-                    End Using
-
-                    shasil = idtrans
-
-                    ' 2. Logic for UPDATE / FINISH Transaction (lid is present)
-                Else
-                    Dim dtExisting As New DataTable()
-                    Using cmdGetExisting As New MySqlCommand("SELECT id, stk_id FROM cld_inv_trans WHERE linkid=@linkid AND custid=@custid", conn, trans)
-                        cmdGetExisting.Parameters.AddWithValue("@linkid", lid)
-                        cmdGetExisting.Parameters.AddWithValue("@custid", custid)
-                        Using adapter As New MySqlDataAdapter(cmdGetExisting)
-                            adapter.Fill(dtExisting)
-                        End Using
-                    End Using
-
-                    ' Map Stk_Id -> ID for quick lookup
-                    Dim existingItems As New Dictionary(Of Integer, Integer)
-                    For Each r As DataRow In dtExisting.Rows
-                        existingItems(Convert.ToInt32(r("stk_id"))) = Convert.ToInt32(r("id"))
-                    Next
-
-                    ' Commands for Loop
-                    Dim sqlUpdate As String = "UPDATE cld_inv_Trans SET U1=@U1, U2=@U2, factor1=@factor1, ttlstock=@ttlstock, CostU1=@CostU1, Cost=@Cost, ModifBy=@ModifBy, flagtrans=@flagtrans, Invdate=@Invdate, Modifdate=@Modifdate WHERE id=@id"
-                    Dim sqlInsert As String = "INSERT INTO cld_inv_Trans (id, custid, InvDate, `type`, cc, Stk_Id, Stk_Name, U1, U2, Factor1, ttlStock, CostU1, Cost, Linkid, flagtrans, U1_nm, U2_nm, Createdby, createddate, stk_no, Cc_name) " &
-                                              "VALUES (@id, @custid, @InvDate, 3, @cc, @Stk_Id, @Stk_Name, @U1, @U2, @Factor1, @ttlStock, @CostU1, @Cost, @Linkid, @flagtrans, @U1_nm, @U2_nm, @Createdby, @createddate, @stk_no, @Cc_name)"
-
-                    Dim cmdUpdate As New MySqlCommand(sqlUpdate, conn, trans)
-                    Dim cmdInsert As New MySqlCommand(sqlInsert, conn, trans)
-                    Dim cmdMaxId As New MySqlCommand("SELECT MAX(ID) FROM cld_inv_Trans", conn, trans)
-
-                    ' Add params for Update
-                    cmdUpdate.Parameters.Add("@U1", MySqlDbType.Decimal)
-                    cmdUpdate.Parameters.Add("@U2", MySqlDbType.Decimal)
-                    cmdUpdate.Parameters.Add("@factor1", MySqlDbType.Decimal)
-                    cmdUpdate.Parameters.Add("@ttlstock", MySqlDbType.Decimal)
-                    cmdUpdate.Parameters.Add("@CostU1", MySqlDbType.Decimal)
-                    cmdUpdate.Parameters.Add("@Cost", MySqlDbType.Decimal)
-                    cmdUpdate.Parameters.AddWithValue("@ModifBy", username)
-                    cmdUpdate.Parameters.AddWithValue("@flagtrans", flagtrans)
-                    cmdUpdate.Parameters.AddWithValue("@InvDate", If(xcancel, usedDate.ToString("yyyy-MM-dd"), usedDate.ToString("yyyy-MM-dd 00:00:00")))
-                    cmdUpdate.Parameters.AddWithValue("@Modifdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                    cmdUpdate.Parameters.Add("@id", MySqlDbType.Int32)
-
-                    ' Add params for Insert
-                    cmdInsert.Parameters.Add("@id", MySqlDbType.Int32)
-                    cmdInsert.Parameters.AddWithValue("@custid", custid)
-                    cmdInsert.Parameters.AddWithValue("@InvDate", Date.Now.ToString("yyyy-MM-dd"))
-                    cmdInsert.Parameters.AddWithValue("@cc", ccfrom)
-                    cmdInsert.Parameters.Add("@Stk_Id", MySqlDbType.Int32)
-                    cmdInsert.Parameters.Add("@Stk_Name", MySqlDbType.VarChar)
-                    cmdInsert.Parameters.Add("@U1", MySqlDbType.Decimal)
-                    cmdInsert.Parameters.Add("@U2", MySqlDbType.Decimal)
-                    cmdInsert.Parameters.Add("@Factor1", MySqlDbType.Decimal)
-                    cmdInsert.Parameters.Add("@ttlStock", MySqlDbType.Decimal)
-                    cmdInsert.Parameters.Add("@CostU1", MySqlDbType.Decimal)
-                    cmdInsert.Parameters.Add("@Cost", MySqlDbType.Decimal)
-                    cmdInsert.Parameters.AddWithValue("@Linkid", lid)
-                    cmdInsert.Parameters.AddWithValue("@flagtrans", flagtrans)
-                    cmdInsert.Parameters.Add("@U1_nm", MySqlDbType.VarChar)
-                    cmdInsert.Parameters.Add("@U2_nm", MySqlDbType.VarChar)
-                    cmdInsert.Parameters.Add("@Createdby", MySqlDbType.VarChar)
-                    cmdInsert.Parameters.AddWithValue("@createddate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                    cmdInsert.Parameters.Add("@stk_no", MySqlDbType.VarChar)
-                    cmdInsert.Parameters.AddWithValue("@Cc_name", ccname)
-
-                    For Each row As DataRow In dt.Rows
-                        Dim stkId As Integer = Convert.ToInt32(row.Item("stk_id"))
-
-                        ' Update Logic
-                        If existingItems.ContainsKey(stkId) Then
-                            Dim dbId As Integer = existingItems(stkId)
-                            ' Check if flagtrans changed (to reverse stock if needed) - Simplified from original logic
-                            ' Original logic had a complex manual check of old flagtrans. 
-                            ' Here we stick to core update logic. 
-                            ' Note: The original logic had a section to REVERSE stock if flagtrans changed.
-                            ' Re-implementing that safely here:
-                            If stat = 1 AndAlso flagtrans = 0 Then ' Pending
-                                ' This block was in original code but relied on row.Item("flagtrans").
-                                ' We assume row.Item("flagtrans") is from ViewState state. 
-                                ' Logic preserved implies if we move from Receive -> Pending (Cancel), we reverse stock.
-                                ' However, row.Item might not have "flagtrans". 
-                                ' Use DB check if needed, but for now assuming row has data.
+                        sqlHeaderUpdate &= " WHERE id=@id AND custid=@custid"
+                        Using cmdHeaderUpdate As New MySqlCommand(sqlHeaderUpdate, conn, trans)
+                            cmdHeaderUpdate.Parameters.AddWithValue("@doctot", doctot + ntax)
+                            cmdHeaderUpdate.Parameters.AddWithValue("@flag", stat)
+                            cmdHeaderUpdate.Parameters.AddWithValue("@modifby", username)
+                            cmdHeaderUpdate.Parameters.AddWithValue("@notes", notes)
+                            cmdHeaderUpdate.Parameters.AddWithValue("@Do", DOS)
+                            cmdHeaderUpdate.Parameters.AddWithValue("@Modifdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                            cmdHeaderUpdate.Parameters.AddWithValue("@exDelDate", ExDelDate.ToString("yyyy-MM-dd"))
+                            cmdHeaderUpdate.Parameters.AddWithValue("@acc", iacc)
+                            cmdHeaderUpdate.Parameters.AddWithValue("@id", lid)
+                            cmdHeaderUpdate.Parameters.AddWithValue("@custid", custid)
+                            cmdHeaderUpdate.Parameters.AddWithValue("@InvDate", usedDate.ToString("yyyy-MM-dd"))
+                            If My.Settings.supp_tax = "1" Then
+                                cmdHeaderUpdate.Parameters.AddWithValue("@p_tax", ptax)
+                                cmdHeaderUpdate.Parameters.AddWithValue("@n_tax", ntax)
                             End If
 
-                            ' Logic for Stock Reversal (Update / Finish / Cancel)
-                            ' We must handle the stock reversal if we are cancelling or finishing a transaction that was processed.
-                            ' To avoid complexity inside this loop, we assume clsprocess handles the 'forward' action.
-                            ' The 'reverse' action was typically manual in the original code. 
-                            ' Critical: The original code's "reverse" logic for stock is crucial.
-                            ' Original line 309: If row.Item("flagtrans") = flagtrans Then ... clsprocess (Reverse)
+                            operation.Track(cmdHeaderUpdate, "cmdHeaderUpdate")
 
-                            ' Re-implementing Stock Reversal using clsInventoryProcess
-                            If (stat = 2 OrElse xcancel) Then ' Finishing or Cancelling
-                                ' Fetch current DB state to see if we need to reverse
-                                ' Optimization: We already know it exists.
-                                ' If we are "Finishing" (stat=2, flagtrans=1), and it was ALREADY flagtrans=1 ? No, flagtrans changes 0->1.
-                                ' If we are "Checking" ?
-
-                                ' Original Logic Clarification:
-                                ' If stat=1 (Pending):
-                                '   If row("flagtrans") <> 0 (was 1), then Reverse Stock.
-                                ' If stat=2 (Finish):
-                                '   If row("flagtrans") == 1 (was 1), Reverse Stock ?? (Wait, original line 309 says If row.Item("flagtrans") = flagtrans Then... flagtrans IS 1 here. So if it WAS 1, reverse it? Maybe to overwrite?)
-
-                                ' To keep it safe, if we are in 'update' mode (lid known), we execute the update.
-                                ' Stock logic is external (clsprocess).
-                                Dim clsprocess As New clsInventoryProcess
-                                Dim shouldReverse As Boolean = False
-
-                                ' We use 'Try' for stock process to not crash the transaction if stock fails, 
-                                ' but actually we want to crash if stock fails?
-                                ' Original code suppressed errors. 
-
-                                If stat = 2 AndAlso Convert.ToInt32(row.Item("flagtrans")) = 1 Then
-                                    shouldReverse = True ' Re-process stock (maybe to update/correct it)
-                                End If
-                                If xcancel Then
-                                    shouldReverse = False ' Cancel logic handles reversal differently in original
-                                End If
-
-                                If shouldReverse Then
-                                    clsprocess.InvstkId = row.Item("stk_id").ToString
-                                    clsprocess.InvCc = row.Item("cc").ToString
-                                    clsprocess.InvCcName = row.Item("cc_name").ToString
-                                    clsprocess.InvCustId = custid
-                                    clsprocess.InvstkName = row.Item("Stk_Name").ToString
-                                    ' Get current stock from DB for reversal
-                                    ' Helper command to get current stock
-                                    Using cmdGetStock As New MySqlCommand("SELECT ttlstock FROM cld_inv_trans WHERE id=" & dbId, conn, trans)
-                                        Dim currentStockObj = cmdGetStock.ExecuteScalar()
-                                        Dim currentStock As Decimal = If(IsDBNull(currentStockObj), 0, Convert.ToDecimal(currentStockObj))
-                                        clsprocess.Invrcvqty = -currentStock
-                                    End Using
-                                    clsprocess.InvStkNo = row.Item("stk_no")
-                                    clsprocess.InvCost = row.Item("cost")
-                                    clsprocess.InvDate = Convert.ToDateTime(row.Item("InvDate"))
-                                    clsprocess.BCost = True
-                                    clsprocess.executeNonQuery_Inv_ProcessCls()
-                                End If
-                            End If
-
-                            cmdUpdate.Parameters("@U1").Value = row.Item("U1")
-                            cmdUpdate.Parameters("@U2").Value = row.Item("U2")
-                            cmdUpdate.Parameters("@factor1").Value = row.Item("Factor1")
-                            cmdUpdate.Parameters("@ttlstock").Value = row.Item("ttlStock")
-                            cmdUpdate.Parameters("@CostU1").Value = row.Item("CostU1")
-                            cmdUpdate.Parameters("@Cost").Value = row.Item("Cost")
-                            cmdUpdate.Parameters("@id").Value = dbId
-
-                            cmdUpdate.ExecuteNonQuery()
-                            doctot += Convert.ToDecimal(row.Item("ttlCost"))
-
-                            ' Insert Logic (Item added during edit)
-                        Else
-                            Dim newId As Integer
-                            Dim maxIdObj = cmdMaxId.ExecuteScalar()
-                            newId = If(IsDBNull(maxIdObj), 1, Convert.ToInt32(maxIdObj) + 1)
-
-                            cmdInsert.Parameters("@id").Value = newId
-                            cmdInsert.Parameters("@Stk_Id").Value = row.Item("stk_id")
-                            cmdInsert.Parameters("@Stk_Name").Value = row.Item("Stk_Name")
-                            cmdInsert.Parameters("@U1").Value = row.Item("U1")
-                            cmdInsert.Parameters("@U2").Value = row.Item("U2")
-                            cmdInsert.Parameters("@Factor1").Value = row.Item("Factor1")
-                            cmdInsert.Parameters("@ttlStock").Value = row.Item("ttlStock")
-                            cmdInsert.Parameters("@CostU1").Value = row.Item("CostU1")
-                            cmdInsert.Parameters("@Cost").Value = row.Item("Cost")
-                            cmdInsert.Parameters("@U1_nm").Value = row.Item("U1_nm")
-                            cmdInsert.Parameters("@U2_nm").Value = row.Item("U2_nm")
-                            cmdInsert.Parameters("@Createdby").Value = row.Item("Createdby")
-                            cmdInsert.Parameters("@stk_no").Value = row.Item("stk_no")
-
-                            cmdInsert.ExecuteNonQuery()
-                            doctot += Convert.ToDecimal(row.Item("ttlCost"))
-                        End If
-
-                        ' Forward Stock Processing (Normal Finish)
-                        If flagtrans = 1 AndAlso Not xcancel Then
-                            Dim clsprocess As New clsInventoryProcess
-                            clsprocess.InvstkId = row.Item("stk_id").ToString
-                            clsprocess.InvCc = row.Item("cc").ToString
-                            clsprocess.InvCcName = row.Item("cc_name").ToString
-                            clsprocess.InvCustId = custid
-                            clsprocess.InvstkName = row.Item("Stk_Name").ToString
-                            clsprocess.Invrcvqty = row.Item("ttlStock")
-                            clsprocess.InvStkNo = row.Item("stk_no")
-                            clsprocess.InvCost = row.Item("cost")
-                            clsprocess.InvDate = usedDate.ToString("yyyy-MM-dd 00:00:00")
-                            clsprocess.BCost = True
-                            clsprocess.executeNonQuery_Inv_ProcessCls()
-                        End If
-                    Next
-
-                    ' === CANCEL RECEIVE: Reset flagtrans=0 in cld_inv_trans, then recalculate stock ===
-                    If xcancel Then
-                        ' Step 1: Set flagtrans=0 so this receive is excluded from stock aggregation
-                        Using cmdResetFlag As New MySqlCommand(
-                            "UPDATE cld_inv_trans SET flagtrans=0, ModifBy=@modifby, Modifdate=@modifdate WHERE linkid=@linkid AND custid=@custid",
-                            conn, trans)
-                            cmdResetFlag.Parameters.AddWithValue("@modifby", username)
-                            cmdResetFlag.Parameters.AddWithValue("@modifdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                            cmdResetFlag.Parameters.AddWithValue("@linkid", lid)
-                            cmdResetFlag.Parameters.AddWithValue("@custid", custid)
-                            cmdResetFlag.ExecuteNonQuery()
+                            cmdHeaderUpdate.ExecuteNonQuery()
                         End Using
 
-                        ' Step 2: Recalculate cld_inv_transstockcls for each affected item
-                        ' executeNonQuery_Inv_ProcessCls reads SUM of flagtrans=1 records,
-                        ' so excluding this receive will produce the correct stock balance.
-                        For Each row As DataRow In dt.Rows
-                            Dim clsprocess As New clsInventoryProcess
-                            clsprocess.InvstkId = row.Item("stk_id").ToString
-                            clsprocess.InvCc = row.Item("cc").ToString
-                            clsprocess.InvCcName = row.Item("cc_name").ToString
-                            clsprocess.InvCustId = custid
-                            clsprocess.InvstkName = row.Item("Stk_Name").ToString
-                            ' Pass negative qty to reverse the previous positive rcvqty addition
-                            clsprocess.Invrcvqty = -Convert.ToDecimal(row.Item("ttlStock"))
-                            clsprocess.InvStkNo = row.Item("stk_no")
-                            clsprocess.InvCost = row.Item("cost")
-                            clsprocess.InvDate = usedDate.ToString("yyyy-MM-dd 00:00:00")
-                            clsprocess.BCost = True
-                            clsprocess.executeNonQuery_Inv_ProcessCls()
-                        Next
+                        shasil = lid
                     End If
-                    ' =====================================================================================
 
-                    ' Update Header
-                    ' When cancelling: reset flag back to 1 (ordered/pending), not stat=2
-                    Dim cancelFlag As Integer = If(xcancel, 1, stat)
-                    Dim sqlHeaderUpdate As String = "UPDATE cld_invlk_rcv SET doctot=@doctot, flag=@flag, modifby=@modifby, notes=@notes, Do=@Do, Modifdate=@Modifdate, exDelDate=@exDelDate, acc=@acc, InvDate=@InvDate"
-                    If My.Settings.supp_tax = "1" Then
-                        sqlHeaderUpdate &= ", p_tax=@p_tax, n_tax=@n_tax"
-                    End If
-                    sqlHeaderUpdate &= " WHERE id=@id AND custid=@custid"
-                    Using cmdHeaderUpdate As New MySqlCommand(sqlHeaderUpdate, conn, trans)
-                        cmdHeaderUpdate.Parameters.AddWithValue("@doctot", doctot + ntax)
-                        cmdHeaderUpdate.Parameters.AddWithValue("@flag", cancelFlag)
-                        cmdHeaderUpdate.Parameters.AddWithValue("@modifby", username)
-                        cmdHeaderUpdate.Parameters.AddWithValue("@notes", notes)
-                        cmdHeaderUpdate.Parameters.AddWithValue("@Do", DOS)
-                        cmdHeaderUpdate.Parameters.AddWithValue("@Modifdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                        cmdHeaderUpdate.Parameters.AddWithValue("@exDelDate", ExDelDate.ToString("yyyy-MM-dd"))
-                        cmdHeaderUpdate.Parameters.AddWithValue("@acc", iacc)
-                        cmdHeaderUpdate.Parameters.AddWithValue("@id", lid)
-                        cmdHeaderUpdate.Parameters.AddWithValue("@custid", custid)
-                        cmdHeaderUpdate.Parameters.AddWithValue("@InvDate", usedDate.ToString("yyyy-MM-dd"))
-                        If My.Settings.supp_tax = "1" Then
-                            cmdHeaderUpdate.Parameters.AddWithValue("@p_tax", ptax)
-                            cmdHeaderUpdate.Parameters.AddWithValue("@n_tax", ntax)
-                        End If
+                    operation.Reconcile()
+                    operation.Commit()
+                    clsQueryGuard.CommitQuery(_qToken) ' === sukses: hapus dari pending log ===
+                    Try
+                        insertLogModule(username, "InvtransRcv", "Update", custid)
+                    Catch auditError As Exception
+                        errLog("[RECEIVE_AUDIT_FAILED] ref=" & operation.ReferenceId & "; committed=True; document=" & shasil & "; " & auditError.ToString(), "clsInventory:insertInvRcv")
+                    End Try
 
-                        cmdHeaderUpdate.ExecuteNonQuery()
-                    End Using
+                Catch ex As Exception
 
-                    shasil = lid
-                End If
-
-                trans.Commit()
-                clsQueryGuard.CommitQuery(_qToken) ' === sukses: hapus dari pending log ===
-                insertLogModule(username, "InvtransRcv", "Update", custid)
-
-            Catch ex As Exception
-                trans.Rollback()
-                clsQueryGuard.MarkTimeout(_qToken, _qSummary, "clsInventory:insertInvRcv", ex) ' === gagal: tetap di pending log ===
-                errLog(ex.Message & " - " & ex.StackTrace, "clsInventory:insertInvRcv")
-                Throw ' Re-throw to alert the caller (UI)
-            End Try
+                    clsQueryGuard.MarkTimeout(_qToken, _qSummary, "clsInventory:insertInvRcv", ex) ' === gagal: tetap di pending log ===
+                    Throw operation.Fail(ex)
+                End Try
+            End Using
         End Using
 
         Return shasil
     End Function
 
+
+    Public Function CancelInvReceive(ByVal receipt As String, ByVal username As String, ByVal custid As Integer) As String
+        Using conn As New MySqlConnection(My.Settings.ServerStr)
+            Using operation As New clsReceivePosting(conn, custid, receipt, username, "cancel", Sub(message, source) errLog(message, source), My.Settings.stock_cost <> "0")
+                Try
+                    If String.IsNullOrWhiteSpace(receipt) Then Throw New InvalidOperationException("Nomor penerimaan belum tersedia.")
+                    operation.Begin()
+                    operation.Cancel()
+                    operation.Commit()
+                    Return receipt
+                Catch ex As Exception
+                    Throw operation.Fail(ex)
+                End Try
+            End Using
+        End Using
+    End Function
 
     Public Function insertInvRcvold(ByVal id As String, ByVal ccfrom As Integer, ByVal ccname As String, ByVal dt As DataTable, ByVal DOS As String, ByVal Supid As Integer, ByVal stat As Integer, ByVal username As String, ByVal custid As Integer, ByVal dExpDate As Date, ByVal notes As String, Optional ByVal xcancel As Boolean = False) As String
         Dim c_cmd As New clsDbo("")

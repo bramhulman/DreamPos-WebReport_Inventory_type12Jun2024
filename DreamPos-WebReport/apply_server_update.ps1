@@ -65,6 +65,12 @@ if ([string]::IsNullOrWhiteSpace($TargetDir)) {
 $TargetDir = [System.IO.Path]::GetFullPath($TargetDir)
 $logFilePath = Join-Path $TargetDir ("UpdateLog_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".txt")
 
+function Quote-MySqlIdentifier {
+    param([Parameter(Mandatory = $true)][string]$Name)
+    # Single-quoted PowerShell strings preserve MySQL backticks literally.
+    return '`' + $Name.Replace('`', '``') + '`'
+}
+
 function Write-UpdateLog {
     param([string]$message, [string]$color = "White", [bool]$isError = $false)
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -325,13 +331,13 @@ try {
                     Write-UpdateLog "-> Koneksi ke database MySQL server berhasil terbuka." "Green"
 
                     # 7a. Buat tabel tracking migrasi jika belum ada
-                    $createHistSql = @"
+                    $createHistSql = @'
 CREATE TABLE IF NOT EXISTS `__migration_history` (
     `migration_id` VARCHAR(150) NOT NULL PRIMARY KEY,
     `executed_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `description` VARCHAR(255) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-"@
+'@
                     $cmdHist = New-Object MySql.Data.MySqlClient.MySqlCommand($createHistSql, $dbConn)
                     $cmdHist.ExecuteNonQuery() | Out-Null
 
@@ -378,6 +384,89 @@ CREATE TABLE IF NOT EXISTS `__migration_history` (
                         Write-UpdateLog "-> Memeriksa skema master dari $schemaMasterPath..." "Yellow"
                         $schemaJson = Get-Content -LiteralPath $schemaMasterPath -Raw -Encoding UTF8 | ConvertFrom-Json
                         if ($schemaJson.tables) {
+                            # Helper fungsi untuk mendeteksi perubahan tipe / pelebaran kapasitas kolom
+                            function Test-ColumnNeedsModification {
+                                param(
+                                    [hashtable]$CurCol,
+                                    [string]$MasterType,
+                                    [ref]$Reason
+                                )
+                                $Reason.Value = ""
+                                if ($null -eq $CurCol -or [string]::IsNullOrWhiteSpace($MasterType)) { return $false }
+
+                                $mTypeLower = $MasterType.Trim().ToLower()
+                                $curColType = if ($CurCol.ColumnType) { $CurCol.ColumnType.Trim().ToLower() } else { "" }
+                                $curDataType = if ($CurCol.DataType) { $CurCol.DataType.Trim().ToLower() } else { "" }
+
+                                $mBaseMatch = [regex]::Match($mTypeLower, "^([a-z]+)")
+                                $mBaseType = if ($mBaseMatch.Success) { $mBaseMatch.Groups[1].Value } else { $mTypeLower }
+
+                                # 1. Hierarki String (char, varchar, tinytext, text, mediumtext, longtext)
+                                $textRank = @{
+                                    "char" = 1; "varchar" = 2; "tinytext" = 3; "text" = 4; "mediumtext" = 5; "longtext" = 6
+                                }
+                                if ($textRank.ContainsKey($mBaseType) -and $textRank.ContainsKey($curDataType)) {
+                                    if ($textRank[$mBaseType] -gt $textRank[$curDataType]) {
+                                        $Reason.Value = "Kapasitas teks diperbesar dari $curColType ke $MasterType"
+                                        return $true
+                                    }
+                                    if (($mBaseType -eq "varchar" -or $mBaseType -eq "char") -and ($curDataType -eq "varchar" -or $curDataType -eq "char")) {
+                                        $mLenMatch = [regex]::Match($mTypeLower, "\((\d+)\)")
+                                        if ($mLenMatch.Success) {
+                                            $mLen = [long]$mLenMatch.Groups[1].Value
+                                            $curLen = [long]$CurCol.CharLength
+                                            if ($mLen -gt $curLen) {
+                                                $Reason.Value = "Panjang kolom diperbesar dari $curColType ($curLen) ke $MasterType ($mLen)"
+                                                return $true
+                                            }
+                                        }
+                                    }
+                                    return $false
+                                }
+
+                                # 2. Hierarki Integer (tinyint, smallint, mediumint, int, bigint)
+                                $intRank = @{
+                                    "tinyint" = 1; "smallint" = 2; "mediumint" = 3; "int" = 4; "integer" = 4; "bigint" = 5
+                                }
+                                if ($intRank.ContainsKey($mBaseType) -and $intRank.ContainsKey($curDataType)) {
+                                    if ($intRank[$mBaseType] -gt $intRank[$curDataType]) {
+                                        $Reason.Value = "Kapasitas integer diperbesar dari $curColType ke $MasterType"
+                                        return $true
+                                    }
+                                    return $false
+                                }
+
+                                # 3. Angka Desimal
+                                if ($mBaseType -eq "decimal" -or $mBaseType -eq "numeric") {
+                                    if ($curDataType -eq "float" -or $curDataType -eq "double") {
+                                        $Reason.Value = "Standarisasi tipe presisi angka desimal dari $curColType ke $MasterType"
+                                        return $true
+                                    }
+                                    if ($curDataType -eq "decimal" -or $curDataType -eq "numeric") {
+                                        $mPrecMatch = [regex]::Match($mTypeLower, "\((\d+),\s*(\d+)\)")
+                                        if ($mPrecMatch.Success) {
+                                            $mPrec = [int]$mPrecMatch.Groups[1].Value
+                                            $mScale = [int]$mPrecMatch.Groups[2].Value
+                                            $cPrec = [int]$CurCol.NumPrec
+                                            $cScale = [int]$CurCol.NumScale
+                                            if ($mPrec -gt $cPrec -or $mScale -gt $cScale) {
+                                                $Reason.Value = "Presisi desimal diperbesar dari $curColType ke $MasterType"
+                                                return $true
+                                            }
+                                        }
+                                    }
+                                    return $false
+                                }
+
+                                # 4. Beda Tipe Data
+                                if ($mBaseType -ne $curDataType) {
+                                    $Reason.Value = "Tipe data diubah dari $curColType ke $MasterType"
+                                    return $true
+                                }
+
+                                return $false
+                            }
+
                             # Ambil list tabel eksisting
                             $curTables = New-Object System.Collections.Generic.HashSet[string]([System.StringComparer]::OrdinalIgnoreCase)
                             $cmdTbl = New-Object MySql.Data.MySqlClient.MySqlCommand("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_TYPE = 'BASE TABLE'", $dbConn)
@@ -385,16 +474,33 @@ CREATE TABLE IF NOT EXISTS `__migration_history` (
                             while ($rdrTbl.Read()) { [void]$curTables.Add($rdrTbl.GetString(0)) }
                             $rdrTbl.Close()
 
-                            # Ambil list kolom eksisting
-                            $curCols = New-Object System.Collections.Generic.HashSet[string]([System.StringComparer]::OrdinalIgnoreCase)
-                            $cmdCols = New-Object MySql.Data.MySqlClient.MySqlCommand("SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE()", $dbConn)
+                            # Ambil metadata kolom eksisting
+                            $curColDetails = @{}
+                            $cmdCols = New-Object MySql.Data.MySqlClient.MySqlCommand("SELECT TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE()", $dbConn)
                             $rdrCols = $cmdCols.ExecuteReader()
-                            while ($rdrCols.Read()) { [void]$curCols.Add($rdrCols.GetString(0) + "." + $rdrCols.GetString(1)) }
+                            while ($rdrCols.Read()) {
+                                $tN = $rdrCols.GetString(0)
+                                $cN = $rdrCols.GetString(1)
+                                $cType = if (-not $rdrCols.IsDBNull(2)) { $rdrCols.GetString(2) } else { "" }
+                                $dType = if (-not $rdrCols.IsDBNull(3)) { $rdrCols.GetString(3) } else { "" }
+                                $cLen = if (-not $rdrCols.IsDBNull(4)) { [long]$rdrCols.GetValue(4) } else { 0L }
+                                $nPrec = if (-not $rdrCols.IsDBNull(5)) { [int]$rdrCols.GetValue(5) } else { 0 }
+                                $nScale = if (-not $rdrCols.IsDBNull(6)) { [int]$rdrCols.GetValue(6) } else { 0 }
+
+                                $curColDetails["$tN.$cN"] = @{
+                                    ColumnType = $cType
+                                    DataType   = $dType
+                                    CharLength = $cLen
+                                    NumPrec    = $nPrec
+                                    NumScale   = $nScale
+                                }
+                            }
                             $rdrCols.Close()
 
                             $tablesObj = $schemaJson.tables
                             $autoAddedTbl = 0
                             $autoAddedCol = 0
+                            $autoModifiedCol = 0
 
                             foreach ($prop in $tablesObj.PSObject.Properties) {
                                 $tName = $prop.Name
@@ -404,27 +510,30 @@ CREATE TABLE IF NOT EXISTS `__migration_history` (
                                     $colDefs = New-Object System.Collections.Generic.List[string]
                                     if ($tData.columns) {
                                         foreach ($cProp in $tData.columns.PSObject.Properties) {
-                                            $colDefs.Add("`"$($cProp.Name)`" $($cProp.Value.definition)")
+                                            $colDefs.Add((Quote-MySqlIdentifier $cProp.Name) + " " + $cProp.Value.definition)
                                         }
                                     }
                                     if ($tData.primary_key -and $tData.primary_key.Count -gt 0) {
-                                        $pkNames = @($tData.primary_key | ForEach-Object { "`"$_`"" }) -join ", "
+                                        $pkNames = @($tData.primary_key | ForEach-Object { Quote-MySqlIdentifier $_ }) -join ", "
                                         $colDefs.Add("PRIMARY KEY ($pkNames)")
                                     }
-                                    $createSql = "CREATE TABLE IF NOT EXISTS `"$tName`" (" + ($colDefs -join ", ") + ") ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+                                    $createSql = "CREATE TABLE IF NOT EXISTS " + (Quote-MySqlIdentifier $tName) + " (" + ($colDefs -join ", ") + ") ENGINE=InnoDB DEFAULT CHARSET=utf8;"
                                     $createCmd = New-Object MySql.Data.MySqlClient.MySqlCommand($createSql, $dbConn)
                                     $createCmd.ExecuteNonQuery() | Out-Null
                                     Write-UpdateLog "   [DB SYNC] Tabel '$tName' berhasil dibuat." "Green"
                                     $autoAddedTbl++
                                 } else {
-                                    # Check missing columns
+                                    # Cek Kolom pada Tabel Eksisting
                                     $tData = $prop.Value
                                     if ($tData.columns) {
                                         foreach ($cProp in $tData.columns.PSObject.Properties) {
                                             $cName = $cProp.Name
                                             $fullKey = "$tName.$cName"
-                                            if (-not $curCols.Contains($fullKey)) {
-                                                $alterSql = "ALTER TABLE `"$tName`" ADD COLUMN `"$cName`" $($cProp.Value.definition);"
+                                            $mType = if ($cProp.Value.type) { $cProp.Value.type.ToString() } else { "" }
+
+                                            if (-not $curColDetails.ContainsKey($fullKey)) {
+                                                # A. Tambah Kolom yang Belum Ada
+                                                $alterSql = "ALTER TABLE " + (Quote-MySqlIdentifier $tName) + " ADD COLUMN " + (Quote-MySqlIdentifier $cName) + " " + $cProp.Value.definition + ";"
                                                 try {
                                                     $alterCmd = New-Object MySql.Data.MySqlClient.MySqlCommand($alterSql, $dbConn)
                                                     $alterCmd.ExecuteNonQuery() | Out-Null
@@ -434,7 +543,22 @@ CREATE TABLE IF NOT EXISTS `__migration_history` (
                                                     if ($_.Exception.Message -match "Duplicate column") {
                                                         Write-UpdateLog "   [DB SYNC] Kolom '$cName' sudah ada pada '$tName'." "Yellow"
                                                     } else {
-                                                        Write-UpdateLog "   [DB SYNC ERROR] Gagal alter kolom '$cName': $($_.Exception.Message)" "Red" $true
+                                                        Write-UpdateLog "   [DB SYNC ERROR] Gagal alter tambah kolom '$cName': $($_.Exception.Message)" "Red" $true
+                                                    }
+                                                }
+                                            } else {
+                                                # B. Evaluasi Apakah Kolom Perlu Diubah Tipe atau Diperbesar Kapasitasnya
+                                                $curMeta = $curColDetails[$fullKey]
+                                                $modReason = ""
+                                                if (Test-ColumnNeedsModification -CurCol $curMeta -MasterType $mType -Reason ([ref]$modReason)) {
+                                                    $modifySql = "ALTER TABLE " + (Quote-MySqlIdentifier $tName) + " MODIFY COLUMN " + (Quote-MySqlIdentifier $cName) + " " + $cProp.Value.definition + ";"
+                                                    try {
+                                                        $modifyCmd = New-Object MySql.Data.MySqlClient.MySqlCommand($modifySql, $dbConn)
+                                                        $modifyCmd.ExecuteNonQuery() | Out-Null
+                                                        Write-UpdateLog "   [DB SYNC] Kolom '$cName' pada tabel '$tName' berhasil dimodifikasi ($modReason)." "Green"
+                                                        $autoModifiedCol++
+                                                    } catch {
+                                                        Write-UpdateLog "   [DB SYNC ERROR] Gagal alter modifikasi kolom '$cName': $($_.Exception.Message)" "Red" $true
                                                     }
                                                 }
                                             }
@@ -442,7 +566,7 @@ CREATE TABLE IF NOT EXISTS `__migration_history` (
                                     }
                                 }
                             }
-                            Write-UpdateLog "-> Hasil Schema Sync: $autoAddedTbl tabel baru, $autoAddedCol kolom baru." "Green"
+                            Write-UpdateLog "-> Hasil Schema Sync: $autoAddedTbl tabel baru dibuat, $autoAddedCol kolom baru ditambahkan, $autoModifiedCol kolom dimodifikasi/diperbesar." "Green"
                         }
                     }
                 } catch {

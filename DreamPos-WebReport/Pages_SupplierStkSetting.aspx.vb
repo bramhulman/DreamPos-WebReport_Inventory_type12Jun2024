@@ -1,4 +1,4 @@
-Imports System.Data
+﻿Imports System.Data
 Imports System.Web.Security
 
 Public Class Pages_SupplierStkSetting
@@ -46,6 +46,7 @@ Public Class Pages_SupplierStkSetting
         If Not cookie Is Nothing Then
             If Not Me.IsPostBack Then
                 lblMessage.Text = ""
+                EnsureTableExists()
                 LoadDropdowns()
                 BindOverviewGrid()
 
@@ -64,21 +65,44 @@ Public Class Pages_SupplierStkSetting
         End If
     End Sub
 
+    Private Sub EnsureTableExists()
+        Try
+            Dim sql As String = "CREATE TABLE IF NOT EXISTS `cld_inv_stkxsupplier` (" &
+                                "`id` INT NOT NULL AUTO_INCREMENT, " &
+                                "`stk_id` INT NOT NULL, " &
+                                "`supplier_id` INT NOT NULL, " &
+                                "`custid` INT NOT NULL, " &
+                                "`created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP, " &
+                                "PRIMARY KEY (`id`), " &
+                                "KEY `idx_stk_supp_cust` (`stk_id`, `supplier_id`, `custid`), " &
+                                "KEY `idx_supp_cust` (`supplier_id`, `custid`), " &
+                                "KEY `idx_stk_cust` (`stk_id`, `custid`)" &
+                                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+            ExecuteNonQuery(sql)
+        Catch ex As Exception
+            mfunction.errLog("EnsureTableExists: " & ex.Message, "Pages_SupplierStkSetting:EnsureTableExists")
+        End Try
+    End Sub
+
     Private Sub LoadDropdowns()
         Try
             ' 1. Load Suppliers
             Dim dsSup As DataSet = GetDataSet("SELECT Id, Name FROM cld_Inv_Supplier WHERE custid = " & custid() & " ORDER BY Name")
-            ddlSupplierSearch.DataSource = dsSup.Tables(0)
-            ddlSupplierSearch.DataTextField = "Name"
-            ddlSupplierSearch.DataValueField = "Id"
-            ddlSupplierSearch.DataBind()
+            If dsSup IsNot Nothing AndAlso dsSup.Tables.Count > 0 Then
+                ddlSupplierSearch.DataSource = dsSup.Tables(0)
+                ddlSupplierSearch.DataTextField = "Name"
+                ddlSupplierSearch.DataValueField = "Id"
+                ddlSupplierSearch.DataBind()
+            End If
 
             ' 2. Load Stock Items
             Dim dsStk As DataSet = GetDataSet("SELECT Id, CONCAT(Number, ' - ', Name) AS Name FROM cld_inv_stk WHERE custid = " & custid() & " ORDER BY Name")
-            ddlStockSearch.DataSource = dsStk.Tables(0)
-            ddlStockSearch.DataTextField = "Name"
-            ddlStockSearch.DataValueField = "Id"
-            ddlStockSearch.DataBind()
+            If dsStk IsNot Nothing AndAlso dsStk.Tables.Count > 0 Then
+                ddlStockSearch.DataSource = dsStk.Tables(0)
+                ddlStockSearch.DataTextField = "Name"
+                ddlStockSearch.DataValueField = "Id"
+                ddlStockSearch.DataBind()
+            End If
         Catch ex As Exception
             ShowMessage("Error loading dropdowns: " & ex.Message, True)
         End Try
@@ -101,8 +125,13 @@ Public Class Pages_SupplierStkSetting
 
             sql &= "ORDER BY s.Name, st.Name"
             Dim ds As DataSet = GetDataSet(sql)
-            rptMappings.DataSource = ds.Tables(0)
-            rptMappings.DataBind()
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
+                rptMappings.DataSource = ds.Tables(0)
+                rptMappings.DataBind()
+            Else
+                rptMappings.DataSource = Nothing
+                rptMappings.DataBind()
+            End If
             upGrid.Update()
         Catch ex As Exception
             ShowMessage("Error loading active mappings: " & ex.Message, True)
@@ -126,20 +155,24 @@ Public Class Pages_SupplierStkSetting
             Dim dsAllStk As DataSet = GetDataSet("SELECT Id, CONCAT(Number, ' - ', Name) AS Name FROM cld_inv_stk WHERE custid = " & custid() & " ORDER BY Name")
             cblStockItems.Items.Clear()
 
-            For Each row As DataRow In dsAllStk.Tables(0).Rows
-                Dim li As New ListItem(row("Name").ToString(), row("Id").ToString())
-                cblStockItems.Items.Add(li)
-            Next
+            If dsAllStk IsNot Nothing AndAlso dsAllStk.Tables.Count > 0 Then
+                For Each row As DataRow In dsAllStk.Tables(0).Rows
+                    Dim li As New ListItem(row("Name").ToString(), row("Id").ToString())
+                    cblStockItems.Items.Add(li)
+                Next
+            End If
 
             ' Get mapped items for this supplier
             Dim dsMapped As DataSet = GetDataSet("SELECT stk_id FROM cld_inv_stkxsupplier WHERE supplier_id = " & supplierId & " AND custid = " & custid())
-            For Each row As DataRow In dsMapped.Tables(0).Rows
-                Dim stkId As String = row("stk_id").ToString()
-                Dim li As ListItem = cblStockItems.Items.FindByValue(stkId)
-                If li IsNot Nothing Then
-                    li.Selected = True
-                End If
-            Next
+            If dsMapped IsNot Nothing AndAlso dsMapped.Tables.Count > 0 Then
+                For Each row As DataRow In dsMapped.Tables(0).Rows
+                    Dim stkId As String = row("stk_id").ToString()
+                    Dim li As ListItem = cblStockItems.Items.FindByValue(stkId)
+                    If li IsNot Nothing Then
+                        li.Selected = True
+                    End If
+                Next
+            End If
             upBySupplier.Update()
         Catch ex As Exception
             ShowMessage("Error loading stock items: " & ex.Message, True)
@@ -199,20 +232,24 @@ Public Class Pages_SupplierStkSetting
             Dim dsAllSup As DataSet = GetDataSet("SELECT Id, Name FROM cld_Inv_Supplier WHERE custid = " & custid() & " ORDER BY Name")
             cblSuppliers.Items.Clear()
 
-            For Each row As DataRow In dsAllSup.Tables(0).Rows
-                Dim li As New ListItem(row("Name").ToString(), row("Id").ToString())
-                cblSuppliers.Items.Add(li)
-            Next
+            If dsAllSup IsNot Nothing AndAlso dsAllSup.Tables.Count > 0 Then
+                For Each row As DataRow In dsAllSup.Tables(0).Rows
+                    Dim li As New ListItem(row("Name").ToString(), row("Id").ToString())
+                    cblSuppliers.Items.Add(li)
+                Next
+            End If
 
             ' Get mapped suppliers for this stock item
             Dim dsMapped As DataSet = GetDataSet("SELECT supplier_id FROM cld_inv_stkxsupplier WHERE stk_id = " & stkId & " AND custid = " & custid())
-            For Each row As DataRow In dsMapped.Tables(0).Rows
-                Dim supplierId As String = row("supplier_id").ToString()
-                Dim li As ListItem = cblSuppliers.Items.FindByValue(supplierId)
-                If li IsNot Nothing Then
-                    li.Selected = True
-                End If
-            Next
+            If dsMapped IsNot Nothing AndAlso dsMapped.Tables.Count > 0 Then
+                For Each row As DataRow In dsMapped.Tables(0).Rows
+                    Dim supplierId As String = row("supplier_id").ToString()
+                    Dim li As ListItem = cblSuppliers.Items.FindByValue(supplierId)
+                    If li IsNot Nothing Then
+                        li.Selected = True
+                    End If
+                Next
+            End If
             upByStock.Update()
         Catch ex As Exception
             ShowMessage("Error loading suppliers: " & ex.Message, True)

@@ -8,16 +8,17 @@ Public Class clsSchemaMigrator
     Public Class MigrationDiff
         Public Property MissingTables As New List(Of String)
         Public Property MissingColumns As New List(Of MissingColumnInfo)
+        Public Property ModifiedColumns As New List(Of ModifiedColumnInfo)
 
         Public ReadOnly Property HasChanges As Boolean
             Get
-                Return MissingTables.Count > 0 OrElse MissingColumns.Count > 0
+                Return MissingTables.Count > 0 OrElse MissingColumns.Count > 0 OrElse ModifiedColumns.Count > 0
             End Get
         End Property
 
         Public ReadOnly Property TotalChanges As Integer
             Get
-                Return MissingTables.Count + MissingColumns.Count
+                Return MissingTables.Count + MissingColumns.Count + ModifiedColumns.Count
             End Get
         End Property
     End Class
@@ -26,6 +27,25 @@ Public Class clsSchemaMigrator
         Public Property TableName As String
         Public Property ColumnName As String
         Public Property Definition As String
+    End Class
+
+    Public Class ModifiedColumnInfo
+        Public Property TableName As String
+        Public Property ColumnName As String
+        Public Property OldType As String
+        Public Property NewType As String
+        Public Property Definition As String
+        Public Property Reason As String
+    End Class
+
+    Private Class ExistingColumnMeta
+        Public Property TableName As String
+        Public Property ColumnName As String
+        Public Property ColumnType As String
+        Public Property DataType As String
+        Public Property CharLength As Long
+        Public Property NumericPrecision As Integer
+        Public Property NumericScale As Integer
     End Class
 
     Public Class MigrationResult
@@ -396,6 +416,92 @@ Public Class clsSchemaMigrator
     End Function
 
     ''' <summary>
+    ''' Mengecek apakah kolom eksisting perlu diubah tipe datanya atau diperbesar kapasitasnya sesuai skema master
+    ''' </summary>
+    Private Shared Function CheckIfColumnNeedsModification(ByVal curCol As ExistingColumnMeta, ByVal masterType As String, ByRef reason As String) As Boolean
+        reason = ""
+        If curCol Is Nothing OrElse String.IsNullOrEmpty(masterType) Then Return False
+
+        Dim mTypeLower As String = masterType.Trim().ToLower()
+        Dim curTypeLower As String = If(curCol.ColumnType, "").Trim().ToLower()
+
+        ' Ekstrak base type master (misal: varchar dari varchar(50))
+        Dim mBaseMatch As System.Text.RegularExpressions.Match = System.Text.RegularExpressions.Regex.Match(mTypeLower, "^([a-z]+)")
+        Dim mBaseType As String = If(mBaseMatch.Success, mBaseMatch.Groups(1).Value, mTypeLower)
+        Dim curBaseType As String = If(curCol.DataType, "").ToLower()
+
+        ' 1. Hierarki String (char, varchar, tinytext, text, mediumtext, longtext)
+        Dim textRank As New Dictionary(Of String, Integer)(StringComparer.OrdinalIgnoreCase) From {
+            {"char", 1}, {"varchar", 2}, {"tinytext", 3}, {"text", 4}, {"mediumtext", 5}, {"longtext", 6}
+        }
+
+        If textRank.ContainsKey(mBaseType) AndAlso textRank.ContainsKey(curBaseType) Then
+            ' Jika tipe teks master lebih tinggi tingkatannya
+            If textRank(mBaseType) > textRank(curBaseType) Then
+                reason = String.Format("Kapasitas teks diperbesar dari {0} ke {1}", curCol.ColumnType, masterType)
+                Return True
+            End If
+
+            ' Jika sama-sama varchar atau char, periksa batas panjang karakter
+            If (mBaseType = "varchar" OrElse mBaseType = "char") AndAlso (curBaseType = "varchar" OrElse curBaseType = "char") Then
+                Dim mLenMatch As System.Text.RegularExpressions.Match = System.Text.RegularExpressions.Regex.Match(mTypeLower, "\((\d+)\)")
+                If mLenMatch.Success Then
+                    Dim mLen As Long = 0
+                    If Long.TryParse(mLenMatch.Groups(1).Value, mLen) Then
+                        If mLen > curCol.CharLength Then
+                            reason = String.Format("Panjang kolom diperbesar dari {0} ({1}) ke {2} ({3})", curCol.ColumnType, curCol.CharLength, masterType, mLen)
+                            Return True
+                        End If
+                    End If
+                End If
+            End If
+
+            Return False
+        End If
+
+        ' 2. Hierarki Integer (tinyint, smallint, mediumint, int, bigint)
+        Dim intRank As New Dictionary(Of String, Integer)(StringComparer.OrdinalIgnoreCase) From {
+            {"tinyint", 1}, {"smallint", 2}, {"mediumint", 3}, {"int", 4}, {"integer", 4}, {"bigint", 5}
+        }
+
+        If intRank.ContainsKey(mBaseType) AndAlso intRank.ContainsKey(curBaseType) Then
+            If intRank(mBaseType) > intRank(curBaseType) Then
+                reason = String.Format("Kapasitas integer diperbesar dari {0} ke {1}", curCol.ColumnType, masterType)
+                Return True
+            End If
+            ' Jika sama-sama integer rank (misal int(11) vs int di MySQL 8), tidak perlu modifikasi
+            Return False
+        End If
+
+        ' 3. Angka Desimal / Finansial (decimal, numeric, float, double)
+        If (mBaseType = "decimal" OrElse mBaseType = "numeric") Then
+            If curBaseType = "float" OrElse curBaseType = "double" Then
+                reason = String.Format("Standarisasi tipe presisi angka desimal dari {0} ke {1}", curCol.ColumnType, masterType)
+                Return True
+            ElseIf curBaseType = "decimal" OrElse curBaseType = "numeric" Then
+                Dim mPrecMatch As System.Text.RegularExpressions.Match = System.Text.RegularExpressions.Regex.Match(mTypeLower, "\((\d+),\s*(\d+)\)")
+                If mPrecMatch.Success Then
+                    Dim mPrec As Integer = Integer.Parse(mPrecMatch.Groups(1).Value)
+                    Dim mScale As Integer = Integer.Parse(mPrecMatch.Groups(2).Value)
+                    If mPrec > curCol.NumericPrecision OrElse mScale > curCol.NumericScale Then
+                        reason = String.Format("Presisi desimal diperbesar dari {0} ke {1}", curCol.ColumnType, masterType)
+                        Return True
+                    End If
+                End If
+                Return False
+            End If
+        End If
+
+        ' 4. Beda tipe data fundamental (misal int vs varchar, varchar vs datetime)
+        If Not String.Equals(mBaseType, curBaseType, StringComparison.OrdinalIgnoreCase) Then
+            reason = String.Format("Tipe data diubah dari {0} ke {1}", curCol.ColumnType, masterType)
+            Return True
+        End If
+
+        Return False
+    End Function
+
+    ''' <summary>
     ''' Membandingkan schema_master.json dengan struktur database klien secara in-memory cached
     ''' </summary>
     Public Shared Function CheckSchemaDiff(Optional ByVal forceCheck As Boolean = False) As MigrationDiff
@@ -436,11 +542,22 @@ Public Class clsSchemaMigrator
                     End Using
                 End Using
 
-                Dim currentColumns As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
-                Using cmd As New MySqlCommand("SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE()", conn)
+                Dim currentColumns As New Dictionary(Of String, ExistingColumnMeta)(StringComparer.OrdinalIgnoreCase)
+                Using cmd As New MySqlCommand("SELECT TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE()", conn)
                     Using rdr As MySqlDataReader = cmd.ExecuteReader()
                         While rdr.Read()
-                            currentColumns.Add(rdr.GetString(0) & "." & rdr.GetString(1))
+                            Dim tName As String = rdr.GetString(0)
+                            Dim cName As String = rdr.GetString(1)
+                            Dim meta As New ExistingColumnMeta With {
+                                .TableName = tName,
+                                .ColumnName = cName,
+                                .ColumnType = If(rdr.IsDBNull(2), "", rdr.GetString(2)),
+                                .DataType = If(rdr.IsDBNull(3), "", rdr.GetString(3)),
+                                .CharLength = If(rdr.IsDBNull(4), 0L, Convert.ToInt64(rdr.GetValue(4))),
+                                .NumericPrecision = If(rdr.IsDBNull(5), 0, Convert.ToInt32(rdr.GetValue(5))),
+                                .NumericScale = If(rdr.IsDBNull(6), 0, Convert.ToInt32(rdr.GetValue(6)))
+                            }
+                            currentColumns(tName & "." & cName) = meta
                         End While
                     End Using
                 End Using
@@ -456,13 +573,29 @@ Public Class clsSchemaMigrator
                             For Each colProp In colsObj.Properties()
                                 Dim colName As String = colProp.Name
                                 Dim key As String = tblName & "." & colName
-                                If Not currentColumns.Contains(key) Then
-                                    Dim colDef As String = colProp.Value("definition").ToString()
+                                Dim colDef As String = colProp.Value("definition").ToString()
+                                Dim masterType As String = If(colProp.Value("type") IsNot Nothing, colProp.Value("type").ToString(), "")
+
+                                If Not currentColumns.ContainsKey(key) Then
                                     diff.MissingColumns.Add(New MissingColumnInfo With {
                                         .TableName = tblName,
                                         .ColumnName = colName,
                                         .Definition = colDef
                                     })
+                                Else
+                                    ' Evaluasi apakah kolom perlu diubah tipe / diperbesar ukurannya
+                                    Dim curColMeta As ExistingColumnMeta = currentColumns(key)
+                                    Dim modReason As String = ""
+                                    If CheckIfColumnNeedsModification(curColMeta, masterType, modReason) Then
+                                        diff.ModifiedColumns.Add(New ModifiedColumnInfo With {
+                                            .TableName = tblName,
+                                            .ColumnName = colName,
+                                            .OldType = curColMeta.ColumnType,
+                                            .NewType = masterType,
+                                            .Definition = colDef,
+                                            .Reason = modReason
+                                        })
+                                    End If
                                 End If
                             Next
                         End If
@@ -481,7 +614,7 @@ Public Class clsSchemaMigrator
     End Function
 
     ''' <summary>
-    ''' Mengeksekusi penambahan tabel dan kolom yang kurang secara otomatis dan aman
+    ''' Mengeksekusi penambahan tabel, penambahan kolom, dan modifikasi/pelebaran tipe data secara otomatis dan aman
     ''' </summary>
     Public Shared Function ExecuteMigration() As MigrationResult
         Dim result As New MigrationResult()
@@ -545,7 +678,7 @@ Public Class clsSchemaMigrator
                 ' B. Tambah Kolom Baru
                 For Each col In diff.MissingColumns
                     Dim alterSql As String = "ALTER TABLE `" & col.TableName & "` ADD COLUMN `" & col.ColumnName & "` " & col.Definition
-                    WriteLog("Menjalankan DDL: " & alterSql)
+                    WriteLog("Menjalankan DDL Tambah Kolom: " & alterSql)
 
                     Try
                         Using cmd As New MySqlCommand(alterSql, conn)
@@ -558,8 +691,25 @@ Public Class clsSchemaMigrator
                     End Try
                 Next
 
+                ' C. Modifikasi / Perbesar Kolom yang Berbeda Tipe atau Kurang Panjang
+                For Each mCol In diff.ModifiedColumns
+                    Dim modifySql As String = "ALTER TABLE `" & mCol.TableName & "` MODIFY COLUMN `" & mCol.ColumnName & "` " & mCol.Definition
+                    WriteLog("Menjalankan DDL Modifikasi: " & modifySql & " [Alasan: " & mCol.Reason & "]")
+
+                    Try
+                        Using cmd As New MySqlCommand(modifySql, conn)
+                            cmd.ExecuteNonQuery()
+                        End Using
+                        result.ExecutedCount += 1
+                        result.Messages.Add("Kolom `" & mCol.ColumnName & "` pada tabel `" & mCol.TableName & "` berhasil dimodifikasi (" & mCol.Reason & ").")
+                    Catch exMod As Exception
+                        WriteLog("GAGAL ALTER MODIFY: " & exMod.Message & " (SQL: " & modifySql & ")", isError:=True)
+                        result.Messages.Add("Gagal memodifikasi kolom `" & mCol.ColumnName & "`: " & exMod.Message)
+                    End Try
+                Next
+
                 result.Success = True
-                WriteLog(String.Format("--- MIGRASI SELESAI: {0} DDL dieksekusi ---", result.ExecutedCount))
+                WriteLog(String.Format("--- MIGRASI SELESAI: {0} DDL dieksekusi ({1} tabel baru, {2} kolom baru, {3} modifikasi/perbesar) ---", result.ExecutedCount, diff.MissingTables.Count, diff.MissingColumns.Count, diff.ModifiedColumns.Count))
 
                 Dim asm As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly()
                 Dim currentVer As String = asm.GetName().Version.ToString()

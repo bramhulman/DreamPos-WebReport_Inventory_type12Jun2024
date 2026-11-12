@@ -47,6 +47,7 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Content\js\receive-posting.js" />
     <Reference Include="AjaxControlToolkit, Version=3.0.30930.28736, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AjaxControlToolkit.19.1.0\lib\net40\AjaxControlToolkit.dll</HintPath>
@@ -1984,6 +1985,7 @@
     <Compile Include="ConnectionMysql\clsExportData.vb" />
     <Compile Include="ConnectionMysql\clsHome.vb" />
     <Compile Include="ConnectionMysql\clsInventory.vb" />
+    <Compile Include="ConnectionMysql\clsReceivePosting.vb" />
     <Compile Include="ConnectionMysql\clsInventory_Batch.vb" />
     <Compile Include="ConnectionMysql\clsInventory_Cc.vb" />
     <Compile Include="ConnectionMysql\clsInventory_ItemMaster.vb" />
