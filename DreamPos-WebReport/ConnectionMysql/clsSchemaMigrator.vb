@@ -543,11 +543,16 @@ Public Class clsSchemaMigrator
                 End Using
 
                 Dim currentColumns As New Dictionary(Of String, ExistingColumnMeta)(StringComparer.OrdinalIgnoreCase)
-                Using cmd As New MySqlCommand("SELECT TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE()", conn)
+                Dim tablesWithAutoInc As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
+                Using cmd As New MySqlCommand("SELECT TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE, EXTRA FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE()", conn)
                     Using rdr As MySqlDataReader = cmd.ExecuteReader()
                         While rdr.Read()
                             Dim tName As String = rdr.GetString(0)
                             Dim cName As String = rdr.GetString(1)
+                            Dim extraVal As String = If(rdr.IsDBNull(7), "", rdr.GetString(7))
+                            If extraVal.IndexOf("auto_increment", StringComparison.OrdinalIgnoreCase) >= 0 Then
+                                tablesWithAutoInc.Add(tName)
+                            End If
                             Dim meta As New ExistingColumnMeta With {
                                 .TableName = tName,
                                 .ColumnName = cName,
@@ -577,6 +582,14 @@ Public Class clsSchemaMigrator
                                 Dim masterType As String = If(colProp.Value("type") IsNot Nothing, colProp.Value("type").ToString(), "")
 
                                 If Not currentColumns.ContainsKey(key) Then
+                                    If System.Text.RegularExpressions.Regex.IsMatch(colDef, "\bAUTO_INCREMENT\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then
+                                        If tablesWithAutoInc.Contains(tblName) Then
+                                            colDef = System.Text.RegularExpressions.Regex.Replace(colDef, "\bAUTO_INCREMENT\b", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim()
+                                        Else
+                                            colDef &= ", ADD INDEX `idx_" & colName & "` (`" & colName & "`)"
+                                            tablesWithAutoInc.Add(tblName)
+                                        End If
+                                    End If
                                     diff.MissingColumns.Add(New MissingColumnInfo With {
                                         .TableName = tblName,
                                         .ColumnName = colName,

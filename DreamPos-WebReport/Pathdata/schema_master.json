@@ -315,10 +315,10 @@
           "definition": "int(11) NULL DEFAULT '0'"
         },
         "Subtotal": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(12 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(12,2) NOT NULL DEFAULT '0.00'"
         },
         "insertDate": {
           "type": "datetime",
@@ -372,10 +372,10 @@
           "definition": "int(11) NULL DEFAULT '0'"
         },
         "Subtotal": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(12 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(12,2) NOT NULL DEFAULT '0.00'"
         }
       }
     },
@@ -419,10 +419,10 @@
           "definition": "varchar(50) NOT NULL"
         },
         "Subtotal": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,2) NULL DEFAULT NULL"
         }
       }
     },
@@ -677,8 +677,8 @@
         "Type": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "ExpireDate": {
           "type": "datetime",
@@ -918,10 +918,10 @@
           "definition": "datetime NULL DEFAULT NULL"
         },
         "invoiceTot": {
-          "type": "decimal(14",
+          "type": "decimal(14,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(14 NULL DEFAULT NULL"
+          "definition": "decimal(14,2) NULL DEFAULT NULL"
         },
         "notes": {
           "type": "varchar(100)",
@@ -988,14 +988,14 @@
         "PCode": {
           "type": "varchar(15)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(15) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(15) NULL DEFAULT NULL"
         },
         "Notes": {
           "type": "varchar(50)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(50) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(50) NULL DEFAULT NULL"
         }
       }
     },
@@ -1030,10 +1030,10 @@
           "definition": "varchar(30) NULL DEFAULT NULL"
         },
         "Cost": {
-          "type": "decimal(14",
+          "type": "decimal(14,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(14 NULL DEFAULT NULL"
+          "definition": "decimal(14,2) NULL DEFAULT NULL"
         },
         "Remarks": {
           "type": "varchar(50)",
@@ -1063,10 +1063,10 @@
           "definition": "int(11) NOT NULL"
         },
         "cost": {
-          "type": "decimal(12",
+          "type": "decimal(12,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,4) NULL DEFAULT NULL"
         },
         "ccid": {
           "type": "int(11)",
@@ -1103,26 +1103,26 @@
         "tipe": {
           "type": "smallint(6)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "smallint(6) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "smallint(6) NULL DEFAULT NULL"
         },
         "kodeId": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "qty": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,2) NULL DEFAULT NULL"
         },
         "Lossf": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,2) NULL DEFAULT NULL"
         }
       }
     },
@@ -1181,46 +1181,46 @@
           "definition": "varchar(5) NULL DEFAULT NULL"
         },
         "Factor1": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "Factor2": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "stkLimit": {
-          "type": "decimal(12",
+          "type": "decimal(12,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,4) NULL DEFAULT NULL"
         },
         "Batch": {
           "type": "bit(1)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "bit(1) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "bit(1) NULL DEFAULT NULL"
         },
         "BLink": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "price1": {
-          "type": "decimal(13",
+          "type": "decimal(13,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(13 NULL DEFAULT '0.0000'"
+          "definition": "decimal(13,4) NULL DEFAULT '0.0000'"
         },
         "price2": {
-          "type": "decimal(13",
+          "type": "decimal(13,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(13 NULL DEFAULT '0.0000'"
+          "definition": "decimal(13,4) NULL DEFAULT '0.0000'"
         }
       }
     },
@@ -1244,10 +1244,10 @@
           "definition": "int(11) NOT NULL"
         },
         "stkLimit": {
-          "type": "decimal(12",
+          "type": "decimal(12,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,4) NULL DEFAULT NULL"
         },
         "ccid": {
           "type": "int(11)",
@@ -1256,10 +1256,10 @@
           "definition": "int(11) NOT NULL"
         },
         "cost": {
-          "type": "decimal(13",
+          "type": "decimal(13,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(13 NULL DEFAULT '0.0000'"
+          "definition": "decimal(13,4) NULL DEFAULT '0.0000'"
         }
       }
     },
@@ -1283,10 +1283,10 @@
           "definition": "int(11) NOT NULL"
         },
         "Cost": {
-          "type": "decimal(14",
+          "type": "decimal(14,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(14 NULL DEFAULT NULL"
+          "definition": "decimal(14,2) NULL DEFAULT NULL"
         },
         "Custid": {
           "type": "int(11)",
@@ -1446,14 +1446,14 @@
         "PCode": {
           "type": "varchar(15)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(15) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(15) NULL DEFAULT NULL"
         },
         "Notes": {
           "type": "varchar(50)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(50) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(50) NULL DEFAULT NULL"
         }
       }
     },
@@ -1505,44 +1505,44 @@
         "Stk_Name": {
           "type": "varchar(30)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(30) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(30) NULL DEFAULT NULL"
         },
         "U1": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "U2": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "Factor1": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "ttlStock": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "CostU1": {
-          "type": "decimal(15",
+          "type": "decimal(15,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(15 NULL DEFAULT NULL"
+          "definition": "decimal(15,4) NULL DEFAULT NULL"
         },
         "Cost": {
-          "type": "decimal(15",
+          "type": "decimal(15,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(15 NULL DEFAULT NULL"
+          "definition": "decimal(15,4) NULL DEFAULT NULL"
         },
         "Linkid": {
           "type": "varchar(18)",
@@ -1553,20 +1553,20 @@
         "flagtrans": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "U1_nm": {
           "type": "varchar(5)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(5) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(5) NULL DEFAULT NULL"
         },
         "U2_nm": {
           "type": "varchar(5)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(5) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(5) NULL DEFAULT NULL"
         },
         "CreatedBy": {
           "type": "varchar(20)",
@@ -1595,8 +1595,8 @@
         "Stk_no": {
           "type": "varchar(15)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(15) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(15) NULL DEFAULT NULL"
         },
         "Cc_name": {
           "type": "varchar(15)",
@@ -1654,44 +1654,44 @@
         "Stk_Name": {
           "type": "varchar(30)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(30) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(30) NULL DEFAULT NULL"
         },
         "U1": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "U2": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "Factor1": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "ttlStock": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "CostU1": {
-          "type": "decimal(13",
+          "type": "decimal(13,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(13 NULL DEFAULT NULL"
+          "definition": "decimal(13,4) NULL DEFAULT NULL"
         },
         "Cost": {
-          "type": "decimal(13",
+          "type": "decimal(13,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(13 NULL DEFAULT NULL"
+          "definition": "decimal(13,4) NULL DEFAULT NULL"
         },
         "Linkid": {
           "type": "varchar(18)",
@@ -1702,20 +1702,20 @@
         "flagtrans": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "U1_nm": {
           "type": "varchar(5)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(5) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(5) NULL DEFAULT NULL"
         },
         "U2_nm": {
           "type": "varchar(5)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(5) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(5) NULL DEFAULT NULL"
         },
         "CreatedBy": {
           "type": "varchar(15)",
@@ -1744,8 +1744,8 @@
         "Stk_no": {
           "type": "varchar(15)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(15) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(15) NULL DEFAULT NULL"
         },
         "Cc_name": {
           "type": "varchar(15)",
@@ -1783,8 +1783,8 @@
         "Notes": {
           "type": "varchar(99)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(99) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(99) NULL DEFAULT NULL"
         }
       }
     },
@@ -1832,118 +1832,118 @@
           "definition": "varchar(15) NULL DEFAULT NULL"
         },
         "OpenCost": {
-          "type": "decimal(13",
+          "type": "decimal(13,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(13 NULL DEFAULT NULL"
+          "definition": "decimal(13,4) NULL DEFAULT NULL"
         },
         "openQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "decimal(10 NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "Cost": {
-          "type": "decimal(13",
+          "type": "decimal(13,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(13 NULL DEFAULT NULL"
+          "definition": "decimal(13,4) NULL DEFAULT NULL"
         },
         "rcvQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "rtnQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "tinQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "toutQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "rwasteQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "fwasteQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,4) NOT NULL"
         },
         "usageQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "ttlQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "decimal(10 NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "bClose": {
           "type": "bit(1)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "bit(1) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "bit(1) NULL DEFAULT NULL"
         },
         "closeQty": {
-          "type": "decimal(10",
-          "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "decimal(10 NULL DEFAULT NULL COMMENT '"
-        },
-        "closeCost": {
-          "type": "decimal(13",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(13 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
+        },
+        "closeCost": {
+          "type": "decimal(13,4)",
+          "nullable": true,
+          "default": "NULL",
+          "definition": "decimal(13,4) NULL DEFAULT NULL"
         },
         "varianceQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "decimal(10 NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "BPin": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(10 NULL DEFAULT '0.0000'"
+          "definition": "decimal(10,4) NULL DEFAULT '0.0000'"
         },
         "BPout": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(10 NULL DEFAULT '0.0000'"
+          "definition": "decimal(10,4) NULL DEFAULT '0.0000'"
         },
         "HoInQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(10 NULL DEFAULT '0.0000'"
+          "definition": "decimal(10,4) NULL DEFAULT '0.0000'"
         },
         "HoOutQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(10 NULL DEFAULT '0.0000'"
+          "definition": "decimal(10,4) NULL DEFAULT '0.0000'"
         }
       }
     },
@@ -1998,130 +1998,124 @@
           "definition": "varchar(15) NULL DEFAULT NULL"
         },
         "OpenCost": {
-          "type": "decimal(13",
+          "type": "decimal(13,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(13 NULL DEFAULT NULL"
+          "definition": "decimal(13,4) NULL DEFAULT NULL"
         },
         "openQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "decimal(10 NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "Cost": {
-          "type": "decimal(13",
+          "type": "decimal(13,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(13 NULL DEFAULT NULL"
+          "definition": "decimal(13,4) NULL DEFAULT NULL"
         },
         "rcvQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "rtnQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "tinQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "toutQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "rwasteQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "fwasteQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,4) NOT NULL"
         },
         "usageQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "ttlQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "decimal(10 NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "bClose": {
           "type": "bit(1)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "bit(1) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "bit(1) NULL DEFAULT NULL"
         },
         "closeQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "decimal(10 NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "closeCost": {
-          "type": "decimal(13",
+          "type": "decimal(13,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(13 NULL DEFAULT NULL"
+          "definition": "decimal(13,4) NULL DEFAULT NULL"
         },
         "varianceQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "decimal(10 NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "HoOutQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "HoInQty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "BPIn": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "BPout": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "cwasteqty": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(10 NULL DEFAULT '0.0000'"
-        },
-        "FULLTEXT": {
-          "type": "KEY",
-          "nullable": true,
-          "default": null,
-          "definition": "KEY NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT '0.0000'"
         }
       }
     },
@@ -2174,44 +2168,44 @@
         "Stk_no": {
           "type": "varchar(15)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(15) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(15) NULL DEFAULT NULL"
         },
         "Stk_Name": {
           "type": "varchar(30)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(30) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(30) NULL DEFAULT NULL"
         },
         "U2": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "U3": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "Factor2": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "ttlStock": {
-          "type": "decimal(10",
-          "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "decimal(10 NULL DEFAULT NULL COMMENT '"
-        },
-        "Cost": {
-          "type": "decimal(13",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(13 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
+        },
+        "Cost": {
+          "type": "decimal(13,4)",
+          "nullable": true,
+          "default": "NULL",
+          "definition": "decimal(13,4) NULL DEFAULT NULL"
         },
         "Linkid": {
           "type": "varchar(15)",
@@ -2222,20 +2216,20 @@
         "flagtrans": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "U2_nm": {
           "type": "varchar(5)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(5) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(5) NULL DEFAULT NULL"
         },
         "U3_nm": {
           "type": "varchar(5)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(5) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(5) NULL DEFAULT NULL"
         },
         "CreatedBy": {
           "type": "varchar(15)",
@@ -2264,8 +2258,8 @@
         "smNo": {
           "type": "varchar(14)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(14) NOT NULL"
+          "default": "",
+          "definition": "varchar(14) NOT NULL DEFAULT ''"
         },
         "Outletid": {
           "type": "int(11)",
@@ -2330,44 +2324,44 @@
         "Stk_no": {
           "type": "varchar(15)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(15) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(15) NULL DEFAULT NULL"
         },
         "Stk_Name": {
           "type": "varchar(30)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(30) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(30) NULL DEFAULT NULL"
         },
         "U2": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "U3": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "Factor2": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "ttlStock": {
-          "type": "decimal(10",
-          "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "decimal(10 NULL DEFAULT NULL COMMENT '"
-        },
-        "Cost": {
-          "type": "decimal(13",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(13 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
+        },
+        "Cost": {
+          "type": "decimal(13,4)",
+          "nullable": true,
+          "default": "NULL",
+          "definition": "decimal(13,4) NULL DEFAULT NULL"
         },
         "Linkid": {
           "type": "varchar(15)",
@@ -2378,20 +2372,20 @@
         "flagtrans": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "U2_nm": {
           "type": "varchar(5)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(5) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(5) NULL DEFAULT NULL"
         },
         "U3_nm": {
           "type": "varchar(5)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(5) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(5) NULL DEFAULT NULL"
         },
         "CreatedBy": {
           "type": "varchar(15)",
@@ -2420,8 +2414,8 @@
         "smNo": {
           "type": "varchar(14)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(14) NOT NULL"
+          "default": "",
+          "definition": "varchar(14) NOT NULL DEFAULT ''"
         },
         "Outletid": {
           "type": "int(11)",
@@ -2470,10 +2464,10 @@
           "definition": "int(11) NOT NULL"
         },
         "ttlStock": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "flag": {
           "type": "int(11)",
@@ -2516,10 +2510,10 @@
           "definition": "int(11) NOT NULL"
         },
         "ttlStock": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "flag": {
           "type": "int(11)",
@@ -2562,10 +2556,10 @@
           "definition": "int(11) NOT NULL"
         },
         "ttlStock": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "flag": {
           "type": "int(11)",
@@ -2596,16 +2590,16 @@
           "definition": "int(11) NOT NULL"
         },
         "DocTot": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(15 NULL DEFAULT NULL"
+          "definition": "decimal(15,2) NULL DEFAULT NULL"
         },
         "Flag": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "ccFrom": {
           "type": "int(11)",
@@ -2658,14 +2652,14 @@
         "appBy": {
           "type": "varchar(15)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(15) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(15) NULL DEFAULT NULL"
         },
         "rcvBy": {
           "type": "varchar(25)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(25) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(25) NULL DEFAULT NULL"
         },
         "DelID": {
           "type": "varchar(18)",
@@ -2712,8 +2706,8 @@
         "Notes": {
           "type": "varchar(100)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(100) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(100) NULL DEFAULT ''"
         },
         "DueDate": {
           "type": "date",
@@ -2780,10 +2774,10 @@
           "definition": "varchar(30) NULL DEFAULT NULL"
         },
         "U1": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "U1_nm": {
           "type": "varchar(5)",
@@ -2792,10 +2786,10 @@
           "definition": "varchar(5) NULL DEFAULT NULL"
         },
         "U2": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "U2_nm": {
           "type": "varchar(5)",
@@ -2804,34 +2798,34 @@
           "definition": "varchar(5) NULL DEFAULT NULL"
         },
         "TotalU2": {
-          "type": "decimal(14",
+          "type": "decimal(14,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(14 NULL DEFAULT NULL"
+          "definition": "decimal(14,4) NULL DEFAULT NULL"
         },
         "u1Del": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "u1Rcv": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         },
         "cost": {
-          "type": "decimal(15",
+          "type": "decimal(15,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(15 NULL DEFAULT NULL"
+          "definition": "decimal(15,4) NULL DEFAULT NULL"
         },
         "Factor1": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,4) NULL DEFAULT NULL"
         }
       }
     },
@@ -2868,20 +2862,20 @@
         "Flag": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "DocTot": {
-          "type": "decimal(14",
+          "type": "decimal(14,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(14 NULL DEFAULT NULL"
+          "definition": "decimal(14,2) NULL DEFAULT NULL"
         },
         "Tipe": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "Cc": {
           "type": "int(11)",
@@ -2934,8 +2928,8 @@
         "Notes": {
           "type": "varchar(100)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(100) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(100) NULL DEFAULT ''"
         },
         "ID3": {
           "type": "int(11)",
@@ -2956,16 +2950,16 @@
           "definition": "int(11) NULL DEFAULT '1'"
         },
         "p_tax": {
-          "type": "decimal(8",
+          "type": "decimal(8,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(8 NULL DEFAULT NULL"
+          "definition": "decimal(8,2) NULL DEFAULT NULL"
         },
         "n_tax": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "pr_id": {
           "type": "bigint(20)",
@@ -3076,22 +3070,22 @@
           "definition": "varchar(45) NULL DEFAULT NULL"
         },
         "Price": {
-          "type": "decimal(17",
+          "type": "decimal(17,0)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(17 NULL DEFAULT NULL"
+          "definition": "decimal(17,0) NULL DEFAULT NULL"
         },
         "Cost": {
-          "type": "decimal(17",
+          "type": "decimal(17,0)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(17 NULL DEFAULT NULL"
+          "definition": "decimal(17,0) NULL DEFAULT NULL"
         },
         "Type": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -3124,10 +3118,10 @@
           "definition": "int(11) NULL DEFAULT NULL"
         },
         "Factor": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,2) NULL DEFAULT NULL"
         },
         "itemgroup": {
           "type": "int(11)",
@@ -3150,14 +3144,14 @@
         "DisplayName": {
           "type": "varchar(45)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(45) NOT NULL"
+          "default": "",
+          "definition": "varchar(45) NOT NULL DEFAULT ''"
         },
         "ItemNo1": {
           "type": "varchar(30)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(30) NOT NULL"
+          "default": "",
+          "definition": "varchar(30) NOT NULL DEFAULT ''"
         },
         "flag": {
           "type": "int(11)",
@@ -3187,10 +3181,10 @@
           "definition": "int(11) NOT NULL"
         },
         "cost": {
-          "type": "decimal(12",
+          "type": "decimal(12,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,4) NULL DEFAULT NULL"
         },
         "ccid": {
           "type": "int(11)",
@@ -3199,10 +3193,10 @@
           "definition": "int(11) NOT NULL"
         },
         "addcost": {
-          "type": "decimal(8",
+          "type": "decimal(8,4)",
           "nullable": false,
           "default": "0.0000",
-          "definition": "decimal(8 NOT NULL DEFAULT '0.0000'"
+          "definition": "decimal(8,4) NOT NULL DEFAULT '0.0000'"
         }
       }
     },
@@ -3222,10 +3216,10 @@
           "definition": "int(11) NULL DEFAULT NULL"
         },
         "Cost": {
-          "type": "decimal(18",
+          "type": "decimal(18,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(18 NULL DEFAULT '0.0000'"
+          "definition": "decimal(18,4) NULL DEFAULT '0.0000'"
         },
         "ccid": {
           "type": "int(11)",
@@ -3234,10 +3228,10 @@
           "definition": "int(11) NULL DEFAULT NULL"
         },
         "addcost": {
-          "type": "decimal(18",
+          "type": "decimal(18,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(18 NULL DEFAULT '0.0000'"
+          "definition": "decimal(18,4) NULL DEFAULT '0.0000'"
         },
         "Busidate": {
           "type": "datetime",
@@ -3344,22 +3338,22 @@
           "definition": "varchar(35) NOT NULL"
         },
         "SysCash": {
-          "type": "decimal(19",
+          "type": "decimal(19,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(19 NULL DEFAULT NULL"
+          "definition": "decimal(19,4) NULL DEFAULT NULL"
         },
         "CasCash": {
-          "type": "decimal(19",
+          "type": "decimal(19,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(19 NULL DEFAULT NULL"
+          "definition": "decimal(19,4) NULL DEFAULT NULL"
         },
         "DifCash": {
-          "type": "decimal(19",
+          "type": "decimal(19,4)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(19 NULL DEFAULT NULL"
+          "definition": "decimal(19,4) NULL DEFAULT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -3544,16 +3538,16 @@
           "definition": "datetime NULL DEFAULT NULL"
         },
         "Saldo": {
-          "type": "decimal(10",
+          "type": "decimal(10,0)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,0) NOT NULL"
         },
         "Points": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,2) NOT NULL"
         },
         "Notes": {
           "type": "varchar(100)",
@@ -3653,22 +3647,22 @@
           "definition": "datetime NOT NULL"
         },
         "TransTtl": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(15 NULL DEFAULT NULL"
+          "definition": "decimal(15,2) NULL DEFAULT NULL"
         },
         "DepGet": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(15 NULL DEFAULT NULL"
+          "definition": "decimal(15,2) NULL DEFAULT NULL"
         },
         "DepBefore": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(15 NULL DEFAULT NULL"
+          "definition": "decimal(15,2) NULL DEFAULT NULL"
         },
         "OlNumber": {
           "type": "varchar(15)",
@@ -3697,20 +3691,20 @@
         "Station": {
           "type": "varchar(50)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(50) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(50) NULL DEFAULT NULL"
         },
         "User": {
           "type": "varchar(10)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(10) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(10) NULL DEFAULT NULL"
         },
         "TransName": {
           "type": "varchar(20)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "varchar(20) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "varchar(20) NULL DEFAULT NULL"
         }
       }
     },
@@ -3748,22 +3742,22 @@
           "definition": "datetime NOT NULL"
         },
         "Total": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(15 NULL DEFAULT NULL"
+          "definition": "decimal(15,2) NULL DEFAULT NULL"
         },
         "PointGet": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,2) NOT NULL"
         },
         "PointBefore": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,2) NULL DEFAULT NULL"
         },
         "OlNumber": {
           "type": "varchar(15)",
@@ -3822,28 +3816,28 @@
           "definition": "varchar(30) NOT NULL"
         },
         "DiscBirthday": {
-          "type": "decimal(10",
+          "type": "decimal(10,0)",
           "nullable": false,
           "default": "0",
-          "definition": "decimal(10 NOT NULL DEFAULT '0'"
+          "definition": "decimal(10,0) NOT NULL DEFAULT '0'"
         },
         "DiscMarrigeDay": {
-          "type": "decimal(10",
+          "type": "decimal(10,0)",
           "nullable": false,
           "default": "0",
-          "definition": "decimal(10 NOT NULL DEFAULT '0'"
+          "definition": "decimal(10,0) NOT NULL DEFAULT '0'"
         },
         "PointValue": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,2) NOT NULL"
         },
         "RPointValue": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,2) NULL DEFAULT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -4010,10 +4004,10 @@
           "definition": "varchar(15) NULL DEFAULT NULL"
         },
         "percentage": {
-          "type": "decimal(5",
+          "type": "decimal(5,0)",
           "nullable": false,
           "default": "0",
-          "definition": "decimal(5 NOT NULL DEFAULT '0'"
+          "definition": "decimal(5,0) NOT NULL DEFAULT '0'"
         },
         "PosVer": {
           "type": "varchar(10)",
@@ -4084,10 +4078,10 @@
           "definition": "varchar(30) NULL DEFAULT NULL"
         },
         "markup": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(10 NULL DEFAULT '0.0000'"
+          "definition": "decimal(10,4) NULL DEFAULT '0.0000'"
         }
       }
     },
@@ -4125,10 +4119,10 @@
           "definition": "varchar(15) NOT NULL"
         },
         "Total": {
-          "type": "decimal(14",
+          "type": "decimal(14,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(14 NULL DEFAULT NULL"
+          "definition": "decimal(14,2) NULL DEFAULT NULL"
         },
         "Tipe": {
           "type": "int(11)",
@@ -4163,38 +4157,38 @@
         "Refno": {
           "type": "varchar(20)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(20) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(20) NULL DEFAULT ''"
         },
         "Notes": {
           "type": "varchar(115)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(115) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(115) NULL DEFAULT ''"
         },
         "pmNo": {
           "type": "varchar(14)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(14) NOT NULL"
+          "default": "",
+          "definition": "varchar(14) NOT NULL DEFAULT ''"
         },
         "EDCRef": {
           "type": "varchar(100)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(100) NOT NULL"
+          "default": "",
+          "definition": "varchar(100) NOT NULL DEFAULT ''"
         },
         "EDCApp": {
           "type": "varchar(100)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(100) NOT NULL"
+          "default": "",
+          "definition": "varchar(100) NOT NULL DEFAULT ''"
         },
         "EDCtrace": {
           "type": "varchar(100)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(100) NOT NULL"
+          "default": "",
+          "definition": "varchar(100) NOT NULL DEFAULT ''"
         }
       }
     },
@@ -4232,10 +4226,10 @@
           "definition": "varchar(15) NOT NULL"
         },
         "Total": {
-          "type": "decimal(14",
+          "type": "decimal(14,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(14 NULL DEFAULT NULL"
+          "definition": "decimal(14,2) NULL DEFAULT NULL"
         },
         "Tipe": {
           "type": "int(11)",
@@ -4270,38 +4264,38 @@
         "Refno": {
           "type": "varchar(20)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(20) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(20) NULL DEFAULT ''"
         },
         "Notes": {
           "type": "varchar(115)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(115) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(115) NULL DEFAULT ''"
         },
         "pmNo": {
           "type": "varchar(14)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(14) NOT NULL"
+          "default": "",
+          "definition": "varchar(14) NOT NULL DEFAULT ''"
         },
         "EDCRef": {
           "type": "varchar(100)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(100) NOT NULL"
+          "default": "",
+          "definition": "varchar(100) NOT NULL DEFAULT ''"
         },
         "EDCApp": {
           "type": "varchar(100)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(100) NOT NULL"
+          "default": "",
+          "definition": "varchar(100) NOT NULL DEFAULT ''"
         },
         "EDCtrace": {
           "type": "varchar(100)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(100) NOT NULL"
+          "default": "",
+          "definition": "varchar(100) NOT NULL DEFAULT ''"
         }
       }
     },
@@ -4535,8 +4529,8 @@
         "periode": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "rptlvl": {
           "type": "int(11)",
@@ -4579,28 +4573,28 @@
           "definition": "varchar(40) NOT NULL"
         },
         "Qty": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,2) NOT NULL"
         },
         "Price": {
-          "type": "decimal(15",
+          "type": "decimal(15,4)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,4) NOT NULL"
         },
         "Subtotal": {
-          "type": "decimal(15",
+          "type": "decimal(15,4)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,4) NOT NULL"
         },
         "Cost": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "ServeEmployee": {
           "type": "varchar(30)",
@@ -4621,10 +4615,10 @@
           "definition": "varchar(30) NULL DEFAULT NULL"
         },
         "Komisi": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(15 NULL DEFAULT NULL"
+          "definition": "decimal(15,2) NULL DEFAULT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -4659,32 +4653,32 @@
         "MajorGroup": {
           "type": "varchar(30)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(30) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(30) NULL DEFAULT ''"
         },
         "ParentNo": {
           "type": "varchar(10)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(10) NOT NULL"
+          "default": "",
+          "definition": "varchar(10) NOT NULL DEFAULT ''"
         },
         "ParentName": {
           "type": "varchar(40)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(40) NOT NULL"
+          "default": "",
+          "definition": "varchar(40) NOT NULL DEFAULT ''"
         },
         "UserID": {
           "type": "varchar(12)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(12) NOT NULL"
+          "default": "",
+          "definition": "varchar(12) NOT NULL DEFAULT ''"
         },
         "CompName": {
           "type": "varchar(35)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(35) NOT NULL"
+          "default": "",
+          "definition": "varchar(35) NOT NULL DEFAULT ''"
         },
         "Transdate": {
           "type": "datetime",
@@ -4695,20 +4689,14 @@
         "SlsTypeNm": {
           "type": "varchar(20)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(20) NOT NULL"
+          "default": "",
+          "definition": "varchar(20) NOT NULL DEFAULT ''"
         },
         "SlsTypePromo": {
           "type": "int(11)",
           "nullable": false,
           "default": "0",
           "definition": "int(11) NOT NULL DEFAULT '0'"
-        },
-        "FULLTEXT": {
-          "type": "KEY",
-          "nullable": true,
-          "default": null,
-          "definition": "KEY NULL DEFAULT NULL"
         }
       }
     },
@@ -4745,28 +4733,28 @@
           "definition": "varchar(40) NOT NULL"
         },
         "Qty": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,2) NOT NULL"
         },
         "Price": {
-          "type": "decimal(15",
+          "type": "decimal(15,4)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,4) NOT NULL"
         },
         "Subtotal": {
-          "type": "decimal(15",
+          "type": "decimal(15,4)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,4) NOT NULL"
         },
         "Cost": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "ServeEmployee": {
           "type": "varchar(30)",
@@ -4787,10 +4775,10 @@
           "definition": "varchar(30) NULL DEFAULT NULL"
         },
         "Komisi": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(15 NULL DEFAULT NULL"
+          "definition": "decimal(15,2) NULL DEFAULT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -4825,32 +4813,32 @@
         "MajorGroup": {
           "type": "varchar(30)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(30) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(30) NULL DEFAULT ''"
         },
         "ParentNo": {
           "type": "varchar(10)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(10) NOT NULL"
+          "default": "",
+          "definition": "varchar(10) NOT NULL DEFAULT ''"
         },
         "ParentName": {
           "type": "varchar(40)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(40) NOT NULL"
+          "default": "",
+          "definition": "varchar(40) NOT NULL DEFAULT ''"
         },
         "UserID": {
           "type": "varchar(12)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(12) NOT NULL"
+          "default": "",
+          "definition": "varchar(12) NOT NULL DEFAULT ''"
         },
         "CompName": {
           "type": "varchar(35)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(35) NOT NULL"
+          "default": "",
+          "definition": "varchar(35) NOT NULL DEFAULT ''"
         },
         "Transdate": {
           "type": "datetime",
@@ -4861,20 +4849,14 @@
         "SlsTypeNm": {
           "type": "varchar(20)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(20) NOT NULL"
+          "default": "",
+          "definition": "varchar(20) NOT NULL DEFAULT ''"
         },
         "SlsTypePromo": {
           "type": "int(11)",
           "nullable": false,
           "default": "0",
           "definition": "int(11) NOT NULL DEFAULT '0'"
-        },
-        "FULLTEXT": {
-          "type": "KEY",
-          "nullable": true,
-          "default": null,
-          "definition": "KEY NULL DEFAULT NULL"
         }
       }
     },
@@ -4903,16 +4885,16 @@
           "definition": "varchar(15) NULL DEFAULT NULL"
         },
         "olSubt": {
-          "type": "decimal(20",
+          "type": "decimal(20,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(20 NULL DEFAULT NULL"
+          "definition": "decimal(20,2) NULL DEFAULT NULL"
         },
         "dif": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "calculate": {
           "type": "int(11)",
@@ -4952,34 +4934,34 @@
           "definition": "datetime NOT NULL"
         },
         "Subtotal": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "Tax": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "Service": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "Total": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "TotalCost": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "MemberNo": {
           "type": "varchar(30)",
@@ -5036,22 +5018,22 @@
           "definition": "int(11) NOT NULL"
         },
         "getPoint": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,2) NOT NULL"
         },
         "UsedSaldo": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "Discount": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "olId": {
           "type": "int(11)",
@@ -5098,32 +5080,32 @@
         "PayNm": {
           "type": "varchar(20)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(20) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(20) NULL DEFAULT ''"
         },
         "SlsTypeNm": {
           "type": "varchar(20)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(20) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(20) NULL DEFAULT ''"
         },
         "ppn": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "pb1": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "DiscNm": {
           "type": "varchar(15)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(15) NOT NULL"
+          "default": "",
+          "definition": "varchar(15) NOT NULL DEFAULT ''"
         },
         "TotalItem": {
           "type": "int(11)",
@@ -5146,38 +5128,32 @@
         "ChefName": {
           "type": "varchar(15)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(15) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(15) NULL DEFAULT ''"
         },
         "RoundOff": {
-          "type": "decimal(6",
+          "type": "decimal(6,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(6 NULL DEFAULT '0.00'"
+          "definition": "decimal(6,2) NULL DEFAULT '0.00'"
         },
         "DeliveryFee": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         },
         "OtherRevenue": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         },
         "tableno": {
           "type": "varchar(10)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(10) NOT NULL"
-        },
-        "FULLTEXT": {
-          "type": "KEY",
-          "nullable": true,
-          "default": null,
-          "definition": "KEY NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(10) NOT NULL DEFAULT ''"
         }
       }
     },
@@ -5211,34 +5187,34 @@
           "definition": "datetime NOT NULL"
         },
         "Subtotal": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "Tax": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "Service": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "Total": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "TotalCost": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "MemberNo": {
           "type": "varchar(30)",
@@ -5295,22 +5271,22 @@
           "definition": "int(11) NOT NULL"
         },
         "getPoint": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,2) NOT NULL"
         },
         "UsedSaldo": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "Discount": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,2) NOT NULL"
         },
         "olId": {
           "type": "int(11)",
@@ -5357,32 +5333,32 @@
         "PayNm": {
           "type": "varchar(20)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(20) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(20) NULL DEFAULT ''"
         },
         "SlsTypeNm": {
           "type": "varchar(20)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(20) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(20) NULL DEFAULT ''"
         },
         "ppn": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "pb1": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "DiscNm": {
           "type": "varchar(15)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(15) NOT NULL"
+          "default": "",
+          "definition": "varchar(15) NOT NULL DEFAULT ''"
         },
         "TotalItem": {
           "type": "int(11)",
@@ -5405,38 +5381,32 @@
         "ChefName": {
           "type": "varchar(15)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(15) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(15) NULL DEFAULT ''"
         },
         "RoundOff": {
-          "type": "decimal(6",
+          "type": "decimal(6,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(6 NULL DEFAULT '0.00'"
+          "definition": "decimal(6,2) NULL DEFAULT '0.00'"
         },
         "DeliveryFee": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         },
         "OtherRevenue": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         },
         "tableno": {
           "type": "varchar(10)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(10) NOT NULL"
-        },
-        "FULLTEXT": {
-          "type": "KEY",
-          "nullable": true,
-          "default": null,
-          "definition": "KEY NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(10) NOT NULL DEFAULT ''"
         }
       }
     },
@@ -5465,10 +5435,10 @@
           "definition": "int(11) NULL DEFAULT NULL"
         },
         "Commission": {
-          "type": "decimal(10",
+          "type": "decimal(10,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(10 NULL DEFAULT '0.0000'"
+          "definition": "decimal(10,4) NULL DEFAULT '0.0000'"
         }
       }
     },
@@ -5514,20 +5484,20 @@
         "Itemno": {
           "type": "varchar(20)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(20) NOT NULL"
+          "default": "",
+          "definition": "varchar(20) NOT NULL DEFAULT ''"
         },
         "ItemName": {
           "type": "varchar(40)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(40) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(40) NULL DEFAULT ''"
         },
         "DisplayName": {
           "type": "varchar(45)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(45) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(45) NULL DEFAULT ''"
         },
         "Flag": {
           "type": "int(11)",
@@ -5538,8 +5508,8 @@
         "User": {
           "type": "varchar(20)",
           "nullable": true,
-          "default": null,
-          "definition": "varchar(20) NULL DEFAULT NULL"
+          "default": "",
+          "definition": "varchar(20) NULL DEFAULT ''"
         }
       }
     },
@@ -5595,28 +5565,28 @@
           "definition": "varchar(15) NOT NULL"
         },
         "usagecost": {
-          "type": "decimal(18",
+          "type": "decimal(18,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(18 NOT NULL"
+          "definition": "decimal(18,2) NOT NULL"
         },
         "BPout": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "rwaste": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Expenses": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -5671,16 +5641,16 @@
           "definition": "varchar(30) NOT NULL"
         },
         "qty": {
-          "type": "decimal(10",
+          "type": "decimal(10,0)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,0) NULL DEFAULT NULL"
         },
         "Total": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(16 NULL DEFAULT NULL"
+          "definition": "decimal(16,2) NULL DEFAULT NULL"
         },
         "Custid": {
           "type": "int(11)",
@@ -5742,16 +5712,16 @@
           "definition": "int(11) NULL DEFAULT NULL"
         },
         "qty": {
-          "type": "decimal(10",
+          "type": "decimal(10,0)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,0) NULL DEFAULT NULL"
         },
         "Total": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(16 NULL DEFAULT NULL"
+          "definition": "decimal(16,2) NULL DEFAULT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -5800,34 +5770,34 @@
           "definition": "varchar(15) NOT NULL"
         },
         "Subtotal": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Tax": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Service": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Total": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(16 NOT NULL"
+          "definition": "decimal(16,2) NOT NULL"
         },
         "TotalCost": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,2) NOT NULL"
         },
         "Cover": {
           "type": "int(11)",
@@ -5836,10 +5806,10 @@
           "definition": "int(11) NOT NULL"
         },
         "Discount": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -5854,160 +5824,160 @@
           "definition": "int(11) NULL DEFAULT NULL"
         },
         "T0": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T1": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T2": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T3": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T4": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T5": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T6": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T7": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T8": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T9": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T10": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T11": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T12": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T13": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T14": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T15": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T16": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T17": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T18": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T19": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T20": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T21": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T22": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T23": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "ppn": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "pb1": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "SlsTypeNm": {
           "type": "varchar(20)",
@@ -6016,16 +5986,16 @@
           "definition": "varchar(20) NOT NULL"
         },
         "DeliveryFee": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         },
         "OtherRevenue": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         }
       }
     },
@@ -6078,16 +6048,16 @@
           "definition": "varchar(30) NOT NULL"
         },
         "Qty": {
-          "type": "decimal(10",
+          "type": "decimal(10,0)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,0) NOT NULL"
         },
         "Total": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(16 NOT NULL"
+          "definition": "decimal(16,2) NOT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -6114,10 +6084,10 @@
           "definition": "varchar(30) NOT NULL"
         },
         "Price": {
-          "type": "decimal(15",
+          "type": "decimal(15,4)",
           "nullable": true,
           "default": "0.0000",
-          "definition": "decimal(15 NULL DEFAULT '0.0000'"
+          "definition": "decimal(15,4) NULL DEFAULT '0.0000'"
         }
       }
     },
@@ -6167,16 +6137,16 @@
           "definition": "int(11) NULL DEFAULT NULL"
         },
         "qty": {
-          "type": "decimal(10",
+          "type": "decimal(10,0)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(10 NULL DEFAULT NULL"
+          "definition": "decimal(10,0) NULL DEFAULT NULL"
         },
         "Total": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(16 NULL DEFAULT NULL"
+          "definition": "decimal(16,2) NULL DEFAULT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -6238,10 +6208,10 @@
           "definition": "int(11) NOT NULL"
         },
         "TotalTrans": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(16 NOT NULL"
+          "definition": "decimal(16,2) NOT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -6315,10 +6285,10 @@
           "definition": "int(11) NULL DEFAULT NULL"
         },
         "total": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(16 NULL DEFAULT NULL"
+          "definition": "decimal(16,2) NULL DEFAULT NULL"
         },
         "custid": {
           "type": "int(11)",
@@ -6361,34 +6331,34 @@
           "definition": "varchar(15) NOT NULL"
         },
         "Subtotal": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Tax": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Service": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Total": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(16 NOT NULL"
+          "definition": "decimal(16,2) NOT NULL"
         },
         "TotalCost": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,2) NOT NULL"
         },
         "Cover": {
           "type": "int(11)",
@@ -6397,10 +6367,10 @@
           "definition": "int(11) NOT NULL"
         },
         "Discount": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -6415,16 +6385,16 @@
           "definition": "int(11) NULL DEFAULT NULL"
         },
         "ppn": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "pb1": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "SlsTypeNm": {
           "type": "varchar(20)",
@@ -6433,16 +6403,16 @@
           "definition": "varchar(20) NOT NULL"
         },
         "DeliveryFee": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         },
         "OtherRevenue": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         }
       }
     },
@@ -6479,34 +6449,34 @@
           "definition": "varchar(15) NOT NULL"
         },
         "Subtotal": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Tax": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Service": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Total": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(16 NOT NULL"
+          "definition": "decimal(16,2) NOT NULL"
         },
         "TotalCost": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,2) NOT NULL"
         },
         "Cover": {
           "type": "int(11)",
@@ -6515,10 +6485,10 @@
           "definition": "int(11) NOT NULL"
         },
         "Discount": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -6533,160 +6503,160 @@
           "definition": "int(11) NULL DEFAULT NULL"
         },
         "T0": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T1": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T2": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T3": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T4": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T5": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T6": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T7": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T8": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T9": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T10": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T11": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T12": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T13": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T14": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T15": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T16": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T17": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T18": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T19": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T20": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T21": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T22": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "T23": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": true,
           "default": "NULL",
-          "definition": "decimal(12 NULL DEFAULT NULL"
+          "definition": "decimal(12,2) NULL DEFAULT NULL"
         },
         "ppn": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "pb1": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "SlsTypeNm": {
           "type": "varchar(20)",
@@ -6695,16 +6665,16 @@
           "definition": "varchar(20) NOT NULL"
         },
         "DeliveryFee": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         },
         "OtherRevenue": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         }
       }
     },
@@ -6759,16 +6729,16 @@
           "definition": "varchar(30) NOT NULL"
         },
         "Qty": {
-          "type": "decimal(10",
+          "type": "decimal(10,0)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,0) NOT NULL"
         },
         "Total": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(16 NOT NULL"
+          "definition": "decimal(16,2) NOT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -6795,22 +6765,22 @@
           "definition": "varchar(30) NOT NULL"
         },
         "Price": {
-          "type": "decimal(15",
+          "type": "decimal(15,4)",
           "nullable": false,
           "default": "0.0000",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.0000'"
+          "definition": "decimal(15,4) NOT NULL DEFAULT '0.0000'"
         },
         "ParentNo": {
           "type": "varchar(10)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(10) NOT NULL"
+          "default": "",
+          "definition": "varchar(10) NOT NULL DEFAULT ''"
         },
         "ParentName": {
           "type": "varchar(40)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(40) NOT NULL"
+          "default": "",
+          "definition": "varchar(40) NOT NULL DEFAULT ''"
         }
       }
     },
@@ -6866,16 +6836,16 @@
           "definition": "varchar(30) NOT NULL"
         },
         "Qty": {
-          "type": "decimal(10",
+          "type": "decimal(10,0)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,0) NOT NULL"
         },
         "Total": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(16 NOT NULL"
+          "definition": "decimal(16,2) NOT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -6902,22 +6872,22 @@
           "definition": "varchar(30) NOT NULL"
         },
         "Price": {
-          "type": "decimal(15",
+          "type": "decimal(15,4)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(15 NOT NULL"
+          "definition": "decimal(15,4) NOT NULL"
         },
         "ParentNo": {
           "type": "varchar(10)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(10) NOT NULL"
+          "default": "",
+          "definition": "varchar(10) NOT NULL DEFAULT ''"
         },
         "ParentName": {
           "type": "varchar(40)",
           "nullable": false,
-          "default": null,
-          "definition": "varchar(40) NOT NULL"
+          "default": "",
+          "definition": "varchar(40) NOT NULL DEFAULT ''"
         }
       }
     },
@@ -6955,34 +6925,34 @@
           "definition": "varchar(15) NOT NULL"
         },
         "Subtotal": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Tax": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Service": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "Total": {
-          "type": "decimal(16",
+          "type": "decimal(16,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(16 NOT NULL"
+          "definition": "decimal(16,2) NOT NULL"
         },
         "TotalCost": {
-          "type": "decimal(10",
+          "type": "decimal(10,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(10 NOT NULL"
+          "definition": "decimal(10,2) NOT NULL"
         },
         "Cover": {
           "type": "int(11)",
@@ -6991,10 +6961,10 @@
           "definition": "int(11) NOT NULL"
         },
         "Discount": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "CustID": {
           "type": "int(11)",
@@ -7009,22 +6979,22 @@
           "definition": "int(11) NULL DEFAULT NULL"
         },
         "TH": {
-          "type": "decimal(12",
+          "type": "decimal(12,2)",
           "nullable": false,
           "default": null,
-          "definition": "decimal(12 NOT NULL"
+          "definition": "decimal(12,2) NOT NULL"
         },
         "ppn": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "pb1": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": false,
           "default": "0.00",
-          "definition": "decimal(15 NOT NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NOT NULL DEFAULT '0.00'"
         },
         "SlsTypeNm": {
           "type": "varchar(20)",
@@ -7033,16 +7003,16 @@
           "definition": "varchar(20) NOT NULL"
         },
         "DeliveryFee": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         },
         "OtherRevenue": {
-          "type": "decimal(15",
+          "type": "decimal(15,2)",
           "nullable": true,
           "default": "0.00",
-          "definition": "decimal(15 NULL DEFAULT '0.00'"
+          "definition": "decimal(15,2) NULL DEFAULT '0.00'"
         }
       }
     },
@@ -7200,8 +7170,8 @@
         "rptPriv": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "Email": {
           "type": "varchar(30)",
@@ -7212,8 +7182,8 @@
         "Modul": {
           "type": "int(11)",
           "nullable": true,
-          "default": "NULL COMMENT ",
-          "definition": "int(11) NULL DEFAULT NULL COMMENT '"
+          "default": "NULL",
+          "definition": "int(11) NULL DEFAULT NULL"
         },
         "rptf": {
           "type": "int(11)",
@@ -7315,6 +7285,18 @@
           "default": null,
           "definition": "date NULL DEFAULT NULL"
         },
+        "required_date": {
+          "type": "date",
+          "nullable": true,
+          "default": null,
+          "definition": "date NULL DEFAULT NULL"
+        },
+        "cc": {
+          "type": "int(11)",
+          "nullable": true,
+          "default": "0",
+          "definition": "int(11) NULL DEFAULT 0"
+        },
         "cc_id": {
           "type": "int(11)",
           "nullable": true,
@@ -7327,17 +7309,41 @@
           "default": "0",
           "definition": "int(11) NULL DEFAULT 0"
         },
-        "remarks": {
-          "type": "text",
+        "request_by": {
+          "type": "varchar(50)",
           "nullable": true,
           "default": null,
-          "definition": "text NULL"
+          "definition": "varchar(50) NULL DEFAULT NULL"
+        },
+        "stat": {
+          "type": "varchar(50)",
+          "nullable": true,
+          "default": "OPEN",
+          "definition": "varchar(50) NULL DEFAULT 'OPEN'"
         },
         "status": {
           "type": "varchar(50)",
           "nullable": true,
           "default": "Open",
           "definition": "varchar(50) NULL DEFAULT 'Open'"
+        },
+        "appBy": {
+          "type": "varchar(50)",
+          "nullable": true,
+          "default": null,
+          "definition": "varchar(50) NULL DEFAULT NULL"
+        },
+        "appDate": {
+          "type": "datetime",
+          "nullable": true,
+          "default": null,
+          "definition": "datetime NULL DEFAULT NULL"
+        },
+        "remarks": {
+          "type": "text",
+          "nullable": true,
+          "default": null,
+          "definition": "text NULL"
         },
         "flag": {
           "type": "int(11)",
@@ -7406,6 +7412,30 @@
           "default": null,
           "definition": "varchar(150) NULL DEFAULT NULL"
         },
+        "U1": {
+          "type": "decimal(18,4)",
+          "nullable": true,
+          "default": "0.0000",
+          "definition": "decimal(18,4) NULL DEFAULT 0.0000"
+        },
+        "U2": {
+          "type": "decimal(18,4)",
+          "nullable": true,
+          "default": "0.0000",
+          "definition": "decimal(18,4) NULL DEFAULT 0.0000"
+        },
+        "Total": {
+          "type": "decimal(18,4)",
+          "nullable": true,
+          "default": "0.0000",
+          "definition": "decimal(18,4) NULL DEFAULT 0.0000"
+        },
+        "app_qty": {
+          "type": "decimal(18,4)",
+          "nullable": true,
+          "default": "0.0000",
+          "definition": "decimal(18,4) NULL DEFAULT 0.0000"
+        },
         "qty": {
           "type": "decimal(18,4)",
           "nullable": true,
@@ -7430,6 +7460,18 @@
           "default": "0.0000",
           "definition": "decimal(18,4) NULL DEFAULT 0.0000"
         },
+        "supplier_id": {
+          "type": "int(11)",
+          "nullable": true,
+          "default": "0",
+          "definition": "int(11) NULL DEFAULT 0"
+        },
+        "stat": {
+          "type": "varchar(50)",
+          "nullable": true,
+          "default": "OPEN",
+          "definition": "varchar(50) NULL DEFAULT 'OPEN'"
+        },
         "remarks": {
           "type": "varchar(255)",
           "nullable": true,
@@ -7452,10 +7494,10 @@
           "definition": "varchar(50) NOT NULL"
         },
         "wID": {
-          "type": "int(11)",
+          "type": "varchar(50)",
           "nullable": false,
           "default": null,
-          "definition": "int(11) NOT NULL"
+          "definition": "varchar(50) NOT NULL"
         },
         "custid": {
           "type": "int(11)",
@@ -7527,15 +7569,13 @@
     },
     "cld_inv_w_del_dtl": {
       "primary_key": [
-        "id"
+        "DelID",
+        "wID",
+        "custid",
+        "ccTo",
+        "stk_id"
       ],
       "columns": {
-        "id": {
-          "type": "int(11)",
-          "nullable": false,
-          "default": null,
-          "definition": "int(11) NOT NULL AUTO_INCREMENT"
-        },
         "DelID": {
           "type": "varchar(50)",
           "nullable": false,
@@ -7543,10 +7583,10 @@
           "definition": "varchar(50) NOT NULL"
         },
         "wID": {
-          "type": "int(11)",
+          "type": "varchar(50)",
           "nullable": false,
           "default": null,
-          "definition": "int(11) NOT NULL"
+          "definition": "varchar(50) NOT NULL"
         },
         "custid": {
           "type": "int(11)",
@@ -7556,9 +7596,9 @@
         },
         "ccTo": {
           "type": "int(11)",
-          "nullable": true,
+          "nullable": false,
           "default": "0",
-          "definition": "int(11) NULL DEFAULT 0"
+          "definition": "int(11) NOT NULL DEFAULT 0"
         },
         "stk_id": {
           "type": "int(11)",
@@ -7786,15 +7826,11 @@
     },
     "cld_itemxtag": {
       "primary_key": [
-        "id"
+        "item",
+        "tag",
+        "custid"
       ],
       "columns": {
-        "id": {
-          "type": "int(11)",
-          "nullable": false,
-          "default": null,
-          "definition": "int(11) NOT NULL AUTO_INCREMENT"
-        },
         "item": {
           "type": "varchar(50)",
           "nullable": false,

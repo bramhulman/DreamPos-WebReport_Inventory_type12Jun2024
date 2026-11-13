@@ -938,5 +938,69 @@ Module mHelper
     Public Function IsLoggedIn() As Boolean
         Return (CustID() > 0) AndAlso (Not String.IsNullOrEmpty(Username()))
     End Function
+
+    ''' <summary>
+    ''' Membangun URL SSO dan mengalihkan user ke aplikasi Web Report Home (My.Settings.webreport)
+    ''' sambil mencatat errLog jika terjadi kegagalan parameter atau cookie.
+    ''' </summary>
+    Public Sub RedirectToWebReportHome(ByVal context As HttpContext)
+        If context Is Nothing Then Return
+        Try
+            Dim baseUrl As String = If(My.Settings.webreport, "").Trim()
+            If String.IsNullOrWhiteSpace(baseUrl) Then
+                LogRequestFailure("WebReportSso.MissingTargetUrl [My.Settings.webreport kosong]", Nothing)
+                context.Response.Redirect("~/Inventoryhome.aspx", False)
+                context.ApplicationInstance.CompleteRequest()
+                Return
+            End If
+
+            Dim userCookie As HttpCookie = context.Request.Cookies("UserLogin_inv")
+            If userCookie Is Nothing Then
+                LogRequestFailure("WebReportSso.MissingCookie [Cookie UserLogin_inv tidak ditemukan]", Nothing)
+                context.Response.Redirect("~/Default.aspx", False)
+                context.ApplicationInstance.CompleteRequest()
+                Return
+            End If
+
+            Dim rawUser As String = If(userCookie("userName"), userCookie("username"))
+            Dim rawCustId As String = userCookie("custid")
+            If String.IsNullOrWhiteSpace(rawUser) OrElse String.IsNullOrWhiteSpace(rawCustId) Then
+                LogRequestFailure(String.Format("WebReportSso.IncompleteCookie [userName={0}, custid={1}]", rawUser, rawCustId), Nothing)
+                context.Response.Redirect("~/Default.aspx", False)
+                context.ApplicationInstance.CompleteRequest()
+                Return
+            End If
+
+            context.Session("username") = rawUser
+
+            Dim targetUrl As String = baseUrl.TrimEnd("/"c)
+            If Not targetUrl.EndsWith(".aspx", StringComparison.OrdinalIgnoreCase) Then
+                targetUrl &= "/Default.aspx"
+            End If
+
+            Dim strusername As String = context.Server.UrlEncode(rawUser)
+            Dim strcustid As String = context.Server.UrlEncode(rawCustId)
+            Dim strmodulepriv As String = context.Server.UrlEncode(If(userCookie("modulepriv"), "0"))
+            Dim strrptpriv As String = context.Server.UrlEncode(If(userCookie("rptpriv"), "0"))
+            Dim strmodule As String = context.Server.UrlEncode(If(userCookie("modul"), "0"))
+            Dim strrptf As String = context.Server.UrlEncode(If(userCookie("rptf"), "0"))
+            Dim strinvpriv As String = context.Server.UrlEncode(If(userCookie("invpriv"), "0"))
+            Dim strtime As String = context.Server.UrlEncode(GenerateSHA512String(DateTime.Now.ToString("ddMMMyyyyHH")))
+
+            Dim fullUrl As String = String.Format("{0}?login={1}&username={2}&custid={3}&modulepriv={4}&rptpriv={5}&modul={6}&rptf={7}&invpriv={8}&time={9}",
+                targetUrl, strusername, strusername, strcustid, strmodulepriv, strrptpriv, strmodule, strrptf, strinvpriv, strtime)
+
+            errLog("url", fullUrl)
+            context.Response.Redirect(fullUrl, False)
+            context.ApplicationInstance.CompleteRequest()
+        Catch ex As Exception
+            LogRequestFailure("WebReportSso.RedirectException", ex)
+            Try
+                context.Response.Redirect("~/Inventoryhome.aspx", False)
+                context.ApplicationInstance.CompleteRequest()
+            Catch
+            End Try
+        End Try
+    End Sub
 End Module
 

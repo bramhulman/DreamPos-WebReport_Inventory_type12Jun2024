@@ -1,0 +1,2183 @@
+[
+  {
+    "table": "cld_eod",
+    "column": "Subtotal",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(12,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_eod_nonsales",
+    "column": "Subtotal",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(12,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_expother",
+    "column": "Subtotal",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_gift",
+    "column": "Type",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT '2 voucher, 1 Gift, 3 item'"
+  },
+  {
+    "table": "cld_inv_invoice",
+    "column": "invoiceTot",
+    "action": "repair-malformed-definition",
+    "old": "decimal(14 NULL DEFAULT NULL",
+    "new": "decimal(14,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_ordercust",
+    "column": "PCode",
+    "action": "repair-malformed-definition",
+    "old": "varchar(15) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(15) DEFAULT NULL COMMENT 'Kode Pos'"
+  },
+  {
+    "table": "cld_inv_ordercust",
+    "column": "Notes",
+    "action": "repair-malformed-definition",
+    "old": "varchar(50) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(50) DEFAULT NULL COMMENT 'Notes untuk isi apa aj'"
+  },
+  {
+    "table": "cld_inv_rcp",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(14 NULL DEFAULT NULL",
+    "new": "decimal(14,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_rcp_cc",
+    "column": "cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_rcpdtl",
+    "column": "tipe",
+    "action": "repair-malformed-definition",
+    "old": "smallint(6) NULL DEFAULT NULL COMMENT '",
+    "new": "smallint(6) DEFAULT NULL COMMENT '1 stockmaster, 2 receipe'"
+  },
+  {
+    "table": "cld_inv_rcpdtl",
+    "column": "kodeId",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT 'kode stock or receipe'"
+  },
+  {
+    "table": "cld_inv_rcpdtl",
+    "column": "qty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_rcpdtl",
+    "column": "Lossf",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_stk",
+    "column": "Factor1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_stk",
+    "column": "Factor2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_stk",
+    "column": "stkLimit",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_stk",
+    "column": "Batch",
+    "action": "repair-malformed-definition",
+    "old": "bit(1) NULL DEFAULT NULL COMMENT '",
+    "new": "bit(1) DEFAULT NULL COMMENT 'Set barang setengah jadi'"
+  },
+  {
+    "table": "cld_inv_stk",
+    "column": "BLink",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT 'Link ke receipe'"
+  },
+  {
+    "table": "cld_inv_stk",
+    "column": "price1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT '0.0000'",
+    "new": "decimal(13,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_inv_stk",
+    "column": "price2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT '0.0000'",
+    "new": "decimal(13,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_inv_stk_cc",
+    "column": "stkLimit",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_stk_cc",
+    "column": "cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT '0.0000'",
+    "new": "decimal(13,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_inv_stkcost",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(14 NULL DEFAULT NULL",
+    "new": "decimal(14,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_supplier",
+    "column": "PCode",
+    "action": "repair-malformed-definition",
+    "old": "varchar(15) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(15) DEFAULT NULL COMMENT 'Kode Pos'"
+  },
+  {
+    "table": "cld_inv_supplier",
+    "column": "Notes",
+    "action": "repair-malformed-definition",
+    "old": "varchar(50) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(50) DEFAULT NULL COMMENT 'Notes untuk isi apa aj'"
+  },
+  {
+    "table": "cld_inv_trans",
+    "column": "Stk_Name",
+    "action": "repair-malformed-definition",
+    "old": "varchar(30) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(30) DEFAULT NULL COMMENT 'Stock Name'"
+  },
+  {
+    "table": "cld_inv_trans",
+    "column": "U1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans",
+    "column": "U2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans",
+    "column": "Factor1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans",
+    "column": "ttlStock",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans",
+    "column": "CostU1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT NULL",
+    "new": "decimal(15,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT NULL",
+    "new": "decimal(15,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans",
+    "column": "flagtrans",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT 'Default isi 1'"
+  },
+  {
+    "table": "cld_inv_trans",
+    "column": "U1_nm",
+    "action": "repair-malformed-definition",
+    "old": "varchar(5) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(5) DEFAULT NULL COMMENT 'Nama unit 1'"
+  },
+  {
+    "table": "cld_inv_trans",
+    "column": "U2_nm",
+    "action": "repair-malformed-definition",
+    "old": "varchar(5) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(5) DEFAULT NULL COMMENT 'Name Unit 2'"
+  },
+  {
+    "table": "cld_inv_trans",
+    "column": "Stk_no",
+    "action": "repair-malformed-definition",
+    "old": "varchar(15) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(15) DEFAULT NULL COMMENT 'Stock No'"
+  },
+  {
+    "table": "cld_inv_trans_old",
+    "column": "Stk_Name",
+    "action": "repair-malformed-definition",
+    "old": "varchar(30) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(30) DEFAULT NULL COMMENT 'Stock Name'"
+  },
+  {
+    "table": "cld_inv_trans_old",
+    "column": "U1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans_old",
+    "column": "U2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans_old",
+    "column": "Factor1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans_old",
+    "column": "ttlStock",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans_old",
+    "column": "CostU1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT NULL",
+    "new": "decimal(13,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans_old",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT NULL",
+    "new": "decimal(13,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_trans_old",
+    "column": "flagtrans",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT 'Default isi 1'"
+  },
+  {
+    "table": "cld_inv_trans_old",
+    "column": "U1_nm",
+    "action": "repair-malformed-definition",
+    "old": "varchar(5) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(5) DEFAULT NULL COMMENT 'Nama unit 1'"
+  },
+  {
+    "table": "cld_inv_trans_old",
+    "column": "U2_nm",
+    "action": "repair-malformed-definition",
+    "old": "varchar(5) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(5) DEFAULT NULL COMMENT 'Name Unit 2'"
+  },
+  {
+    "table": "cld_inv_trans_old",
+    "column": "Stk_no",
+    "action": "repair-malformed-definition",
+    "old": "varchar(15) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(15) DEFAULT NULL COMMENT 'Stock No'"
+  },
+  {
+    "table": "cld_inv_transnotes",
+    "column": "Notes",
+    "action": "repair-malformed-definition",
+    "old": "varchar(99) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(99) DEFAULT NULL COMMENT 'Stock Name'"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "OpenCost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT NULL",
+    "new": "decimal(13,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "openQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL COMMENT '",
+    "new": "decimal(10,4) DEFAULT NULL COMMENT 'qty Opening'"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT NULL",
+    "new": "decimal(13,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "rcvQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "rtnQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "tinQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "toutQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "rwasteQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "fwasteQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,4) NOT NULL"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "usageQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "ttlQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL COMMENT '",
+    "new": "decimal(10,4) DEFAULT NULL COMMENT 'Total Qty'"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "bClose",
+    "action": "repair-malformed-definition",
+    "old": "bit(1) NULL DEFAULT NULL COMMENT '",
+    "new": "bit(1) DEFAULT NULL COMMENT 'melakukan stock opname atau tidak'"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "closeQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL COMMENT '",
+    "new": "decimal(10,4) DEFAULT NULL COMMENT 'Total StockOpname'"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "closeCost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT NULL",
+    "new": "decimal(13,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "varianceQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL COMMENT '",
+    "new": "decimal(10,4) DEFAULT NULL COMMENT 'variance jika ada stockopname'"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "BPin",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT '0.0000'",
+    "new": "decimal(10,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "BPout",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT '0.0000'",
+    "new": "decimal(10,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "HoInQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT '0.0000'",
+    "new": "decimal(10,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_inv_transstock",
+    "column": "HoOutQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT '0.0000'",
+    "new": "decimal(10,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "OpenCost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT NULL",
+    "new": "decimal(13,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "openQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL COMMENT '",
+    "new": "decimal(10,4) DEFAULT NULL COMMENT 'qty Opening'"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT NULL",
+    "new": "decimal(13,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "rcvQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "rtnQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "tinQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "toutQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "rwasteQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "fwasteQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,4) NOT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "usageQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "ttlQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL COMMENT '",
+    "new": "decimal(10,4) DEFAULT NULL COMMENT 'Total Qty'"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "bClose",
+    "action": "repair-malformed-definition",
+    "old": "bit(1) NULL DEFAULT NULL COMMENT '",
+    "new": "bit(1) DEFAULT NULL COMMENT 'melakukan stock opname atau tidak'"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "closeQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL COMMENT '",
+    "new": "decimal(10,4) DEFAULT NULL COMMENT 'Total StockOpname'"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "closeCost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT NULL",
+    "new": "decimal(13,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "varianceQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL COMMENT '",
+    "new": "decimal(10,4) DEFAULT NULL COMMENT 'variance jika ada stockopname'"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "HoOutQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "HoInQty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "BPIn",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "BPout",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "cwasteqty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT '0.0000'",
+    "new": "decimal(10,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_inv_transstockcls",
+    "column": "FULLTEXT",
+    "action": "remove-index-pseudocolumn"
+  },
+  {
+    "table": "cld_inv_transusage",
+    "column": "Stk_no",
+    "action": "repair-malformed-definition",
+    "old": "varchar(15) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(15) DEFAULT NULL COMMENT 'Stock No'"
+  },
+  {
+    "table": "cld_inv_transusage",
+    "column": "Stk_Name",
+    "action": "repair-malformed-definition",
+    "old": "varchar(30) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(30) DEFAULT NULL COMMENT 'Stock Name'"
+  },
+  {
+    "table": "cld_inv_transusage",
+    "column": "U2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transusage",
+    "column": "U3",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transusage",
+    "column": "Factor2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transusage",
+    "column": "ttlStock",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL COMMENT '",
+    "new": "decimal(10,4) DEFAULT NULL COMMENT 'u2 + (U3/factor2)'"
+  },
+  {
+    "table": "cld_inv_transusage",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT NULL",
+    "new": "decimal(13,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transusage",
+    "column": "flagtrans",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT 'Default isi 1'"
+  },
+  {
+    "table": "cld_inv_transusage",
+    "column": "U2_nm",
+    "action": "repair-malformed-definition",
+    "old": "varchar(5) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(5) DEFAULT NULL COMMENT 'Nama unit 2'"
+  },
+  {
+    "table": "cld_inv_transusage",
+    "column": "U3_nm",
+    "action": "repair-malformed-definition",
+    "old": "varchar(5) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(5) DEFAULT NULL COMMENT 'Name Unit 3'"
+  },
+  {
+    "table": "cld_inv_transusage_cpo",
+    "column": "Stk_no",
+    "action": "repair-malformed-definition",
+    "old": "varchar(15) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(15) DEFAULT NULL COMMENT 'Stock No'"
+  },
+  {
+    "table": "cld_inv_transusage_cpo",
+    "column": "Stk_Name",
+    "action": "repair-malformed-definition",
+    "old": "varchar(30) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(30) DEFAULT NULL COMMENT 'Stock Name'"
+  },
+  {
+    "table": "cld_inv_transusage_cpo",
+    "column": "U2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transusage_cpo",
+    "column": "U3",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transusage_cpo",
+    "column": "Factor2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transusage_cpo",
+    "column": "ttlStock",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL COMMENT '",
+    "new": "decimal(10,4) DEFAULT NULL COMMENT 'u2 + (U3/factor2)'"
+  },
+  {
+    "table": "cld_inv_transusage_cpo",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(13 NULL DEFAULT NULL",
+    "new": "decimal(13,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transusage_cpo",
+    "column": "flagtrans",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT 'Default isi 1'"
+  },
+  {
+    "table": "cld_inv_transusage_cpo",
+    "column": "U2_nm",
+    "action": "repair-malformed-definition",
+    "old": "varchar(5) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(5) DEFAULT NULL COMMENT 'Nama unit 2'"
+  },
+  {
+    "table": "cld_inv_transusage_cpo",
+    "column": "U3_nm",
+    "action": "repair-malformed-definition",
+    "old": "varchar(5) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(5) DEFAULT NULL COMMENT 'Name Unit 3'"
+  },
+  {
+    "table": "cld_inv_transusagesum",
+    "column": "ttlStock",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transusagesum_2",
+    "column": "ttlStock",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_transusagesum_cpo",
+    "column": "ttlStock",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_w",
+    "column": "DocTot",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT NULL",
+    "new": "decimal(15,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_w",
+    "column": "Flag",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT '1 order, 2 ud dikirim 3 di terima'"
+  },
+  {
+    "table": "cld_inv_w",
+    "column": "appBy",
+    "action": "repair-malformed-definition",
+    "old": "varchar(15) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(15) DEFAULT NULL COMMENT 'Yang terima order di HO'"
+  },
+  {
+    "table": "cld_inv_w",
+    "column": "rcvBy",
+    "action": "repair-malformed-definition",
+    "old": "varchar(25) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(25) DEFAULT NULL COMMENT 'Yang terima di Store'"
+  },
+  {
+    "table": "cld_inv_w_dtl",
+    "column": "U1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_w_dtl",
+    "column": "U2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_w_dtl",
+    "column": "TotalU2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(14 NULL DEFAULT NULL",
+    "new": "decimal(14,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_w_dtl",
+    "column": "u1Del",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_w_dtl",
+    "column": "u1Rcv",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_w_dtl",
+    "column": "cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT NULL",
+    "new": "decimal(15,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_inv_w_dtl",
+    "column": "Factor1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_invlk_rcv",
+    "column": "Flag",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT '1 submit, 2 ud selesai'"
+  },
+  {
+    "table": "cld_invlk_rcv",
+    "column": "DocTot",
+    "action": "repair-malformed-definition",
+    "old": "decimal(14 NULL DEFAULT NULL",
+    "new": "decimal(14,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_invlk_rcv",
+    "column": "Tipe",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT '1 receiving, 2 Return'"
+  },
+  {
+    "table": "cld_invlk_rcv",
+    "column": "p_tax",
+    "action": "repair-malformed-definition",
+    "old": "decimal(8 NULL DEFAULT NULL",
+    "new": "decimal(8,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_invlk_rcv",
+    "column": "n_tax",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_itemmaster",
+    "column": "Price",
+    "action": "repair-malformed-definition",
+    "old": "decimal(17 NULL DEFAULT NULL",
+    "new": "decimal(17,0) DEFAULT NULL"
+  },
+  {
+    "table": "cld_itemmaster",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(17 NULL DEFAULT NULL",
+    "new": "decimal(17,0) DEFAULT NULL"
+  },
+  {
+    "table": "cld_itemmaster",
+    "column": "Type",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT '1. cost by inventory, 2 cost input sendiri'"
+  },
+  {
+    "table": "cld_itemmaster",
+    "column": "Factor",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_itemmaster_cc",
+    "column": "cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_itemmaster_cc",
+    "column": "addcost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(8 NOT NULL DEFAULT '0.0000'",
+    "new": "decimal(8,4) NOT NULL DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_itemmaster_cc_daily",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(18 NULL DEFAULT '0.0000'",
+    "new": "decimal(18,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_itemmaster_cc_daily",
+    "column": "addcost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(18 NULL DEFAULT '0.0000'",
+    "new": "decimal(18,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_loan",
+    "column": "SysCash",
+    "action": "repair-malformed-definition",
+    "old": "decimal(19 NULL DEFAULT NULL",
+    "new": "decimal(19,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_loan",
+    "column": "CasCash",
+    "action": "repair-malformed-definition",
+    "old": "decimal(19 NULL DEFAULT NULL",
+    "new": "decimal(19,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_loan",
+    "column": "DifCash",
+    "action": "repair-malformed-definition",
+    "old": "decimal(19 NULL DEFAULT NULL",
+    "new": "decimal(19,4) DEFAULT NULL"
+  },
+  {
+    "table": "cld_member",
+    "column": "Saldo",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,0) NOT NULL"
+  },
+  {
+    "table": "cld_member",
+    "column": "Points",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,2) NOT NULL"
+  },
+  {
+    "table": "cld_memberdeposit",
+    "column": "TransTtl",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT NULL",
+    "new": "decimal(15,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_memberdeposit",
+    "column": "DepGet",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT NULL",
+    "new": "decimal(15,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_memberdeposit",
+    "column": "DepBefore",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT NULL",
+    "new": "decimal(15,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_memberdeposit",
+    "column": "Station",
+    "action": "repair-malformed-definition",
+    "old": "varchar(50) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(50) DEFAULT NULL COMMENT 'Station yang transaksi'"
+  },
+  {
+    "table": "cld_memberdeposit",
+    "column": "User",
+    "action": "repair-malformed-definition",
+    "old": "varchar(10) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(10) DEFAULT NULL COMMENT 'User yang Input'"
+  },
+  {
+    "table": "cld_memberdeposit",
+    "column": "TransName",
+    "action": "repair-malformed-definition",
+    "old": "varchar(20) NULL DEFAULT NULL COMMENT '",
+    "new": "varchar(20) DEFAULT NULL COMMENT 'Payment Name'"
+  },
+  {
+    "table": "cld_memberpoint",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT NULL",
+    "new": "decimal(15,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_memberpoint",
+    "column": "PointGet",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,2) NOT NULL"
+  },
+  {
+    "table": "cld_memberpoint",
+    "column": "PointBefore",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_membertype",
+    "column": "DiscBirthday",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL DEFAULT '0'",
+    "new": "decimal(10,0) NOT NULL DEFAULT '0'"
+  },
+  {
+    "table": "cld_membertype",
+    "column": "DiscMarrigeDay",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL DEFAULT '0'",
+    "new": "decimal(10,0) NOT NULL DEFAULT '0'"
+  },
+  {
+    "table": "cld_membertype",
+    "column": "PointValue",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,2) NOT NULL"
+  },
+  {
+    "table": "cld_membertype",
+    "column": "RPointValue",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_outlet",
+    "column": "percentage",
+    "action": "repair-malformed-definition",
+    "old": "decimal(5 NOT NULL DEFAULT '0'",
+    "new": "decimal(5,0) NOT NULL DEFAULT '0'"
+  },
+  {
+    "table": "cld_own",
+    "column": "markup",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT '0.0000'",
+    "new": "decimal(10,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_payment",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(14 NULL DEFAULT NULL",
+    "new": "decimal(14,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_payment_cpo",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(14 NULL DEFAULT NULL",
+    "new": "decimal(14,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_rpt",
+    "column": "periode",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT '1=daily;2=monthly'"
+  },
+  {
+    "table": "cld_salesdetail",
+    "column": "Qty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesdetail",
+    "column": "Price",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,4) NOT NULL"
+  },
+  {
+    "table": "cld_salesdetail",
+    "column": "Subtotal",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,4) NOT NULL"
+  },
+  {
+    "table": "cld_salesdetail",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesdetail",
+    "column": "Komisi",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT NULL",
+    "new": "decimal(15,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_salesdetail",
+    "column": "FULLTEXT",
+    "action": "remove-index-pseudocolumn"
+  },
+  {
+    "table": "cld_salesdetail_cpo",
+    "column": "Qty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesdetail_cpo",
+    "column": "Price",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,4) NOT NULL"
+  },
+  {
+    "table": "cld_salesdetail_cpo",
+    "column": "Subtotal",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,4) NOT NULL"
+  },
+  {
+    "table": "cld_salesdetail_cpo",
+    "column": "Cost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesdetail_cpo",
+    "column": "Komisi",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT NULL",
+    "new": "decimal(15,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_salesdetail_cpo",
+    "column": "FULLTEXT",
+    "action": "remove-index-pseudocolumn"
+  },
+  {
+    "table": "cld_salesdif",
+    "column": "olSubt",
+    "action": "repair-malformed-definition",
+    "old": "decimal(20 NULL DEFAULT NULL",
+    "new": "decimal(20,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_salesdif",
+    "column": "dif",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT '0 ga beda, 1 beda'"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "Subtotal",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "Tax",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "Service",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "TotalCost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "getPoint",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "UsedSaldo",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "Discount",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "ppn",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "pb1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "RoundOff",
+    "action": "repair-malformed-definition",
+    "old": "decimal(6 NULL DEFAULT '0.00'",
+    "new": "decimal(6,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "DeliveryFee",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "OtherRevenue",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_salesmaster",
+    "column": "FULLTEXT",
+    "action": "remove-index-pseudocolumn"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "Subtotal",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "Tax",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "Service",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "TotalCost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "getPoint",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "UsedSaldo",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "Discount",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,2) NOT NULL"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "ppn",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "pb1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "RoundOff",
+    "action": "repair-malformed-definition",
+    "old": "decimal(6 NULL DEFAULT '0.00'",
+    "new": "decimal(6,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "DeliveryFee",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "OtherRevenue",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_salesmaster_cpo",
+    "column": "FULLTEXT",
+    "action": "remove-index-pseudocolumn"
+  },
+  {
+    "table": "cld_salestype",
+    "column": "Commission",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT '0.0000'",
+    "new": "decimal(10,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_sumcostdaily",
+    "column": "usagecost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(18 NOT NULL",
+    "new": "decimal(18,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumcostdaily",
+    "column": "BPout",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumcostdaily",
+    "column": "rwaste",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumcostdaily",
+    "column": "Expenses",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumdiscdaily",
+    "column": "qty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,0) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumdiscdaily",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NULL DEFAULT NULL",
+    "new": "decimal(16,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnopaymentdaily",
+    "column": "qty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,0) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnopaymentdaily",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NULL DEFAULT NULL",
+    "new": "decimal(16,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "Subtotal",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "Tax",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "Service",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NOT NULL",
+    "new": "decimal(16,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "TotalCost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "Discount",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T0",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T3",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T4",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T5",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T6",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T7",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T8",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T9",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T10",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T11",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T12",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T13",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T14",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T15",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T16",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T17",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T18",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T19",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T20",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T21",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T22",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "T23",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "ppn",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "pb1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "DeliveryFee",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumnosalesdaily",
+    "column": "OtherRevenue",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumnosalesdetaildaily",
+    "column": "Qty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,0) NOT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdetaildaily",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NOT NULL",
+    "new": "decimal(16,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumnosalesdetaildaily",
+    "column": "Price",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.0000'",
+    "new": "decimal(15,4) DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_sumpaymentdaily",
+    "column": "qty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NULL DEFAULT NULL",
+    "new": "decimal(10,0) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumpaymentdaily",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NULL DEFAULT NULL",
+    "new": "decimal(16,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumpermember",
+    "column": "TotalTrans",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NOT NULL",
+    "new": "decimal(16,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumpromodaily",
+    "column": "total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NULL DEFAULT NULL",
+    "new": "decimal(16,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsales",
+    "column": "Subtotal",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsales",
+    "column": "Tax",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsales",
+    "column": "Service",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsales",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NOT NULL",
+    "new": "decimal(16,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsales",
+    "column": "TotalCost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsales",
+    "column": "Discount",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsales",
+    "column": "ppn",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumsales",
+    "column": "pb1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumsales",
+    "column": "DeliveryFee",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumsales",
+    "column": "OtherRevenue",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "Subtotal",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "Tax",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "Service",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NOT NULL",
+    "new": "decimal(16,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "TotalCost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "Discount",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T0",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T2",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T3",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T4",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T5",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T6",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T7",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T8",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T9",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T10",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T11",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T12",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T13",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T14",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T15",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T16",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T17",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T18",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T19",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T20",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T21",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T22",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "T23",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NULL DEFAULT NULL",
+    "new": "decimal(12,2) DEFAULT NULL"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "ppn",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "pb1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "DeliveryFee",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumsalesdaily",
+    "column": "OtherRevenue",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumsalesdetail",
+    "column": "Qty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,0) NOT NULL"
+  },
+  {
+    "table": "cld_sumsalesdetail",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NOT NULL",
+    "new": "decimal(16,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsalesdetail",
+    "column": "Price",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.0000'",
+    "new": "decimal(15,4) NOT NULL DEFAULT '0.0000'"
+  },
+  {
+    "table": "cld_sumsalesdetaildaily",
+    "column": "Qty",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,0) NOT NULL"
+  },
+  {
+    "table": "cld_sumsalesdetaildaily",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NOT NULL",
+    "new": "decimal(16,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsalesdetaildaily",
+    "column": "Price",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL",
+    "new": "decimal(15,4) NOT NULL"
+  },
+  {
+    "table": "cld_sumsaleshourdaily",
+    "column": "Subtotal",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsaleshourdaily",
+    "column": "Tax",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsaleshourdaily",
+    "column": "Service",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsaleshourdaily",
+    "column": "Total",
+    "action": "repair-malformed-definition",
+    "old": "decimal(16 NOT NULL",
+    "new": "decimal(16,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsaleshourdaily",
+    "column": "TotalCost",
+    "action": "repair-malformed-definition",
+    "old": "decimal(10 NOT NULL",
+    "new": "decimal(10,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsaleshourdaily",
+    "column": "Discount",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsaleshourdaily",
+    "column": "TH",
+    "action": "repair-malformed-definition",
+    "old": "decimal(12 NOT NULL",
+    "new": "decimal(12,2) NOT NULL"
+  },
+  {
+    "table": "cld_sumsaleshourdaily",
+    "column": "ppn",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumsaleshourdaily",
+    "column": "pb1",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NOT NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) NOT NULL DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumsaleshourdaily",
+    "column": "DeliveryFee",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_sumsaleshourdaily",
+    "column": "OtherRevenue",
+    "action": "repair-malformed-definition",
+    "old": "decimal(15 NULL DEFAULT '0.00'",
+    "new": "decimal(15,2) DEFAULT '0.00'"
+  },
+  {
+    "table": "cld_user",
+    "column": "rptPriv",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT 'klo 1 bisa liat revenue di crm klo 0 tidak'"
+  },
+  {
+    "table": "cld_user",
+    "column": "Modul",
+    "action": "repair-malformed-definition",
+    "old": "int(11) NULL DEFAULT NULL COMMENT '",
+    "new": "int(11) DEFAULT NULL COMMENT '1 Web report 2 CRM'"
+  }
+]

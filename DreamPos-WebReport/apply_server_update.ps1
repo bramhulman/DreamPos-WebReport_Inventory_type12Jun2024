@@ -62,6 +62,7 @@ if ([string]::IsNullOrWhiteSpace($TargetDir)) {
     $TargetDir = $scriptDir
 }
 
+$TargetDir = $TargetDir.Trim().Trim('"')
 $TargetDir = [System.IO.Path]::GetFullPath($TargetDir)
 $logFilePath = Join-Path $TargetDir ("UpdateLog_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".txt")
 
@@ -69,6 +70,46 @@ function Quote-MySqlIdentifier {
     param([Parameter(Mandatory = $true)][string]$Name)
     # Single-quoted PowerShell strings preserve MySQL backticks literally.
     return '`' + $Name.Replace('`', '``') + '`'
+}
+
+function Test-SchemaSqlFragment {
+    param([string]$Text)
+    $depth = 0
+    $quote = [char]0
+    for ($i = 0; $i -lt $Text.Length; $i++) {
+        $c = $Text[$i]
+        if ($quote -ne [char]0) {
+            if ($c -eq [char]92) { $i++; continue }
+            if ($c -eq $quote) {
+                if ($i + 1 -lt $Text.Length -and $Text[$i + 1] -eq $quote) { $i++; continue }
+                $quote = [char]0
+            }
+        } elseif ($c -eq [char]39 -or $c -eq [char]34 -or $c -eq [char]96) {
+            $quote = $c
+        } elseif ($c -eq '(') {
+            $depth++
+        } elseif ($c -eq ')') {
+            $depth--
+            if ($depth -lt 0) { return $false }
+        } elseif ($c -eq ';') {
+            return $false
+        }
+    }
+    return ($depth -eq 0 -and $quote -eq [char]0)
+}
+
+function Test-MasterSchemaColumn {
+    param([string]$Name, $Column)
+    $columnType = [string]$Column.type
+    $definition = [string]$Column.definition
+    # A real column named FULLTEXT is allowed if its data type is a real MySQL type.
+    if ($columnType -match '^(KEY|PRIMARY|UNIQUE|FULLTEXT|SPATIAL|CONSTRAINT|FOREIGN|CHECK)(\s|$)') { return $false }
+    if ([string]::IsNullOrWhiteSpace($columnType) -or [string]::IsNullOrWhiteSpace($definition) -or
+        -not (Test-SchemaSqlFragment $columnType) -or -not (Test-SchemaSqlFragment $definition) -or
+        -not $definition.StartsWith($columnType, [StringComparison]::OrdinalIgnoreCase)) {
+        throw "Skema master tidak valid pada '$Name' (type='$columnType'). Perbaiki schema_master.json; tidak ada DDL schema master yang dijalankan."
+    }
+    return $true
 }
 
 function Write-UpdateLog {
@@ -384,6 +425,18 @@ CREATE TABLE IF NOT EXISTS `__migration_history` (
                         Write-UpdateLog "-> Memeriksa skema master dari $schemaMasterPath..." "Yellow"
                         $schemaJson = Get-Content -LiteralPath $schemaMasterPath -Raw -Encoding UTF8 | ConvertFrom-Json
                         if ($schemaJson.tables) {
+                            # Validate every column BEFORE applying any master-schema DDL.
+                            foreach ($tableProperty in $schemaJson.tables.PSObject.Properties) {
+                                if ($tableProperty.Value.columns) {
+                                    foreach ($columnProperty in @($tableProperty.Value.columns.PSObject.Properties)) {
+                                        $columnPath = $tableProperty.Name + "." + $columnProperty.Name
+                                        if (-not (Test-MasterSchemaColumn $columnPath $columnProperty.Value)) {
+                                            Write-UpdateLog "   [DB SYNC SKIP] Entri indeks '$columnPath' bukan kolom; diabaikan." "Yellow"
+                                            $tableProperty.Value.columns.PSObject.Properties.Remove($columnProperty.Name)
+                                        }
+                                    }
+                                }
+                            }
                             # Helper fungsi untuk mendeteksi perubahan tipe / pelebaran kapasitas kolom
                             function Test-ColumnNeedsModification {
                                 param(
@@ -474,9 +527,10 @@ CREATE TABLE IF NOT EXISTS `__migration_history` (
                             while ($rdrTbl.Read()) { [void]$curTables.Add($rdrTbl.GetString(0)) }
                             $rdrTbl.Close()
 
-                            # Ambil metadata kolom eksisting
+                            # Ambil metadata kolom eksisting & catat tabel yang sudah memiliki AUTO_INCREMENT
                             $curColDetails = @{}
-                            $cmdCols = New-Object MySql.Data.MySqlClient.MySqlCommand("SELECT TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE()", $dbConn)
+                            $tablesWithAutoInc = New-Object System.Collections.Generic.HashSet[string]([System.StringComparer]::OrdinalIgnoreCase)
+                            $cmdCols = New-Object MySql.Data.MySqlClient.MySqlCommand("SELECT TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE, EXTRA FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE()", $dbConn)
                             $rdrCols = $cmdCols.ExecuteReader()
                             while ($rdrCols.Read()) {
                                 $tN = $rdrCols.GetString(0)
@@ -486,6 +540,11 @@ CREATE TABLE IF NOT EXISTS `__migration_history` (
                                 $cLen = if (-not $rdrCols.IsDBNull(4)) { [long]$rdrCols.GetValue(4) } else { 0L }
                                 $nPrec = if (-not $rdrCols.IsDBNull(5)) { [int]$rdrCols.GetValue(5) } else { 0 }
                                 $nScale = if (-not $rdrCols.IsDBNull(6)) { [int]$rdrCols.GetValue(6) } else { 0 }
+                                $extraVal = if (-not $rdrCols.IsDBNull(7)) { $rdrCols.GetString(7) } else { "" }
+
+                                if ($extraVal -match "auto_increment") {
+                                    [void]$tablesWithAutoInc.Add($tN)
+                                }
 
                                 $curColDetails["$tN.$cN"] = @{
                                     ColumnType = $cType
@@ -533,7 +592,20 @@ CREATE TABLE IF NOT EXISTS `__migration_history` (
 
                                             if (-not $curColDetails.ContainsKey($fullKey)) {
                                                 # A. Tambah Kolom yang Belum Ada
-                                                $alterSql = "ALTER TABLE " + (Quote-MySqlIdentifier $tName) + " ADD COLUMN " + (Quote-MySqlIdentifier $cName) + " " + $cProp.Value.definition + ";"
+                                                $colDefStr = $cProp.Value.definition.ToString()
+                                                $addIndexClause = ""
+                                                if ($colDefStr -match "(?i)\bAUTO_INCREMENT\b") {
+                                                    if ($tablesWithAutoInc.Contains($tName)) {
+                                                        # Tabel sudah memiliki kolom AUTO_INCREMENT lain, hilangkan AUTO_INCREMENT agar tidak bentrok
+                                                        $colDefStr = ($colDefStr -replace "(?i)\bAUTO_INCREMENT\b", "").Trim()
+                                                    } else {
+                                                        # MySQL mewajibkan kolom AUTO_INCREMENT terdefinisi sebagai KEY/INDEX
+                                                        $addIndexClause = ", ADD INDEX " + (Quote-MySqlIdentifier "idx_$cName") + " (" + (Quote-MySqlIdentifier $cName) + ")"
+                                                        [void]$tablesWithAutoInc.Add($tName)
+                                                    }
+                                                }
+
+                                                $alterSql = "ALTER TABLE " + (Quote-MySqlIdentifier $tName) + " ADD COLUMN " + (Quote-MySqlIdentifier $cName) + " " + $colDefStr + $addIndexClause + ";"
                                                 try {
                                                     $alterCmd = New-Object MySql.Data.MySqlClient.MySqlCommand($alterSql, $dbConn)
                                                     $alterCmd.ExecuteNonQuery() | Out-Null

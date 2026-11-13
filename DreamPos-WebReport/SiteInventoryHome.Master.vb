@@ -382,32 +382,7 @@ Public Class SiteInventoryHome
     '    Response.Redirect("~/Pages_InvClosingStock.aspx", False)
     'End Sub
     Protected Sub webreporthome_ServerClick(ByVal sender As Object, ByVal e As EventArgs)
-
-        'Dim userCookie As HttpCookie = New HttpCookie("UserLogin")
-
-        'userCookie("userName") = username()
-        'userCookie("custid") = custid()
-        'userCookie("modulepriv") = modulepriv()
-        'userCookie("rptpriv") = rptpriv()
-        'userCookie("modul") = modul()
-        'userCookie("rptf") = rptf()
-
-        Session("username") = Request.Cookies("UserLogin_inv")("username")
-
-
-        Dim strusername As String = Server.UrlEncode(Request.Cookies("UserLogin_inv")("userName").ToString)
-        Dim strcustid As String = Server.UrlEncode(Request.Cookies("UserLogin_inv")("custid").ToString)
-        Dim strmodulepriv As String = Server.UrlEncode(Request.Cookies("UserLogin_inv")("modulepriv").ToString)
-        Dim strrptpriv As String = Server.UrlEncode(Request.Cookies("UserLogin_inv")("rptpriv").ToString)
-        Dim strmodule As String = Server.UrlEncode(Request.Cookies("UserLogin_inv")("modul").ToString)
-        Dim strrptf As String = Server.UrlEncode(Request.Cookies("UserLogin_inv")("rptf").ToString)
-        Dim strinvpriv As String = Server.UrlEncode(Request.Cookies("UserLogin_inv")("invpriv").ToString)
-        Dim strtime As String = Server.UrlEncode(GenerateSHA512String(Date.Now().ToString("ddMMMyyyyHH")))
-        'userCookie.Expires = Now.AddHours(1)
-        'Response.Cookies.Add(userCookie)
-        Dim urls As String = My.Settings.webreport + "?login=" + Session("username").ToString + "&username=" + strusername + "&custid=" + strcustid + "&modulepriv=" + strmodulepriv + "&rptpriv=" + strrptpriv + "&modul=" + strmodule + "&rptf=" + strrptf + "&invpriv=" + strinvpriv + "&time=" + strtime
-        mfunction.errLog("url", urls)
-        Response.Redirect(My.Settings.webreport + "?login=" + Session("username").ToString + "&username=" + strusername + "&custid=" + strcustid + "&modulepriv=" + strmodulepriv + "&rptpriv=" + strrptpriv + "&modul=" + strmodule + "&rptf=" + strrptf + "&invpriv=" + strinvpriv + "&time=" + strtime)
+        RedirectToWebReportHome(Context)
     End Sub
 
     Private Sub LSupplier_ServerClick(sender As Object, e As EventArgs) Handles LSupplier.ServerClick
