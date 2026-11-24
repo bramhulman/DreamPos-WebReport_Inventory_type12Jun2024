@@ -225,16 +225,27 @@ Public Class Pages_Calculate
         End Try
     End Sub
     Protected Sub btnrecal_ServerClick(sender As Object, e As EventArgs) Handles btnrecal.ServerClick
-        Dim clsrecal As New cls_recalculate
-        Dim selCC As Integer = 0
-        Dim selStock As Integer = 0
-        If ddlCC.SelectedValue <> "" Then selCC = Convert.ToInt32(ddlCC.SelectedValue)
-        If ddlStock.SelectedValue <> "" Then selStock = Convert.ToInt32(ddlStock.SelectedValue)
-            
-        ' Gunakan query teroptimasi yang hanya memproses item dengan transaksi (sesuai saran agar cepat)
-        clsrecal.InvCaclculate_ActiveTransOnly(CDate(txtDate.Text), Now.Date, custid, selCC, selStock)
-        
-        messagesuccesfull("Calculate Full Stock Success")
+        Try
+            Dim clsrecal As New cls_recalculate
+            Dim selCC As Integer = 0
+            Dim selStock As Integer = 0
+            If ddlCC.SelectedValue <> "" Then selCC = Convert.ToInt32(ddlCC.SelectedValue)
+            If ddlStock.SelectedValue <> "" Then selStock = Convert.ToInt32(ddlStock.SelectedValue)
+
+            ' Gunakan query teroptimasi yang hanya memproses item dengan transaksi (sesuai saran agar cepat)
+            Dim isSuccess As Boolean = clsrecal.InvCaclculate_ActiveTransOnly(CDate(txtDate.Text), Now.Date, custid, selCC, selStock)
+
+            If isSuccess Then
+                messagesuccesfull("Calculate Full Stock Success")
+            Else
+                mfunction.errLog("InvCaclculate_ActiveTransOnly returned False for From=" & txtDate.Text & ", CC=" & selCC & ", Stock=" & selStock & ", CustID=" & custid(), "Pages_Calculate:btnrecal_ServerClick")
+                notsuccesfull("Calculate Full Stock selesai dengan error. Silakan cek ErrLog.txt untuk detail.")
+            End If
+        Catch ex As Exception
+            mfunction.errLog(ex.ToString(), "Pages_Calculate:btnrecal_ServerClick")
+            notsuccesfull("Calculate Full Stock gagal: " & ex.Message.Replace("'", "\'"))
+            Err.Clear()
+        End Try
     End Sub
 
     Protected Sub btnSyncCost_ServerClick(sender As Object, e As EventArgs) Handles btnSyncCost.ServerClick

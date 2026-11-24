@@ -584,15 +584,26 @@ Public Class Inventoryhome
             Dim today As String = Date.Now.ToString("yyyy-MM-dd 00:00:00")
 
             Dim strSql As String = "INSERT INTO `cld_inv_transstockcls` " &
-                                   "SELECT ADDDATE(T1.invdate, 1), T1.custid, T1.stkid, T1.stkno, T1.stkname, T1.ccid, T1.ccname, T1.cost, T1.ttlqty, T1.cost, 0, 0, 0, 0, 0, 0, 0, 0, T1.bclose, 0, 0, 0, 0, 0, 0, 0, 0 " &
+                                   "(invdate, custid, stkid, stkno, stkname, ccid, ccname, opencost, openqty, cost, " &
+                                   " rcvqty, rtnqty, tinqty, toutqty, rwasteqty, fwasteqty, usageqty, ttlqty, bclose, " &
+                                   " closeqty, closecost, varianceqty, hooutqty, hoinqty, bpin, bpout, cwasteqty) " &
+                                   "SELECT ADDDATE(T1.invdate, 1), T1.custid, T1.stkid, T1.stkno, T1.stkname, T1.ccid, T1.ccname, " &
+                                   "       CASE WHEN (T1.bclose = 1 OR T1.bclose = b'1') AND T1.closecost > 0 THEN T1.closecost ELSE T1.cost END, " &
+                                   "       CASE WHEN (T1.bclose = 1 OR T1.bclose = b'1') THEN T1.closeqty ELSE T1.ttlqty END, " &
+                                   "       CASE WHEN (T1.bclose = 1 OR T1.bclose = b'1') AND T1.closecost > 0 THEN T1.closecost ELSE T1.cost END, " &
+                                   "       0, 0, 0, 0, 0, 0, 0, " &
+                                   "       CASE WHEN (T1.bclose = 1 OR T1.bclose = b'1') THEN T1.closeqty ELSE T1.ttlqty END, " &
+                                   "       0, 0, 0, 0, 0, 0, 0, 0, 0 " &
                                    "FROM `cld_inv_transstockcls` T1 " &
-                                   "LEFT JOIN `cld_inv_transstockcls` T2 ON T1.ccid = T2.ccid AND T1.stkid = T2.stkid AND T2.invdate = '" & today & "' " &
+                                   "LEFT JOIN `cld_inv_transstockcls` T2 ON T1.ccid = T2.ccid AND T1.stkid = T2.stkid AND T1.custid = T2.custid AND T2.invdate = '" & today & "' " &
                                    "WHERE T1.invdate = '" & yesterday & "' AND T2.ccid IS NULL"
 
-            c_cmd.executeNonQuery(strSql)
+            If c_cmd.executeNonQuery(strSql) = False Then
+                mfunction.errLog("insert_closing failed for today=" & today & " from yesterday=" & yesterday, "InventoryHome:insert_closing")
+            End If
 
         Catch ex As Exception
-            mfunction.errLog(Err.Description, "InventoryHome:insert_closing")
+            mfunction.errLog(ex.ToString(), "InventoryHome:insert_closing")
             Err.Clear()
         End Try
 

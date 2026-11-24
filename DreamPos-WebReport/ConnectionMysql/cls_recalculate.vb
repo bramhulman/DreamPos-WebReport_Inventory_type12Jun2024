@@ -827,8 +827,9 @@ Public Class cls_recalculate
 
 
     End Function
-    Public Sub InvCaclculate_ActiveTransOnly(ByVal dstart As Date, ByVal dend As Date, ByVal Custid As Integer, Optional ByVal ccidFilter As Integer = 0, Optional ByVal stkidFilter As Integer = 0)
+    Public Function InvCaclculate_ActiveTransOnly(ByVal dstart As Date, ByVal dend As Date, ByVal Custid As Integer, Optional ByVal ccidFilter As Integer = 0, Optional ByVal stkidFilter As Integer = 0) As Boolean
         Dim c_cmd As New clsDbo("")
+        Dim hasError As Boolean = False
         Try
             Dim dFrom As Date = dstart.Date
             Dim dTo As Date = dend.Date
@@ -836,22 +837,31 @@ Public Class cls_recalculate
 
             Dim filterCC As String = ""
             Dim filterStk As String = ""
+            Dim filterCCTrans As String = ""
+            Dim filterStkTrans As String = ""
 
-            If ccidFilter > 0 Then filterCC = " AND ccid = " & ccidFilter
-            If stkidFilter > 0 Then filterStk = " AND stkid = " & stkidFilter
+            If ccidFilter > 0 Then
+                filterCC = " AND ccid = " & ccidFilter
+                filterCCTrans = " AND Cc = " & ccidFilter
+            End If
+            If stkidFilter > 0 Then
+                filterStk = " AND stkid = " & stkidFilter
+                filterStkTrans = " AND Stk_Id = " & stkidFilter
+            End If
 
             Dim currDate As Date = dFrom.Date
             Do While currDate <= dTo
                 Dim sCurrDate As String = currDate.ToString("yyyy-MM-dd 00:00:00")
+                Dim sCurrDay As String = currDate.ToString("yyyy-MM-dd")
                 Dim prevDate As Date = currDate.AddDays(-1)
                 Dim sPrevDate As String = prevDate.ToString("yyyy-MM-dd 00:00:00")
 
                 ' 1. Pastikan setiap item yang ada kemarin memiliki baris hari ini (Insert If Not Exists)
                 Dim strInsertToday As String = "INSERT INTO cld_inv_transstockcls " &
-                    "(invdate, custid, stkid, stk_no, stk_name, ccid, cc_name, opencost, openqty, cost, " &
+                    "(invdate, custid, stkid, stkno, stkname, ccid, ccname, opencost, openqty, cost, " &
                     " rcvqty, rtnqty, tinqty, toutqty, rwasteqty, fwasteqty, usageqty, ttlqty, bclose, " &
                     " closeqty, closecost, varianceqty, hooutqty, hoinqty, bpin, bpout, cwasteqty) " &
-                    "SELECT '" & sCurrDate & "', yest.custid, yest.stkid, yest.stk_no, yest.stk_name, yest.ccid, yest.cc_name, " &
+                    "SELECT '" & sCurrDate & "', yest.custid, yest.stkid, yest.stkno, yest.stkname, yest.ccid, yest.ccname, " &
                     "       CASE WHEN (yest.bclose = 1 OR yest.bclose = b'1') AND yest.closecost > 0 THEN yest.closecost ELSE yest.cost END, " &
                     "       CASE WHEN (yest.bclose = 1 OR yest.bclose = b'1') THEN yest.closeqty ELSE yest.ttlqty END, " &
                     "       CASE WHEN (yest.bclose = 1 OR yest.bclose = b'1') AND yest.closecost > 0 THEN yest.closecost ELSE yest.cost END, " &
@@ -861,8 +871,11 @@ Public Class cls_recalculate
                     "FROM cld_inv_transstockcls yest " &
                     "LEFT JOIN cld_inv_transstockcls today ON yest.stkid = today.stkid AND yest.ccid = today.ccid AND yest.custid = today.custid AND today.invdate = '" & sCurrDate & "' " &
                     "WHERE yest.invdate = '" & sPrevDate & "' AND yest.custid = " & Custid & " AND today.stkid IS NULL " &
-                    filterCC.Replace("ccid", "yest.ccid").Replace("stkid", "yest.stkid")
-                c_cmd.executeNonQuery(strInsertToday)
+                    filterCC.Replace("ccid", "yest.ccid") & filterStk.Replace("stkid", "yest.stkid")
+                If c_cmd.executeNonQuery(strInsertToday) = False Then
+                    hasError = True
+                    errLog("Step 1 (strInsertToday) failed for date=" & sCurrDate & ", custid=" & Custid & ", cc=" & ccidFilter & ", stk=" & stkidFilter, "cls_recalculate:InvCaclculate_ActiveTransOnly")
+                End If
 
                 ' 2. Alirkan openqty hari ini dari saldo akhir (ttlqty/closeqty) kemarin
                 Dim strCascadeOpen As String = "UPDATE cld_inv_transstockcls today " &
@@ -870,41 +883,87 @@ Public Class cls_recalculate
                     "   ON today.stkid = yest.stkid AND today.ccid = yest.ccid AND today.custid = yest.custid " &
                     "  AND yest.invdate = '" & sPrevDate & "' " &
                     "SET today.openqty = CASE WHEN (yest.bclose = 1 OR yest.bclose = b'1') THEN yest.closeqty ELSE yest.ttlqty END " &
-                    "WHERE today.invdate = '" & sCurrDate & "' AND today.custid = " & Custid & filterCC.Replace("ccid", "today.ccid").Replace("stkid", "today.stkid")
-                c_cmd.executeNonQuery(strCascadeOpen)
+                    "WHERE today.invdate = '" & sCurrDate & "' AND today.custid = " & Custid &
+                    filterCC.Replace("ccid", "today.ccid") & filterStk.Replace("stkid", "today.stkid")
+                If c_cmd.executeNonQuery(strCascadeOpen) = False Then
+                    hasError = True
+                    errLog("Step 2 (strCascadeOpen) failed for date=" & sCurrDate & ", custid=" & Custid & ", cc=" & ccidFilter & ", stk=" & stkidFilter, "cls_recalculate:InvCaclculate_ActiveTransOnly")
+                End If
 
-                ' 3. Update komponen transaksi kuantitas untuk hari ini
-                Dim sqlRecal As String = "UPDATE cld_inv_transstockcls today SET " &
-                    "rcvqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 3 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
-                    "rtnqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 4 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
-                    "tinQty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 1 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
-                    "toutQty = IFNULL((SELECT SUM(sd.ttlStock) FROM cld_inv_trans sd JOIN cld_invlk_trf ON (sd.Linkid = cld_invlk_trf.id AND sd.CustID = cld_invlk_trf.CustID) WHERE sd.type = 1 AND sd.flagtrans = 1 AND sd.CustID = " & Custid & " AND sd.Stk_Id = today.stkid AND sd.InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND cld_invlk_trf.ccFrom = today.ccid), 0), " &
-                    "rwasteQty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 2 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
-                    "usageqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_transusage WHERE type = 10 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
-                    "hooutqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 7 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
-                    "hoinqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 8 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
-                    "bpin = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 9 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
-                    "bpout = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_transusage WHERE type = 11 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0), " &
-                    "cwasteqty = IFNULL((SELECT SUM(ttlStock) FROM cld_inv_trans WHERE type = 14 AND flagtrans = 1 AND CustID = " & Custid & " AND Stk_Id = today.stkid AND InvDate = '" & currDate.ToString("yyyy-MM-dd") & "' AND Cc = today.ccid), 0) " &
-                    "WHERE today.CustID = " & Custid & " AND today.invdate = '" & sCurrDate & "'" & filterCC.Replace("ccid", "today.ccid").Replace("stkid", "today.stkid")
-                c_cmd.executeNonQuery(sqlRecal)
+                ' 3. Update komponen transaksi kuantitas untuk hari ini (teragregasi dengan LEFT JOIN agar cepat)
+                Dim sqlRecal As String = "UPDATE cld_inv_transstockcls today " &
+                    "LEFT JOIN (" &
+                    "    SELECT Stk_Id, Cc, " &
+                    "           SUM(CASE WHEN type = 3 THEN ttlStock ELSE 0 END) AS rcvqty, " &
+                    "           SUM(CASE WHEN type = 4 THEN ttlStock ELSE 0 END) AS rtnqty, " &
+                    "           SUM(CASE WHEN type = 1 THEN ttlStock ELSE 0 END) AS tinQty, " &
+                    "           SUM(CASE WHEN type = 2 THEN ttlStock ELSE 0 END) AS rwasteQty, " &
+                    "           SUM(CASE WHEN type = 7 THEN ttlStock ELSE 0 END) AS hooutqty, " &
+                    "           SUM(CASE WHEN type = 8 THEN ttlStock ELSE 0 END) AS hoinqty, " &
+                    "           SUM(CASE WHEN type = 9 THEN ttlStock ELSE 0 END) AS bpin, " &
+                    "           SUM(CASE WHEN type = 14 THEN ttlStock ELSE 0 END) AS cwasteqty " &
+                    "    FROM cld_inv_trans " &
+                    "    WHERE flagtrans = 1 AND CustID = " & Custid & " AND InvDate = '" & sCurrDay & "' AND type IN (1, 2, 3, 4, 7, 8, 9, 14) " &
+                    filterCCTrans & filterStkTrans & " " &
+                    "    GROUP BY Stk_Id, Cc" &
+                    ") tr ON today.stkid = tr.Stk_Id AND today.ccid = tr.Cc " &
+                    "LEFT JOIN (" &
+                    "    SELECT sd.Stk_Id, trf.ccFrom AS Cc, SUM(sd.ttlStock) AS toutQty " &
+                    "    FROM cld_inv_trans sd " &
+                    "    INNER JOIN cld_invlk_trf trf ON (sd.Linkid = trf.id AND sd.CustID = trf.CustID) " &
+                    "    WHERE sd.type = 1 AND sd.flagtrans = 1 AND sd.CustID = " & Custid & " AND sd.InvDate = '" & sCurrDay & "' " &
+                    If(ccidFilter > 0, " AND trf.ccFrom = " & ccidFilter, "") &
+                    If(stkidFilter > 0, " AND sd.Stk_Id = " & stkidFilter, "") & " " &
+                    "    GROUP BY sd.Stk_Id, trf.ccFrom" &
+                    ") tout ON today.stkid = tout.Stk_Id AND today.ccid = tout.Cc " &
+                    "LEFT JOIN (" &
+                    "    SELECT Stk_Id, Cc, " &
+                    "           SUM(CASE WHEN type = 10 THEN ttlStock ELSE 0 END) AS usageqty, " &
+                    "           SUM(CASE WHEN type = 11 THEN ttlStock ELSE 0 END) AS bpout " &
+                    "    FROM cld_inv_transusage " &
+                    "    WHERE flagtrans = 1 AND CustID = " & Custid & " AND InvDate = '" & sCurrDay & "' AND type IN (10, 11) " &
+                    filterCCTrans & filterStkTrans & " " &
+                    "    GROUP BY Stk_Id, Cc" &
+                    ") usg ON today.stkid = usg.Stk_Id AND today.ccid = usg.Cc " &
+                    "SET today.rcvqty = IFNULL(tr.rcvqty, 0), " &
+                    "    today.rtnqty = IFNULL(tr.rtnqty, 0), " &
+                    "    today.tinQty = IFNULL(tr.tinQty, 0), " &
+                    "    today.toutQty = IFNULL(tout.toutQty, 0), " &
+                    "    today.rwasteQty = IFNULL(tr.rwasteQty, 0), " &
+                    "    today.usageqty = IFNULL(usg.usageqty, 0), " &
+                    "    today.hooutqty = IFNULL(tr.hooutqty, 0), " &
+                    "    today.hoinqty = IFNULL(tr.hoinqty, 0), " &
+                    "    today.bpin = IFNULL(tr.bpin, 0), " &
+                    "    today.bpout = IFNULL(usg.bpout, 0), " &
+                    "    today.cwasteqty = IFNULL(tr.cwasteqty, 0) " &
+                    "WHERE today.CustID = " & Custid & " AND today.invdate = '" & sCurrDate & "'" &
+                    filterCC.Replace("ccid", "today.ccid") & filterStk.Replace("stkid", "today.stkid")
+                If c_cmd.executeNonQuery(sqlRecal) = False Then
+                    hasError = True
+                    errLog("Step 3 (sqlRecal) failed for date=" & sCurrDate & ", custid=" & Custid & ", cc=" & ccidFilter & ", stk=" & stkidFilter, "cls_recalculate:InvCaclculate_ActiveTransOnly")
+                End If
 
                 ' 4. Hitung ulang TtlQty & VarianceQty hari ini
                 Dim sqlTtl As String = "UPDATE cld_inv_transstockcls SET " &
                     "ttlqty = openqty + rcvqty - rtnqty + tinQty - toutQty - rwasteQty - fwasteQty - usageqty - HoOutQty + HoInQty + bpin - bpout - cwasteqty, " &
-                    "varianceqty = CASE WHEN (bclose = 1 OR bclose = b'1') THEN (openqty + rcvqty - rtnqty + tinQty - toutQty - rwasteQty - fwasteQty - usageqty - closeqty - HoOutQty + HoInQty + bpin - bpout) ELSE 0 END " &
+                    "varianceqty = CASE WHEN (bclose = 1 OR bclose = b'1') THEN (openqty + rcvqty - rtnqty + tinQty - toutQty - rwasteQty - fwasteQty - usageqty - closeqty - HoOutQty + HoInQty + bpin - bpout - cwasteqty) ELSE 0 END " &
                     "WHERE CustID = " & Custid & " AND invdate = '" & sCurrDate & "'" & filterCC & filterStk
-                c_cmd.executeNonQuery(sqlTtl)
+                If c_cmd.executeNonQuery(sqlTtl) = False Then
+                    hasError = True
+                    errLog("Step 4 (sqlTtl) failed for date=" & sCurrDate & ", custid=" & Custid & ", cc=" & ccidFilter & ", stk=" & stkidFilter, "cls_recalculate:InvCaclculate_ActiveTransOnly")
+                End If
 
                 currDate = currDate.AddDays(1)
             Loop
         Catch ex As Exception
-            errLog(Err.Description, "cls_recalculate:InvCaclculate_ActiveTransOnly")
+            hasError = True
+            errLog(ex.ToString(), "cls_recalculate:InvCaclculate_ActiveTransOnly")
             Err.Clear()
         Finally
             c_cmd.dispose()
         End Try
-    End Sub
+        Return Not hasError
+    End Function
     Public Sub InvCaclculate_Cost_ActiveTransOnly(ByVal dstart As Date, ByVal dend As Date, ByVal Custid As Integer, Optional ByVal ccidFilter As Integer = 0, Optional ByVal stkidFilter As Integer = 0)
         Dim c_cmd As New clsDbo("")
         Try

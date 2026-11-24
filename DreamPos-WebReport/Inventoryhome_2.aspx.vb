@@ -595,15 +595,27 @@ where HOUR(latepost)-HOUR(NOW())<-8 or date(latepost)-date(NOW())<-1")
             dtpost = c_cmd.ReturnDataset("SELECT invdate,ccid,ccname,stkid,stkname,ttlqty FROM `cld_inv_transstockcls` WHERE invdate = '" & Date.Now.AddDays(-1).Date.ToString("yyyy-MM-dd 00:00:00") & "' 
                                 AND (ccid,stkid)NOT IN(SELECT ccid,stkid FROM `cld_inv_transstockcls` WHERE invdate = '" & Date.Now.Date.ToString("yyyy-MM-dd 00:00:00") & "')")
             If dtpost.Tables(0).Rows.Count > 0 Then
-
-                c_cmd.executeNonQuery("INSERT INTO `cld_inv_transstockcls`
-                                        SELECT ADDDATE(invdate,1),custid,stkid,stkno,stkname,ccid,ccname,cost,ttlqty,cost,0,0,0,0,0,0,0,0,bclose,0,0,0,0,0,0,0,0 
-                                        FROM `cld_inv_transstockcls` WHERE invdate = '" & Date.Now.AddDays(-1).Date.ToString("yyyy-MM-dd 00:00:00") & "'  
-                                        AND (ccid,stkid)NOT IN(SELECT ccid,stkid FROM `cld_inv_transstockcls` WHERE invdate = '" & Date.Now.Date.ToString("yyyy-MM-dd 00:00:00") & "')")
-
+                Dim yesterday As String = Date.Now.AddDays(-1).Date.ToString("yyyy-MM-dd 00:00:00")
+                Dim today As String = Date.Now.Date.ToString("yyyy-MM-dd 00:00:00")
+                Dim strSql As String = "INSERT INTO `cld_inv_transstockcls` " &
+                                       "(invdate, custid, stkid, stkno, stkname, ccid, ccname, opencost, openqty, cost, " &
+                                       " rcvqty, rtnqty, tinqty, toutqty, rwasteqty, fwasteqty, usageqty, ttlqty, bclose, " &
+                                       " closeqty, closecost, varianceqty, hooutqty, hoinqty, bpin, bpout, cwasteqty) " &
+                                       "SELECT ADDDATE(invdate,1),custid,stkid,stkno,stkname,ccid,ccname," &
+                                       "CASE WHEN (bclose = 1 OR bclose = b'1') AND closecost > 0 THEN closecost ELSE cost END," &
+                                       "CASE WHEN (bclose = 1 OR bclose = b'1') THEN closeqty ELSE ttlqty END," &
+                                       "CASE WHEN (bclose = 1 OR bclose = b'1') AND closecost > 0 THEN closecost ELSE cost END," &
+                                       "0,0,0,0,0,0,0," &
+                                       "CASE WHEN (bclose = 1 OR bclose = b'1') THEN closeqty ELSE ttlqty END," &
+                                       "0,0,0,0,0,0,0,0,0 " &
+                                       "FROM `cld_inv_transstockcls` WHERE invdate = '" & yesterday & "' " &
+                                       "AND (ccid,stkid) NOT IN (SELECT ccid,stkid FROM `cld_inv_transstockcls` WHERE invdate = '" & today & "')"
+                If c_cmd.executeNonQuery(strSql) = False Then
+                    mfunction.errLog("insert_closing failed for today=" & today & " from yesterday=" & yesterday, "InventoryHome2:insert_closing")
+                End If
             End If
         Catch ex As Exception
-            mfunction.errLog(Err.Description, "InventoryHome:insert_closing")
+            mfunction.errLog(ex.ToString(), "InventoryHome2:insert_closing")
             Err.Clear()
         End Try
 
